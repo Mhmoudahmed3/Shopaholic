@@ -167,11 +167,13 @@ export async function getProducts(options: {
     }
 
     if (size) {
-        result = result.filter(p => p.sizes.some(s => s.toLowerCase() === size.toLowerCase()));
+        const sizes = size.split(',').map(s => s.trim().toLowerCase());
+        result = result.filter(p => p.sizes.some(s => sizes.includes(s.toLowerCase())));
     }
 
     if (color) {
-        result = result.filter(p => p.colors.some(c => c.toLowerCase() === color.toLowerCase()));
+        const colors = color.split(',').map(c => c.trim().toLowerCase());
+        result = result.filter(p => p.colors.some(c => colors.includes(c.toLowerCase())));
     }
 
     if (minPrice !== undefined) {
@@ -211,6 +213,24 @@ export async function getProduct(id: string) {
 export async function getRelatedProducts(id: string, category: string) {
     await new Promise(resolve => setTimeout(resolve, 500));
     return getProductsDB().filter(p => p.category === category && p.id !== id).slice(0, 4);
+}
+
+export async function getAvailableFilters(options: { category?: string, type?: string } = {}) {
+    const { category, type } = options;
+    const products = getProductsDB();
+    let filtered = products;
+
+    if (category && category !== 'all') {
+        filtered = filtered.filter(p => p.category === category);
+    }
+    if (type) {
+        filtered = filtered.filter(p => p.type?.toLowerCase() === type.toLowerCase());
+    }
+
+    const sizes = Array.from(new Set(filtered.flatMap(p => p.sizes || []).map(s => s.toLowerCase())));
+    const colors = Array.from(new Set(filtered.flatMap(p => p.colors || []).map(c => c.toLowerCase())));
+
+    return { sizes, colors };
 }
 export async function getCollection(id: string) {
     const collections = getCollectionsDB();

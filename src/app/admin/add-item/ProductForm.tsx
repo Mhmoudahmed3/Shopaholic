@@ -28,25 +28,10 @@ interface ImageVariantRow {
     existingUrl: string;
 }
 
-const PREDEFINED_COLORS = ['Black', 'White', 'Grey', 'Charcoal', 'Navy', 'Blue', 'Cream', 'Camel', 'Khaki', 'Olive', 'Green', 'Burgundy', 'Red', 'Default'];
-const PREDEFINED_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'One Size'];
+import { PREDEFINED_COLORS as SHARED_COLORS, PREDEFINED_SIZES, COLOR_MAP_HEX } from "@/lib/constants";
 
-const COLOR_MAP: Record<string, string> = {
-    'Black': '#000000',
-    'White': '#ffffff',
-    'Grey': '#9ca3af',
-    'Charcoal': '#374151',
-    'Navy': '#1e3a8a',
-    'Blue': '#3b82f6',
-    'Cream': '#fef3c7',
-    'Camel': '#d97706',
-    'Khaki': '#fde047',
-    'Olive': '#4d7c0f',
-    'Green': '#22c55e',
-    'Burgundy': '#9f1239',
-    'Red': '#ef4444',
-    'Default': 'transparent'
-};
+const PREDEFINED_COLORS = SHARED_COLORS.map(c => c.name).concat('Default');
+const COLOR_MAP: Record<string, string> = { ...COLOR_MAP_HEX, 'Default': 'transparent' };
 
 export default function ProductForm({ categories, initialProduct }: { categories: Category[], initialProduct?: Product }) {
     const isEditing = !!initialProduct;

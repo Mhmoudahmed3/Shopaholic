@@ -5,7 +5,15 @@ import { ChevronDown, X, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
+import { PREDEFINED_COLORS, PREDEFINED_SIZES } from "@/lib/constants";
 import { ShopSortSelect } from "./ShopSortSelect";
+
+interface FilterSidebarProps {
+    availableFilters?: {
+        sizes: string[];
+        colors: string[];
+    };
+}
 
 const ACCORDION_CATEGORIES = [
     { title: "All Products", path: "/shop" },
@@ -45,7 +53,7 @@ const PRICE_RANGES = [
     { label: 'Over 10,000 EGP', min: 10000, max: 999999 }
 ];
 
-export function FilterSidebar() {
+export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -254,8 +262,12 @@ export function FilterSidebar() {
             <div className="mb-10 pb-8 border-b border-gray-100 dark:border-neutral-800">
                 <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] mb-6 text-neutral-400">Select Size</h3>
                 <div className="grid grid-cols-4 gap-2">
-                    {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => {
-                        const isActive = currentSize?.split(',').includes(size.toLowerCase());
+                    {PREDEFINED_SIZES.map((size) => {
+                        const sizeLow = size.toLowerCase();
+                        const isAvailable = !availableFilters?.sizes || availableFilters.sizes.includes(sizeLow);
+                        if (!isAvailable) return null;
+                        
+                        const isActive = currentSize?.split(',').includes(sizeLow);
                         return (
                             <button
                                 key={size}
@@ -278,15 +290,12 @@ export function FilterSidebar() {
             <div className="mb-10 pb-8 border-b border-gray-100 dark:border-neutral-800">
                 <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] mb-6 text-neutral-400">Filter By Color</h3>
                 <div className="flex flex-wrap gap-3">
-                    {[
-                        { name: 'Black', hex: '#000000', border: true },
-                        { name: 'White', hex: '#FFFFFF', border: true },
-                        { name: 'Beige', hex: '#D2B48C' },
-                        { name: 'Navy', hex: '#000080' },
-                        { name: 'Camel', hex: '#C19A6B' },
-                        { name: 'Grey', hex: '#808080' }
-                    ].map((color) => {
-                        const isActive = currentColor?.split(',').includes(color.name.toLowerCase());
+                    {PREDEFINED_COLORS.map((color) => {
+                        const colorLow = color.name.toLowerCase();
+                        const isAvailable = !availableFilters?.colors || availableFilters.colors.includes(colorLow);
+                        if (!isAvailable) return null;
+
+                        const isActive = currentColor?.split(',').includes(colorLow);
                         return (
                             <button
                                 key={color.name}

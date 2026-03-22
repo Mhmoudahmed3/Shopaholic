@@ -23,17 +23,20 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     const isPopular = resolvedParams.popular === "true";
 
     const categories = await getCategoriesDB();
-    const products = await getProducts({ 
-        category, 
-        sort, 
-        type, 
-        size, 
-        color, 
-        minPrice, 
-        maxPrice,
-        minRating,
-        isPopular
-    });
+    const [products, filterOptions] = await Promise.all([
+        getProducts({ 
+            category, 
+            sort, 
+            type, 
+            size, 
+            color, 
+            minPrice, 
+            maxPrice,
+            minRating,
+            isPopular
+        }),
+        getAvailableFilters({ category, type })
+    ]);
 
     const currentCategoryLabel = category === "all" ? "All Products" : (categories.find(c => c.id === category)?.label || category);
 
@@ -59,7 +62,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
 
             {/* Main Content */}
             <div className="flex flex-col md:flex-row gap-8 lg:gap-12">
-                <FilterSidebar />
+                <FilterSidebar availableFilters={filterOptions} />
                 <div className="flex-1">
                     <ProductGrid products={products} />
                 </div>
