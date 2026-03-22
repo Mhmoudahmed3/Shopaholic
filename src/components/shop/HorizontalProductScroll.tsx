@@ -11,7 +11,7 @@ import { WishlistToggle } from "./WishlistToggle";
 import { QuickAddModal } from "./QuickAddModal";
 
 interface HorizontalProductScrollProps {
-    title: string;
+    title?: string;
     products: Product[];
 }
 
@@ -25,13 +25,13 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
     };
 
     return (
-        <div className="relative w-full py-10">
-            <h2 className="text-xl font-serif mb-8 px-4 md:px-0 uppercase tracking-widest">{title}</h2>
-            <div className="flex gap-8 overflow-x-auto no-scrollbar scroll-smooth pb-8 touch-pan-x">
+        <div className="relative w-full py-2 md:py-10">
+            {title && <h2 className="text-xl font-serif mb-6 md:mb-8 px-4 md:px-0 uppercase tracking-widest">{title}</h2>}
+            <div className="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar scroll-smooth pb-8 touch-pan-x -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0">
                 {products.map((product, index) => (
                     <div 
                         key={`${product.id}-${index}`}
-                        className="flex-none w-[280px] md:w-[350px] group/item relative"
+                        className="flex-none w-[260px] md:w-[350px] group/item relative"
                     >
                         {/* The over-arching Link should be at a lower z-index than the interactive buttons */}
                     <Link 

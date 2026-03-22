@@ -223,7 +223,7 @@ export default function Home() {
           </div>
 
           {filteredBestSellers && filteredBestSellers.length > 0 ? (
-            <HorizontalProductScroll title="Best Sellers" products={filteredBestSellers} />
+            <HorizontalProductScroll products={filteredBestSellers} />
           ) : (
             <div className="text-center py-20 border border-dashed border-neutral-200 dark:border-neutral-800">
               <p className="text-neutral-400 text-sm font-light uppercase tracking-widest">New arrivals coming soon</p>
