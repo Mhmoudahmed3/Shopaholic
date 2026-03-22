@@ -127,21 +127,21 @@ export function CollectionModal({ isOpen, onClose, initialCollection }: Collecti
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300 overflow-y-auto">
-            <div className="bg-white dark:bg-zinc-900 w-full max-w-4xl rounded-[2.5rem] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300 my-8">
-                <div className="flex items-center justify-between p-8 border-b border-gray-100 dark:border-zinc-800">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300 overflow-y-auto">
+            <div className="bg-white dark:bg-zinc-900 w-full max-w-4xl rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300 my-4 md:my-8 flex flex-col max-h-[90vh]">
+                <div className="flex items-center justify-between p-4 sm:p-6 md:p-8 border-b border-gray-100 dark:border-zinc-800 shrink-0">
                     <div>
-                        <h2 className="text-2xl font-light tracking-tight">{initialCollection ? 'Edit Collection' : 'Create New Collection'}</h2>
+                        <h2 className="text-xl sm:text-2xl font-light tracking-tight">{initialCollection ? 'Edit Collection' : 'Create New Collection'}</h2>
                         <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Configure your curated series and select items</p>
                     </div>
-                    <button onClick={onClose} className="p-3 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full transition-colors group">
+                    <button onClick={onClose} className="p-2 sm:p-3 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full transition-colors group shrink-0">
                         <X className="w-5 h-5 text-gray-500 group-hover:rotate-90 transition-transform duration-300" />
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-gray-100 dark:divide-zinc-800">
+                <form onSubmit={handleSubmit} className="flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-gray-100 dark:divide-zinc-800 overflow-y-auto custom-scrollbar">
                     {/* Left Side: Details & Image */}
-                    <div className="flex-1 p-8 space-y-6">
+                    <div className="flex-1 p-4 sm:p-6 md:p-8 space-y-6">
                         <div className="space-y-4">
                             <div 
                                 onDragEnter={handleDrag}
@@ -209,8 +209,8 @@ export function CollectionModal({ isOpen, onClose, initialCollection }: Collecti
                     </div>
 
                     {/* Right Side: Product Selection */}
-                    <div className="w-full md:w-[400px] p-8 bg-gray-50/30 dark:bg-zinc-950/20 flex flex-col h-[600px]">
-                        <div className="flex items-center justify-between mb-6">
+                    <div className="w-full md:w-[400px] p-4 sm:p-6 md:p-8 bg-gray-50/30 dark:bg-zinc-950/20 flex flex-col h-[500px] md:h-[600px] shrink-0">
+                        <div className="flex items-center justify-between mb-4 sm:mb-6 shrink-0">
                             <h3 className="text-sm font-bold uppercase tracking-[0.2em]">Select Inventory</h3>
                             <span className="text-[10px] bg-black dark:bg-white text-white dark:text-black px-2 py-0.5 rounded-full font-bold">{selectedIds.length} Selected</span>
                         </div>
@@ -259,7 +259,7 @@ export function CollectionModal({ isOpen, onClose, initialCollection }: Collecti
                             )}
                         </div>
 
-                        <div className="mt-6 pt-6 border-t border-gray-100 dark:border-zinc-800 flex gap-4">
+                        <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-100 dark:border-zinc-800 flex gap-4 shrink-0">
                             <button 
                                 type="button"
                                 onClick={onClose}

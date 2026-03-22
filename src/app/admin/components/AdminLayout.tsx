@@ -18,7 +18,8 @@ import {
     Info,
     X,
     Home,
-    Library
+    Library,
+    Menu
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -27,6 +28,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export function AdminSideNav() {
     const { user, logout } = useAuthStore();
     const pathname = usePathname();
+    const [isOpen, setIsOpen] = useState(false);
 
     const menuItems = [
         { label: "Dashboard", icon: LayoutDashboard, href: "/admin", active: pathname === "/admin" },
@@ -40,7 +42,30 @@ export function AdminSideNav() {
     ];
 
     return (
-        <aside className="w-64 h-screen bg-black border-r border-gray-800 flex flex-col fixed left-0 top-0 z-50">
+        <>
+            {/* Hamburger Button for Mobile */}
+            <button 
+                onClick={() => setIsOpen(true)}
+                className="lg:hidden fixed top-6 left-6 z-[60] p-1.5 bg-zinc-900 border border-zinc-800 text-white rounded-md shadow-md hover:bg-zinc-800 transition-colors"
+                aria-label="Open Menu"
+            >
+                <Menu className="w-5 h-5" />
+            </button>
+
+            {/* Mobile overlays */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsOpen(false)}
+                        className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]" 
+                    />
+                )}
+            </AnimatePresence>
+
+            <aside className={`w-64 h-screen bg-black border-r border-gray-800 flex flex-col fixed left-0 top-0 z-[70] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}>
             {/* Logo */}
             <div className="p-8 border-b border-gray-900">
                 <Link href="/" className="group block">
@@ -59,6 +84,7 @@ export function AdminSideNav() {
                     <Link
                         key={idx}
                         href={item.href}
+                        onClick={() => setIsOpen(false)}
                         className={`flex items-center gap-3 px-4 py-3 text-sm font-medium tracking-wide transition-all rounded-lg group relative ${
                             item.active 
                                 ? "text-white bg-zinc-900" 
@@ -106,6 +132,7 @@ export function AdminSideNav() {
                 </div>
             </div>
         </aside>
+        </>
     );
 }
 
@@ -120,8 +147,8 @@ export function AdminHeader({ title }: { title: string }) {
     ];
 
     return (
-        <header className="h-20 bg-white/50 dark:bg-black/50 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-8 flex items-center justify-between sticky top-0 z-40">
-            <div>
+        <header className="h-20 bg-white/50 dark:bg-black/50 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-4 md:px-8 flex items-center justify-between sticky top-0 z-40">
+            <div className="pl-12 lg:pl-0">
                 <h2 className="text-xl font-light tracking-tight">{title}</h2>
             </div>
 

@@ -163,45 +163,5 @@
     "popularity": 98,
     "rating": 4.9,
     "reviewsCount": 24
-  },
-  {
-    "id": "1773772807626",
-    "name": "Camel Tailored Wool Coat",
-    "description": "A timeless staple for the modern wardrobe. Precision-tailored from ethically sourced virgin wool, offering unmatched warmth and a refined structural drape.",
-    "price": 8900,
-    "category": "women",
-    "type": "outerwear",
-    "images": [
-      "/uploads/lux_tailored_coat_camel.png"
-    ],
-    "imageVariants": [
-      {
-        "url": "/uploads/lux_tailored_coat_camel.png",
-        "color": "Camel",
-        "size": "M",
-        "quantity": 4
-      },
-      {
-        "url": "/uploads/lux_tailored_coat_camel.png",
-        "color": "Camel",
-        "size": "L",
-        "quantity": 6
-      }
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "colors": [
-      "Camel"
-    ],
-    "createdAt": "2026-03-17T18:40:00.000Z",
-    "isNew": true,
-    "stock": 10,
-    "popularity": 95,
-    "rating": 4.8,
-    "reviewsCount": 18
   }
 ]

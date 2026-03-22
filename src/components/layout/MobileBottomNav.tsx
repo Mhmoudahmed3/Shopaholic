@@ -4,6 +4,9 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, ShoppingBag, Heart } from "lucide-react";
+import { useWishlistStore } from "@/store/useWishlistStore";
+import { useCartStore } from "@/store/useCartStore";
+import { useEffect, useState } from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -14,13 +17,21 @@ function cn(...inputs: ClassValue[]) {
 
 export function MobileBottomNav() {
     const pathname = usePathname();
+    const [mounted, setMounted] = useState(false);
+    
+    // Store values
+    const wishlistCount = useWishlistStore((state) => state.items.length);
+    const cartCount = useCartStore((state) => state.items.reduce((acc, item) => acc + item.quantity, 0));
 
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const navItems = [
         { label: "Home", icon: Home, href: "/" },
         { label: "Shop", icon: ShoppingBag, href: "/shop" },
-        { label: "Wishlist", icon: Heart, href: "/favorites" },
-        { label: "Cart", icon: ShoppingBag, href: "/cart" },
+        { label: "Wishlist", icon: Heart, href: "/favorites", count: wishlistCount },
+        { label: "Cart", icon: ShoppingBag, href: "/cart", count: cartCount },
     ];
 
     return (
@@ -44,6 +55,11 @@ export function MobileBottomNav() {
                                     )} 
                                     strokeWidth={isActive ? 2.5 : 2}
                                 />
+                                {mounted && item.count !== undefined && item.count > 0 && (
+                                    <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[10px] font-bold text-white dark:bg-white dark:text-black transition-all animate-in zoom-in duration-300">
+                                        {item.count}
+                                    </span>
+                                )}
                                 {isActive && (
                                     <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-black dark:bg-white rounded-full animate-in fade-in zoom-in duration-300" />
                                 )}

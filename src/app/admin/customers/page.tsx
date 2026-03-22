@@ -82,13 +82,13 @@ export default async function CustomersPage({
         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
             <AdminHeader title="Customer Directory" />
 
-            <main className="flex-1 p-8 space-y-8">
+            <main className="flex-1 p-4 md:p-8 space-y-6 md:space-y-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-light tracking-tight">Active Shoppers</h1>
                         <p className="text-xs text-gray-500 mt-1">Manage {customers.length} registered customers</p>
                     </div>
-                    <button className="flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-widest rounded hover:opacity-80 transition-all shadow-lg">
+                    <button className="flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3 bg-neutral-900 dark:bg-neutral-100 text-neutral-50 dark:text-neutral-900 border border-transparent dark:border-neutral-200 text-xs font-bold uppercase tracking-widest rounded hover:opacity-80 transition-all shadow-lg">
                         <UserPlus className="w-4 h-4" /> Register New Customer
                     </button>
                 </div>
@@ -186,17 +186,17 @@ export default async function CustomersPage({
                 </div>
 
                 {/* Help Card */}
-                <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/50 p-6 rounded-2xl flex items-center justify-between">
-                    <div className="flex items-center gap-6">
-                        <div className="w-12 h-12 bg-white dark:bg-emerald-900 rounded-full flex items-center justify-center text-emerald-600 shadow-sm shrink-0">
-                            <Mail className="w-6 h-6" />
+                <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/50 p-4 sm:p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+                    <div className="flex items-center gap-4 sm:gap-6">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white dark:bg-emerald-900 rounded-full flex items-center justify-center text-emerald-600 shadow-sm shrink-0">
+                            <Mail className="w-5 h-5 sm:w-6 sm:h-6" />
                         </div>
                         <div>
                             <h3 className="font-medium text-emerald-900 dark:text-emerald-400">Marketing Outreach</h3>
-                            <p className="text-sm text-emerald-600/70 dark:text-emerald-600">Send personalized offers to your most loyal customers based on their purchase history.</p>
+                            <p className="text-xs sm:text-sm text-emerald-600/70 dark:text-emerald-600 mt-1">Send personalized offers to your most loyal customers based on their purchase history.</p>
                         </div>
                     </div>
-                    <button className="hidden md:block px-6 py-2 bg-emerald-600 text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-emerald-700 transition-colors">
+                    <button className="w-full md:w-auto px-6 py-3 md:py-2 bg-emerald-600 text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-emerald-700 transition-colors text-center">
                         Launch Campaign
                     </button>
                 </div>

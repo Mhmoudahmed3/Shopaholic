@@ -48,14 +48,14 @@ export default function OrdersList({ orders }: { orders: Order[] }) {
     };
 
     return (
-        <main className="flex-1 p-8 space-y-8">
+        <main className="flex-1 p-4 md:p-8 space-y-6 md:space-y-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-light tracking-tight">Orders Overview</h1>
                     <p className="text-xs text-gray-500 mt-1">Manage and track your customer orders</p>
                 </div>
-                <div className="flex gap-3">
-                    <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-800 rounded bg-white dark:bg-zinc-900 text-xs font-bold uppercase tracking-widest hover:bg-gray-50 transition-all">
+                <div className="flex gap-3 w-full md:w-auto">
+                    <button className="w-full md:w-auto flex justify-center items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-800 rounded bg-white dark:bg-zinc-900 text-xs font-bold uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-zinc-800 transition-all">
                         <Download className="w-4 h-4" /> Export CSV
                     </button>
                 </div>
@@ -79,7 +79,7 @@ export default function OrdersList({ orders }: { orders: Order[] }) {
 
             {/* Table Section */}
             <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
-                <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex flex-col md:flex-row gap-4 items-center justify-between bg-gray-50/30 dark:bg-zinc-800/20">
+                <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between bg-gray-50/30 dark:bg-zinc-800/20">
                     <div className="flex items-center gap-3 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 px-4 py-2 rounded-lg w-full md:w-80">
                         <Search className="w-4 h-4 text-gray-400" />
                         <input 
@@ -87,7 +87,7 @@ export default function OrdersList({ orders }: { orders: Order[] }) {
                             placeholder="Search order ID or name..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="bg-transparent border-none outline-none text-xs flex-1" 
+                            className="bg-transparent border-none outline-none text-xs flex-1 w-full" 
                         />
                         {searchQuery && (
                             <button onClick={() => setSearchQuery("")} className="text-gray-400 hover:text-black">
@@ -95,12 +95,12 @@ export default function OrdersList({ orders }: { orders: Order[] }) {
                             </button>
                         )}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-row flex-wrap gap-2 w-full md:w-auto">
                         <input 
                             type="date" 
                             value={dateFilter}
                             onChange={(e) => setDateFilter(e.target.value)}
-                            className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-gray-500 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-black transition-colors bg-white dark:bg-black cursor-pointer"
+                            className="flex-1 min-w-[120px] md:flex-none flex items-center gap-2 px-4 py-2 text-xs font-bold text-gray-500 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-black transition-colors bg-white dark:bg-black cursor-pointer"
                         />
                         {(dateFilter || searchQuery || activeStatus !== 'All Orders') && (
                             <button 
@@ -109,7 +109,7 @@ export default function OrdersList({ orders }: { orders: Order[] }) {
                                     setDateFilter("");
                                     setActiveStatus("All Orders");
                                 }}
-                                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-rose-500 border border-rose-200 dark:border-rose-800 rounded-lg hover:bg-rose-50 transition-colors"
+                                className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 text-xs font-bold text-rose-500 border border-rose-200 dark:border-rose-800 rounded-lg hover:bg-rose-50 transition-colors"
                             >
                                 <X className="w-4 h-4" /> Clear
                             </button>

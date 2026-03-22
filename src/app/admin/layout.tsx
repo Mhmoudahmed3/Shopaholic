@@ -6,8 +6,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Sidebar remains fixed */}
             <AdminSideNav />
             
-            {/* Main content area shifts right to account for sidebar */}
-            <div className="flex-1 ml-64 min-h-screen flex flex-col">
+            {/* Main content area shifts right to account for sidebar only on desktop */}
+            <div className="flex-1 flex-col min-h-screen flex lg:ml-64 min-w-0 overflow-x-hidden">
                 {children}
             </div>
         </div>

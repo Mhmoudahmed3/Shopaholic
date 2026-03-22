@@ -61,7 +61,7 @@ export default function AdminCollectionsPage() {
         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50 transition-colors duration-500">
             <AdminHeader title="Collection Management" />
 
-            <main className="flex-1 p-8 space-y-8">
+            <main className="flex-1 p-4 md:p-8 space-y-6 md:space-y-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="animate-in slide-in-from-left duration-700">
                         <h1 className="text-2xl font-light tracking-tight">Curated Collections</h1>
@@ -69,7 +69,7 @@ export default function AdminCollectionsPage() {
                     </div>
                     <button 
                         onClick={handleAddNew}
-                        className="flex items-center gap-2 px-8 py-4 bg-black dark:bg-white text-white dark:text-black text-[11px] font-bold uppercase tracking-[0.2em] rounded-2xl hover:opacity-80 transition-all shadow-xl hover:scale-[1.02] active:scale-95"
+                        className="flex items-center justify-center gap-2 w-full md:w-auto px-8 py-4 bg-neutral-900 text-neutral-50 dark:bg-neutral-100 dark:text-neutral-900 text-[11px] font-bold uppercase tracking-[0.2em] rounded-2xl hover:opacity-80 transition-all shadow-xl hover:scale-[1.02] active:scale-95"
                     >
                         <Plus className="w-4 h-4" /> New Collection
                     </button>
@@ -142,7 +142,7 @@ export default function AdminCollectionsPage() {
                         <p className="text-xs text-gray-400 mt-3 max-w-sm mx-auto leading-relaxed uppercase tracking-widest font-medium opacity-60">Create rich, immersive pages for your collections with editorial content and high-resolution media.</p>
                         <button 
                             onClick={handleAddNew}
-                            className="mt-10 inline-flex items-center gap-2 px-8 py-4 bg-black dark:bg-white text-white dark:text-black text-[11px] font-bold uppercase tracking-[0.2em] rounded-2xl hover:opacity-80 transition-all shadow-xl hover:scale-[1.05]"
+                            className="mt-10 inline-flex items-center gap-2 px-8 py-4 bg-neutral-900 text-neutral-50 dark:bg-neutral-100 dark:text-neutral-900 text-[11px] font-bold uppercase tracking-[0.2em] rounded-2xl hover:opacity-80 transition-all shadow-xl hover:scale-[1.05]"
                         >
                             <Plus className="w-4 h-4" /> Start First Collection
                         </button>

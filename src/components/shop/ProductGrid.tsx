@@ -8,12 +8,22 @@ import { Plus, Star } from "lucide-react";
 import clsx from "clsx";
 import type { Product } from "@/lib/data";
 import { WishlistToggle } from "./WishlistToggle";
+import { useState } from "react";
+import { QuickAddModal } from "./QuickAddModal";
 
 interface ProductGridProps {
     products: Product[];
 }
 
 export function ProductGrid({ products }: ProductGridProps) {
+    const [quickAddProduct, setQuickAddProduct] = useState<Product | null>(null);
+
+    const handleQuickAdd = (e: React.MouseEvent, product: Product) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setQuickAddProduct(product);
+    };
+
     if (products.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-24 text-center">
@@ -33,11 +43,12 @@ export function ProductGrid({ products }: ProductGridProps) {
                     transition={{ duration: 0.5, delay: index * 0.05 }}
                     className="group relative"
                 >
+                    {/* The over-arching Link should be at a lower z-index than the interactive buttons */}
                     <Link href={`/shop/${product.id}`} className="absolute inset-0 z-10" prefetch={false}>
                         <span className="sr-only">View {product.name}</span>
                     </Link>
 
-                    <div className="aspect-[3/4] w-full overflow-hidden bg-neutral-100 dark:bg-neutral-900 relative z-0">
+                    <div className="aspect-[3/4] w-full overflow-hidden bg-neutral-100 dark:bg-neutral-900 relative">
                         {product.isNew && (
                             <span className="absolute top-4 left-4 z-20 px-2 py-1 bg-white dark:bg-black text-[9px] font-bold tracking-[0.2em] uppercase shadow-sm">
                                 New
@@ -63,31 +74,36 @@ export function ProductGrid({ products }: ProductGridProps) {
                                 className="object-cover transition-all duration-1000 opacity-0 group-hover:opacity-100 group-hover:scale-105 absolute inset-0"
                             />
                         )}
+                    </div>
 
-                        {/* Wishlist Toggle (Top Right) */}
-                        <div className="absolute top-4 right-4 z-20">
-                            <WishlistToggle 
-                                productId={product.id} 
-                                className="w-8 h-8 opacity-0 md:group-hover:opacity-100 scale-90 group-hover:scale-100" 
-                            />
-                        </div>
+                    {/* Interactive Buttons (Outside the overflow-hidden container and higher z-index than Link) */}
+                    <div className="absolute top-4 right-4 z-20">
+                        <WishlistToggle 
+                            productId={product.id} 
+                            className="w-8 h-8 opacity-0 md:group-hover:opacity-100 scale-90 group-hover:scale-100" 
+                        />
+                    </div>
 
-                        {/* Quick Add Overlay Button (Below Wishlist) */}
-                        <button className="absolute top-14 right-4 z-20 w-8 h-8 bg-white/90 backdrop-blur-sm text-black flex items-center justify-center rounded-full shadow-lg opacity-0 md:group-hover:opacity-100 transition-all duration-300 hover:bg-black hover:text-white scale-90 group-hover:scale-100">
-                            <span className="sr-only">Quick Add</span>
-                            <Plus className="w-4 h-4" />
+                    <button 
+                        onClick={(e) => handleQuickAdd(e, product)}
+                        className="absolute top-14 right-4 z-20 w-8 h-8 flex items-center justify-center rounded-full shadow-lg bg-white/90 backdrop-blur-sm text-black opacity-0 md:group-hover:opacity-100 hover:bg-black hover:text-white transition-all duration-300 scale-90 group-hover:scale-100"
+                    >
+                        <span className="sr-only">Quick Add</span>
+                        <Plus className="w-4 h-4" />
+                    </button>
+
+                    {/* Minimalist Mobile Buttons */}
+                    <div className="md:hidden absolute top-2 right-2 z-20 flex flex-col gap-2">
+                        <WishlistToggle 
+                            productId={product.id} 
+                            className="w-7 h-7 bg-white/80" 
+                        />
+                        <button 
+                            onClick={(e) => handleQuickAdd(e, product)}
+                            className="w-7 h-7 bg-white/80 text-black flex items-center justify-center rounded-full shadow-md active:bg-black active:text-white transition-colors relative z-20"
+                        >
+                            <Plus className="w-3.5 h-3.5" />
                         </button>
-
-                        {/* Minimalist Mobile Buttons */}
-                        <div className="md:hidden absolute top-2 right-2 z-20 flex flex-col gap-2">
-                            <WishlistToggle 
-                                productId={product.id} 
-                                className="w-7 h-7 bg-white/80" 
-                            />
-                            <button className="w-7 h-7 bg-white/80 text-black flex items-center justify-center rounded-full shadow-md active:bg-black active:text-white transition-colors relative z-20">
-                                <Plus className="w-3.5 h-3.5" />
-                            </button>
-                        </div>
                     </div>
                     
                     <div className="mt-5 flex flex-col gap-1.5 relative pointer-events-none">
@@ -130,6 +146,10 @@ export function ProductGrid({ products }: ProductGridProps) {
                     </div>
                 </motion.div>
             ))}
+            <QuickAddModal 
+                product={quickAddProduct} 
+                onClose={() => setQuickAddProduct(null)} 
+            />
         </div>
     );
 }

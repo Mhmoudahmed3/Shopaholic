@@ -74,7 +74,7 @@ export default async function InventoryPage({
         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
             <AdminHeader title="Product Inventory" />
 
-            <main className="flex-1 p-8 space-y-8">
+            <main className="flex-1 p-4 md:p-8 space-y-6 md:space-y-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-light tracking-tight">Manage Catalog</h1>
@@ -82,7 +82,7 @@ export default async function InventoryPage({
                     </div>
                     <Link 
                         href="/admin/add-item"
-                        className="flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-widest rounded hover:opacity-80 transition-all shadow-lg"
+                        className="flex items-center justify-center gap-2 px-6 py-3 bg-neutral-900 dark:bg-neutral-100 text-neutral-50 dark:text-neutral-900 border border-transparent dark:border-neutral-200 text-xs font-bold uppercase tracking-widest rounded hover:opacity-80 transition-all shadow-lg w-full md:w-auto"
                     >
                         <Plus className="w-4 h-4" /> Add New Item
                     </Link>

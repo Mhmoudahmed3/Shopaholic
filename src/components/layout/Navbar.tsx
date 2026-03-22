@@ -30,15 +30,17 @@ export function Navbar() {
 
                         <button 
                             onClick={openSearch}
-                            className="hidden lg:block p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors"
+                            className="block p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors"
                         >
                             <Search className="h-5 w-5" />
                         </button>
                         <Link href="/admin" className="p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors">
                             <User className="h-5 w-5" />
                         </Link>
-                        <WishlistIcon />
-                        <CartIcon />
+                        <div className="hidden lg:flex items-center gap-1 sm:gap-2">
+                            <WishlistIcon />
+                            <CartIcon />
+                        </div>
                     </div>
 
                 </div>

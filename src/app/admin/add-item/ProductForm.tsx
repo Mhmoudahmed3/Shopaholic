@@ -408,7 +408,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                                         <button
                                             type="button"
                                             onClick={() => addSizeToRow(img.id)}
-                                            className="text-[10px] bg-black dark:bg-white text-white dark:text-black px-2 py-1 rounded-sm hover:opacity-80 transition-opacity flex items-center gap-1 uppercase tracking-tighter"
+                                            className="text-[10px] bg-neutral-900 dark:bg-neutral-100 text-neutral-50 dark:text-neutral-900 px-2 py-1 rounded-sm hover:opacity-80 transition-opacity flex items-center gap-1 uppercase tracking-tighter"
                                         >
                                             <Plus className="w-3 h-3" /> Add Size
                                         </button>
@@ -486,7 +486,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full sm:w-auto px-8 py-4 bg-black text-white dark:bg-white dark:text-black text-sm font-medium tracking-widest uppercase hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                    className="w-full sm:w-auto px-8 py-4 bg-neutral-900 text-neutral-50 dark:bg-neutral-100 dark:text-neutral-900 text-sm font-medium tracking-widest uppercase hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                     {isPending ? (
                         <>

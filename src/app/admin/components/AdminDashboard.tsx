@@ -112,7 +112,7 @@ export default function AdminDashboard({ products, orders }: { products: Product
                             variants={containerVariants}
                             initial="hidden"
                             animate="visible"
-                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
                         >
                             <StatCard 
                                 label="Total Revenue" 
@@ -169,8 +169,8 @@ export default function AdminDashboard({ products, orders }: { products: Product
                         </div>
 
                         <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
-                            <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gray-50/50 dark:bg-zinc-800/30 relative">
-                                <div className="flex items-center gap-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 px-3 py-1.5 rounded-lg w-64">
+                            <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between gap-4 bg-gray-50/50 dark:bg-zinc-800/30 relative">
+                                <div className="flex items-center gap-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 px-3 py-1.5 rounded-lg flex-1 sm:w-64 sm:flex-none">
                                     <Search className="w-4 h-4 text-gray-400" />
                                     <input 
                                         type="text" 
@@ -436,11 +436,11 @@ export default function AdminDashboard({ products, orders }: { products: Product
                             <p className="text-gray-400 text-sm max-w-md leading-relaxed mb-8">
                                 Manage your collections and navigation menu to reflect your latest seasons. Changes here will immediately propagate to the storefront.
                             </p>
-                            <div className="flex gap-4">
-                                <button className="px-6 py-3 bg-white text-black text-xs font-bold uppercase tracking-widest rounded-full hover:opacity-90 transition-opacity">
+                            <div className="flex flex-col sm:flex-row gap-4 mb-8 md:mb-0">
+                                <button className="px-6 py-3 w-full sm:w-auto bg-white text-black text-xs font-bold uppercase tracking-widest rounded-full hover:opacity-90 transition-opacity text-center">
                                     Manage Collections
                                 </button>
-                                <button className="px-6 py-3 border border-gray-700 text-white text-xs font-bold uppercase tracking-widest rounded-full hover:bg-white/10 transition-colors">
+                                <button className="px-6 py-3 w-full sm:w-auto border border-gray-700 text-white text-xs font-bold uppercase tracking-widest rounded-full hover:bg-white/10 transition-colors text-center">
                                     View Analytics
                                 </button>
                             </div>
@@ -485,22 +485,22 @@ function StatCard({ label, value, trend, trendUp, icon: Icon, description }: Sta
     return (
         <motion.div 
             variants={itemVariants}
-            className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 p-6 rounded-xl shadow-sm hover:shadow-md transition-all group"
+            className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 p-4 sm:p-6 rounded-xl shadow-sm hover:shadow-md transition-all group flex flex-col justify-between"
         >
-            <div className="flex justify-between items-start mb-4">
-                <div className="p-2.5 bg-gray-50 dark:bg-zinc-800 rounded-lg group-hover:scale-110 transition-transform">
-                    <Icon className="w-5 h-5 text-gray-900 dark:text-gray-100" />
+            <div className="flex justify-between items-start mb-3 sm:mb-4">
+                <div className="p-2 sm:p-2.5 bg-gray-50 dark:bg-zinc-800 rounded-lg group-hover:scale-110 transition-transform">
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 dark:text-gray-100" />
                 </div>
-                <div className={`flex items-center gap-1 text-xs font-bold ${trendUp ? 'text-emerald-600' : 'text-rose-600'}`}>
-                    {trendUp ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-                    {trend}
+                <div className={`flex items-center gap-1 text-[10px] sm:text-xs font-bold ${trendUp ? 'text-emerald-600' : 'text-rose-600'}`}>
+                    {trendUp ? <ArrowUpRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> : <ArrowDownRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />}
+                    <span className="hidden sm:inline">{trend}</span>
                 </div>
             </div>
             <div>
-                <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">{label}</p>
-                <div className="flex items-baseline gap-2">
-                    <h4 className="text-2xl font-light tracking-tight text-gray-900 dark:text-gray-100">{value}</h4>
-                    <span className="text-[10px] text-gray-400 font-medium">{description}</span>
+                <p className="text-[9px] sm:text-[10px] uppercase tracking-wider sm:tracking-widest text-gray-400 font-bold mb-1 truncate">{label}</p>
+                <div className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-2">
+                    <h4 className="text-lg sm:text-2xl font-light tracking-tight text-gray-900 dark:text-gray-100 truncate">{value}</h4>
+                    <span className="text-[9px] sm:text-[10px] text-gray-400 font-medium truncate">{description}</span>
                 </div>
             </div>
         </motion.div>

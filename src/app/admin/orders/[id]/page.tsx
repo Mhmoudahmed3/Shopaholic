@@ -68,17 +68,17 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
             <AdminHeader title="Order Details" />
 
-            <main className="flex-1 p-8 space-y-8">
+            <main className="flex-1 p-4 md:p-8 space-y-6 md:space-y-8">
                 <Link href="/admin/orders" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black transition-colors">
                     <ArrowLeft className="w-4 h-4" /> Back to Orders
                 </Link>
 
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-light tracking-tight">Order {order.id}</h1>
                         <p className="text-xs text-gray-500 mt-1">Placed on {order.date}</p>
                     </div>
-                    <span className={`px-3 py-1.5 rounded-full text-xs uppercase font-bold tracking-wider border ${getStatusStyles(order.status)}`}>
+                    <span className={`px-3 py-1.5 rounded-full text-xs uppercase font-bold tracking-wider border text-center ${getStatusStyles(order.status)}`}>
                         {order.status}
                     </span>
                 </div>

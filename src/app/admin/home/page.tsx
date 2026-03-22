@@ -130,17 +130,17 @@ export default function AdminHomePage() {
         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
             <AdminHeader title="Homepage Management" />
 
-            <main className="flex-1 p-8 space-y-8">
+            <main className="flex-1 p-4 md:p-8 space-y-6 md:space-y-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-light tracking-tight">Storefront Interface</h1>
                         <p className="text-xs text-gray-500 mt-1">Configure your main landing page and featured content</p>
                     </div>
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 w-full md:w-auto">
                         <Link 
                             href="/"
                             target="_blank"
-                            className="flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-widest rounded hover:opacity-80 transition-all shadow-lg"
+                            className="w-full md:w-auto flex justify-center items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-widest rounded hover:opacity-80 transition-all shadow-lg"
                         >
                             <Eye className="w-4 h-4" /> View Live Site
                         </Link>
@@ -149,9 +149,9 @@ export default function AdminHomePage() {
 
                 {/* Hero Section Editor */}
                 <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden">
-                    <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                    <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gray-50 dark:bg-zinc-800 rounded-xl flex items-center justify-center">
+                            <div className="w-10 h-10 bg-gray-50 dark:bg-zinc-800 rounded-xl flex items-center justify-center shrink-0">
                                 <Layout className="w-5 h-5 text-gray-400" />
                             </div>
                             <div>
@@ -306,9 +306,9 @@ export default function AdminHomePage() {
 
                 {/* Promo Section Editor */}
                 <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden">
-                    <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                    <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gray-50 dark:bg-zinc-800 rounded-xl flex items-center justify-center">
+                            <div className="w-10 h-10 bg-gray-50 dark:bg-zinc-800 rounded-xl flex items-center justify-center shrink-0">
                                 <ImageIcon className="w-5 h-5 text-gray-400" />
                             </div>
                             <div>
@@ -438,9 +438,9 @@ export default function AdminHomePage() {
 
                 {/* Newsletter Section Editor */}
                 <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden">
-                    <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                    <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gray-50 dark:bg-zinc-800 rounded-xl flex items-center justify-center">
+                            <div className="w-10 h-10 bg-gray-50 dark:bg-zinc-800 rounded-xl flex items-center justify-center shrink-0">
                                 <HomeIcon className="w-5 h-5 text-gray-400" />
                             </div>
                             <div>

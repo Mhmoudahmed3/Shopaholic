@@ -1,29 +1,5 @@
 [
   {
-    "id": "summer-2024",
-    "name": "SUMMER 2024",
-    "subtitle": "The Golden Hour Series",
-    "image": "",
-    "status": "Draft",
-    "itemsCount": 0,
-    "link": "/collections/summer-2024",
-    "createdAt": "2026-03-17T16:41:13.723Z"
-  },
-  {
-    "id": "tech-essentials",
-    "name": "TECH ESSENTIALS",
-    "subtitle": "Latest gadgets and gear",
-    "image": "",
-    "status": "Draft",
-    "productIds": [
-      "1773623588212",
-      "1773669234705"
-    ],
-    "itemsCount": 2,
-    "link": "/collections/tech-essentials",
-    "createdAt": "2026-03-17T16:46:44.289Z"
-  },
-  {
     "id": "summern",
     "name": "summern",
     "subtitle": "jsdmxj",

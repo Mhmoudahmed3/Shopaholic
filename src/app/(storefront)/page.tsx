@@ -119,11 +119,11 @@ export default function Home() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8"
+            className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-8"
           >
             <div className="max-w-xl">
 
-              <h2 className="text-5xl md:text-7xl font-serif italic mb-8 leading-tight">Collections</h2>
+              <h2 className="text-4xl sm:text-5xl md:text-7xl font-serif italic mb-8 leading-tight">Collections</h2>
               <p className="text-neutral-500 dark:text-neutral-400 text-sm uppercase tracking-widest leading-loose max-w-sm">
                 A vision of contemporary luxury. Each series reflects our commitment to form, function, and artistic expression.
               </p>
@@ -189,16 +189,16 @@ export default function Home() {
       {/* Best Sellers */}
       <section className="py-32 bg-neutral-50 dark:bg-zinc-900/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-10">
-            <div className="space-y-8">
-              <h2 className="text-5xl md:text-6xl font-serif tracking-tight">Best Sellers</h2>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8 md:gap-10 overflow-hidden">
+            <div className="space-y-8 w-full">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif tracking-tight">Best Sellers</h2>
               
-              <div className="flex gap-10">
+              <div className="flex gap-6 md:gap-10 overflow-x-auto pb-2 no-scrollbar w-full pr-4">
                 {categories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(activeCategory === cat ? "ALL" : cat)}
-                    className="group relative pb-2"
+                    className="group relative pb-2 whitespace-nowrap flex-shrink-0"
                   >
                     <span className={`text-[11px] font-bold tracking-[0.3em] uppercase transition-colors duration-300 ${
                       activeCategory === cat ? 'text-black dark:text-white' : 'text-neutral-400 hover:text-black dark:hover:text-white'
@@ -223,7 +223,7 @@ export default function Home() {
           </div>
 
           {filteredBestSellers && filteredBestSellers.length > 0 ? (
-            <HorizontalProductScroll products={filteredBestSellers} />
+            <HorizontalProductScroll title="Best Sellers" products={filteredBestSellers} />
           ) : (
             <div className="text-center py-20 border border-dashed border-neutral-200 dark:border-neutral-800">
               <p className="text-neutral-400 text-sm font-light uppercase tracking-widest">New arrivals coming soon</p>
@@ -247,12 +247,12 @@ export default function Home() {
           >
             {[1, 2].map((i) => (
               <div key={i} className="flex gap-20 items-center whitespace-nowrap">
-                <span className="text-4xl md:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">VOGUE</span>
-                <span className="text-4xl md:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">GQ</span>
-                <span className="text-4xl md:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">BAZAAR</span>
-                <span className="text-4xl md:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">ELLE</span>
-                <span className="text-4xl md:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">VANITY FAIR</span>
-                <span className="text-4xl md:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">HYPEBEAST</span>
+                <span className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">VOGUE</span>
+                <span className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">GQ</span>
+                <span className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">BAZAAR</span>
+                <span className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">ELLE</span>
+                <span className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">VANITY FAIR</span>
+                <span className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold tracking-widest uppercase opacity-20 hover:opacity-100 transition-opacity cursor-default">HYPEBEAST</span>
               </div>
             ))}
           </motion.div>
@@ -288,7 +288,7 @@ export default function Home() {
             transition={{ duration: 1, ease: "easeOut" }}
           >
             <span className="text-white/60 text-xs font-bold tracking-[0.5em] uppercase mb-6 block">{promo.subtitle}</span>
-            <h2 className="text-white text-5xl md:text-7xl font-serif italic mb-8 leading-tight">
+            <h2 className="text-white text-4xl sm:text-5xl md:text-7xl font-serif italic mb-8 leading-tight">
               {promo.title} <br />
               <span className="not-italic font-sans font-light tracking-tighter">{promo.titleAccent}</span>
             </h2>
