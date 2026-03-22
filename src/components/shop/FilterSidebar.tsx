@@ -4,7 +4,6 @@ import { useState } from "react";
 import { ChevronDown, X, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import clsx from "clsx";
 import { ShopSortSelect } from "./ShopSortSelect";
 
@@ -181,16 +180,17 @@ export function FilterSidebar() {
 
                         return (
                             <li key={cat.title} className="flex flex-col">
-                                <Link
-                                    href={cat.path}
-                                    onClick={(e) => {
+                                <button
+                                    onClick={() => {
                                         if (hasSubcategories) {
-                                            e.preventDefault();
                                             setActiveCategory(isOpen ? null : cat.title);
+                                        } else {
+                                            const isActive = isLinkActive(cat.path);
+                                            router.push(isActive ? '/shop' : cat.path);
                                         }
                                     }}
                                     className={clsx(
-                                        "flex items-center justify-between py-1.5 text-sm transition-all duration-300",
+                                        "flex items-center justify-between py-1.5 text-sm transition-all duration-300 w-full text-left",
                                         isActiveTopLevel || isOpen ? "text-black dark:text-white translate-x-1" : "text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white hover:translate-x-1"
                                     )}
                                 >
@@ -198,22 +198,31 @@ export function FilterSidebar() {
                                     {hasSubcategories && (
                                         <ChevronDown className={clsx("w-3.5 h-3.5 transition-transform duration-500", isOpen ? "rotate-180" : "rotate-0")} />
                                     )}
-                                </Link>
+                                </button>
 
                                 {hasSubcategories && (
                                     <div className={clsx("overflow-hidden transition-all duration-500 ease-in-out", isOpen ? "max-h-[500px] opacity-100 mt-2" : "max-h-0 opacity-0")}>
                                         <ul className="flex flex-col pl-4 space-y-2 border-l border-neutral-100 dark:border-neutral-800 ml-1">
                                             {cat.subcategories!.map((sub) => (
                                                 <li key={sub.title}>
-                                                    <Link
-                                                        href={sub.path}
+                                                    <button
+                                                        onClick={() => {
+                                                            const isActive = isLinkActive(sub.path);
+                                                            if (isActive) {
+                                                                // If it's a subcategory like "Tops", and it's active, 
+                                                                // clicking it should probably go back to the parent category.
+                                                                router.push(cat.path);
+                                                            } else {
+                                                                router.push(sub.path);
+                                                            }
+                                                        }}
                                                         className={clsx(
-                                                            "text-xs transition-colors duration-200 block",
+                                                            "text-xs transition-colors duration-200 block w-full text-left",
                                                             isLinkActive(sub.path) ? "text-black dark:text-white font-medium" : "text-neutral-400 hover:text-black dark:hover:text-white"
                                                         )}
                                                     >
                                                         {sub.title}
-                                                    </Link>
+                                                    </button>
                                                 </li>
                                             ))}
                                         </ul>

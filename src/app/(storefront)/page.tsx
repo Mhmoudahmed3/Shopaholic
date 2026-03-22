@@ -32,7 +32,7 @@ export default function Home() {
   }, [fetchContent]);
 
   const [activeCategory, setActiveCategory] = useState("ALL");
-  const categories = ["ALL", "WOMEN", "MEN", "ACCESSORIES"];
+  const categories = ["ALL", "WOMEN", "MEN", "ACCESSORIES", "CHILDREN"];
 
   const filteredBestSellers = useMemo(() => {
     if (!bestSellers) return [];
@@ -132,57 +132,57 @@ export default function Home() {
               Explore All <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
-        </div>
 
-        {/* Horizontal Auto-Scrolling Container */}
-        <div className="relative w-full">
-          <motion.div
-            className="flex gap-8 px-4 sm:px-6 lg:px-8 pb-12 overflow-x-auto no-scrollbar scroll-smooth"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            {collections.map((collection, index) => (
-              <motion.div 
-                key={collection.id} 
-                variants={fadeIn} 
-                className="flex-none w-[85vw] md:w-[45vw] lg:w-[35vw] group relative overflow-hidden bg-white dark:bg-zinc-900 shadow-2xl aspect-[16/10]"
-              >
-                <Link href={collection.link} className="absolute inset-0 z-30">
-                  <span className="sr-only">View {collection.title}</span>
-                </Link>
-                
-                {collection.image && collection.image.trim() ? (
-                  <Image
-                    src={collection.image}
-                    alt={collection.title}
-                    fill
-                    sizes="(max-width: 768px) 85vw, (max-width: 1024px) 45vw, 35vw"
-                    className="object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-105"
-                  />
-                ) : null}
-                
-                {/* Minimalist Constant Overlay for Legibility */}
-                <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 z-20 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
-                  <div className="flex items-end justify-between transition-transform duration-700">
-                    <div className="max-w-[80%]">
-                      <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-white/70 mb-2 block">{collection.subtitle}</span>
-                      <h3 className="text-2xl md:text-3xl font-serif text-white">{collection.title}</h3>
-                    </div>
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
-                      <ArrowRight className="w-5 h-5" />
+          {/* Horizontal Auto-Scrolling Container - Now inside max-w-7xl */}
+          <div className="relative w-full">
+            <motion.div
+              className="flex gap-8 pb-12 overflow-x-auto no-scrollbar scroll-smooth"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={staggerContainer}
+            >
+              {collections.map((collection, index) => (
+                <motion.div 
+                  key={collection.id} 
+                  variants={fadeIn} 
+                  className="flex-none w-[85vw] md:w-[45vw] lg:w-[35vw] group relative overflow-hidden bg-white dark:bg-zinc-900 shadow-2xl aspect-[16/10]"
+                >
+                  <Link href={collection.link} className="absolute inset-0 z-30">
+                    <span className="sr-only">View {collection.title}</span>
+                  </Link>
+                  
+                  {collection.image && collection.image.trim() ? (
+                    <Image
+                      src={collection.image}
+                      alt={collection.title}
+                      fill
+                      sizes="(max-width: 768px) 85vw, (max-width: 1024px) 45vw, 35vw"
+                      className="object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-105"
+                    />
+                  ) : null}
+                  
+                  {/* Minimalist Constant Overlay for Legibility */}
+                  <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 z-20 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
+                    <div className="flex items-end justify-between transition-transform duration-700">
+                      <div className="max-w-[80%]">
+                        <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-white/70 mb-2 block">{collection.subtitle}</span>
+                        <h3 className="text-2xl md:text-3xl font-serif text-white">{collection.title}</h3>
+                      </div>
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
+                        <ArrowRight className="w-5 h-5" />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Constant Identifier (Minimalist) */}
-                <div className="absolute top-8 left-8 mix-blend-difference z-20">
-                  <span className="text-[9px] font-bold text-white uppercase tracking-[0.5em] opacity-40">Series. 0{index + 1}</span>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                  {/* Constant Identifier (Minimalist) */}
+                  <div className="absolute top-8 left-8 mix-blend-difference z-20">
+                    <span className="text-[9px] font-bold text-white uppercase tracking-[0.5em] opacity-40">Series. 0{index + 1}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -197,7 +197,7 @@ export default function Home() {
                 {categories.map((cat) => (
                   <button
                     key={cat}
-                    onClick={() => setActiveCategory(cat)}
+                    onClick={() => setActiveCategory(activeCategory === cat ? "ALL" : cat)}
                     className="group relative pb-2"
                   >
                     <span className={`text-[11px] font-bold tracking-[0.3em] uppercase transition-colors duration-300 ${

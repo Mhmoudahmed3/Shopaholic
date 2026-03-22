@@ -14,35 +14,13 @@ interface HorizontalProductScrollProps {
 }
 
 export function HorizontalProductScroll({ products }: HorizontalProductScrollProps) {
-    const [isPaused, setIsPaused] = useState(false);
-    
-    // Duplicate products for seamless infinite scroll
-    const displayProducts = [...products, ...products, ...products];
-
     return (
-        <div 
-            className="relative w-full overflow-hidden py-10"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-        >
-            <motion.div
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.05}
-                animate={{
-                    x: isPaused ? undefined : ["0%", "-33.33%"],
-                }}
-                transition={{
-                    duration: 30,
-                    repeat: Infinity,
-                    ease: "linear",
-                }}
-                className="flex gap-8 group touch-pan-x"
-            >
-                {displayProducts.map((product, index) => (
+        <div className="relative w-full py-10">
+            <div className="flex gap-8 overflow-x-auto no-scrollbar scroll-smooth pb-8 touch-pan-x">
+                {products.map((product, index) => (
                     <div 
                         key={`${product.id}-${index}`}
-                        className="flex-none w-[300px] md:w-[400px] group/item relative"
+                        className="flex-none w-[280px] md:w-[350px] group/item relative"
                     >
                         <Link 
                             href={`/shop/${product.id}`} 
@@ -63,7 +41,7 @@ export function HorizontalProductScroll({ products }: HorizontalProductScrollPro
                                 src={product.images[0]}
                                 alt={product.name}
                                 fill
-                                sizes="(max-width: 768px) 300px, 400px"
+                                sizes="(max-width: 768px) 280px, 350px"
                                 className={`object-cover transition-transform duration-1000 group-hover/item:scale-105 ${product.images.length > 1 ? 'opacity-100 group-hover/item:opacity-0' : ''}`}
                             />
 
@@ -73,7 +51,7 @@ export function HorizontalProductScroll({ products }: HorizontalProductScrollPro
                                     src={product.images[1]}
                                     alt={`${product.name} - Alternate View`}
                                     fill
-                                    sizes="(max-width: 768px) 300px, 400px"
+                                    sizes="(max-width: 768px) 280px, 350px"
                                     className="object-cover transition-all duration-1000 opacity-0 group-hover/item:opacity-100 group-hover/item:scale-105 absolute inset-0"
                                 />
                             )}
@@ -126,7 +104,7 @@ export function HorizontalProductScroll({ products }: HorizontalProductScrollPro
                         </div>
                     </div>
                 ))}
-            </motion.div>
+            </div>
         </div>
     );
 }
