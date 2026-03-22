@@ -69,7 +69,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                 }
                 const row = rowMap.get(key);
                 // Only add if this size doesn't exist for this image/color yet (deduplication)
-                if (!row.sizes.find((s: SizeInventory) => s.size === v.size)) {
+                if (row && !row.sizes.find((s: SizeInventory) => s.size === v.size)) {
                     row.sizes.push({
                         id: Math.random().toString(36).substr(2, 9),
                         size: v.size || "",
