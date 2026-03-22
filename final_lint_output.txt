@@ -1,0 +1,33 @@
+
+> temp-app@0.1.0 lint
+> eslint
+
+
+A:\Unfinished work\reham website\src\app\admin\add-item\ProductForm.tsx
+  339:37  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+A:\Unfinished work\reham website\src\app\admin\collections\page.tsx
+  92:41  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+A:\Unfinished work\reham website\src\app\admin\components\CollectionModal.tsx
+  154:37  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  242:45  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+A:\Unfinished work\reham website\src\app\admin\home\page.tsx
+  257:49  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  284:41  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  396:49  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  423:41  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+A:\Unfinished work\reham website\src\components\product\ProductInfo.tsx
+  313:37  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+A:\Unfinished work\reham website\src\lib\db.ts
+   19:14  warning  '_e' is defined but never used  @typescript-eslint/no-unused-vars
+   67:14  warning  '_e' is defined but never used  @typescript-eslint/no-unused-vars
+   89:14  warning  '_e' is defined but never used  @typescript-eslint/no-unused-vars
+  111:14  warning  '_e' is defined but never used  @typescript-eslint/no-unused-vars
+  133:14  warning  '_e' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 14 problems (0 errors, 14 warnings)
+

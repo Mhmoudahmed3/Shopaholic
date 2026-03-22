@@ -1,0 +1,85 @@
+
+A:\Unfinished work\reham website\src\app\(storefront)\page.tsx
+  9:10  warning  'ProductGrid' is defined but never used  @typescript-eslint/no-unused-vars
+
+A:\Unfinished work\reham website\src\app\admin\actions.ts
+   61:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  357:68  error    Unexpected any. Specify a different type                                           @typescript-eslint/no-explicit-any
+
+A:\Unfinished work\reham website\src\app\admin\add-item\ProductForm.tsx
+  339:37  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+A:\Unfinished work\reham website\src\app\admin\collections\page.tsx
+   5:25  warning  'Search' is defined but never used                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+   6:8   warning  'Link' is defined but never used                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+  93:41  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+A:\Unfinished work\reham website\src\app\admin\components\AdminDashboard.tsx
+   10:5   warning  'MoreHorizontal' is defined but never used                   @typescript-eslint/no-unused-vars
+   66:13  error    'sortableProducts' is never reassigned. Use 'const' instead  prefer-const
+  464:78  error    Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+
+A:\Unfinished work\reham website\src\app\admin\components\CollectionModal.tsx
+  154:37  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  242:45  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+A:\Unfinished work\reham website\src\app\admin\home\page.tsx
+    8:5   warning  'ArrowUpRight' is defined but never used                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+   13:5   warning  'Save' is defined but never used                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+   24:12  warning  'isPending' is assigned a value but never used                                                                                                                                                                                                                                           @typescript-eslint/no-unused-vars
+  259:49  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  286:41  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  398:49  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  425:41  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx
+  4:22  warning  'Search' is defined but never used         @typescript-eslint/no-unused-vars
+  4:30  warning  'Filter' is defined but never used         @typescript-eslint/no-unused-vars
+  7:10  warning  'deleteProduct' is defined but never used  @typescript-eslint/no-unused-vars
+
+A:\Unfinished work\reham website\src\app\admin\inventory\ratings\[id]\page.tsx
+    8:10   warning  'revalidatePath' is defined but never used                       @typescript-eslint/no-unused-vars
+  149:93   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  149:110  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+A:\Unfinished work\reham website\src\app\global-error.tsx
+  9:3  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+A:\Unfinished work\reham website\src\app\layout.tsx
+  4:10  warning  'Navbar' is defined but never used  @typescript-eslint/no-unused-vars
+  5:10  warning  'Footer' is defined but never used  @typescript-eslint/no-unused-vars
+
+A:\Unfinished work\reham website\src\components\product\ProductGallery.tsx
+  38:12  warning  'incomingSrc' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  39:12  warning  'isFading' is assigned a value but never used     @typescript-eslint/no-unused-vars
+
+A:\Unfinished work\reham website\src\components\product\ProductInfo.tsx
+   3:20  warning  'useEffect' is defined but never used                   @typescript-eslint/no-unused-vars
+   6:17  warning  'Heart' is defined but never used                       @typescript-eslint/no-unused-vars
+  26:5   warning  'hideColorSwatches' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+A:\Unfinished work\reham website\src\components\product\ProductReviews.tsx
+  4:55  warning  'Filter' is defined but never used  @typescript-eslint/no-unused-vars
+
+A:\Unfinished work\reham website\src\components\shop\FilterSidebar.tsx
+  3:20  warning  'useEffect' is defined but never used  @typescript-eslint/no-unused-vars
+
+A:\Unfinished work\reham website\src\components\shop\HorizontalProductScroll.tsx
+  3:18  warning  'useAnimationControls' is defined but never used  @typescript-eslint/no-unused-vars
+  4:10  warning  'useEffect' is defined but never used             @typescript-eslint/no-unused-vars
+  7:10  warning  'Plus' is defined but never used                  @typescript-eslint/no-unused-vars
+
+A:\Unfinished work\reham website\src\components\ui\Skeleton.tsx
+  1:11  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+A:\Unfinished work\reham website\src\lib\db.ts
+    4:10  warning  'mockProducts' is defined but never used  @typescript-eslint/no-unused-vars
+   20:14  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+   68:14  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+   90:14  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+  112:14  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+  134:14  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+
+Γ£û 45 problems (6 errors, 39 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+

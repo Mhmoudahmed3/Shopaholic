@@ -1,0 +1,642 @@
+A:\Unfinished work\reham website\backend\app.js: 8 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\cleanup-db.js: 1 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\controllers\authController.js: 4 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\controllers\orderController.js: 2 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\controllers\productController.js: 2 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\db\index.js: 1 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\middleware\auth.js: 2 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\prisma\client.js: 1 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\routes\auth.js: 3 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\routes\orders.js: 3 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\routes\products.js: 3 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\seed-categories.js: 1 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\backend\server.js: 3 errors
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+  - @typescript-eslint/no-require-imports: A `require()` style import is forbidden.
+A:\Unfinished work\reham website\src\app\(storefront)\favorites\FavoritesPageClient.tsx: 5 errors
+  - react-hooks/set-state-in-effect: Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+A:\Unfinished work\reham website\src\app\(storefront)\favorites\FavoritesPageClient.tsx:19:9
+  17 |
+  18 |     useEffect(() => {
+> 19 |         setMounted(true);
+     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |         const fetchFavorites = async () => {
+  21 |             if (items.length > 0) {
+  22 |                 setLoading(true);
+  - react/no-unescaped-entities: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+  - react/no-unescaped-entities: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+  - react/no-unescaped-entities: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+  - react/no-unescaped-entities: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+A:\Unfinished work\reham website\src\app\(storefront)\shop\[id]\page.tsx: 2 errors
+  - react/no-unescaped-entities: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+  - react/no-unescaped-entities: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+A:\Unfinished work\reham website\src\app\admin\actions.ts: 1 errors
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+A:\Unfinished work\reham website\src\app\admin\add-item\ProductForm.tsx: 7 errors
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+A:\Unfinished work\reham website\src\app\admin\components\AdminDashboard.tsx: 6 errors
+  - prefer-const: 'sortableProducts' is never reassigned. Use 'const' instead.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx: 8 errors
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:99:67
+   97 |                                     <th className="px-6 py-5 whitespace-nowrap">
+   98 |                                         <Link href={getSortLink('name')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+>  99 |                                             Customer Information <SortIcon colKey="name" />
+      |                                                                   ^^^^^^^^ This component is created during render
+  100 |                                         </Link>
+  101 |                                     </th>
+  102 |                                     <th className="px-6 py-5 whitespace-nowrap">
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:65:22
+  63 |     };
+  64 |
+> 65 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 66 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 67 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 68 |     };
+     | ^^^^^^ The component is created during render here
+  69 |
+  70 |     return (
+  71 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:104:59
+  102 |                                     <th className="px-6 py-5 whitespace-nowrap">
+  103 |                                         <Link href={getSortLink('phone')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 104 |                                             Phone Number <SortIcon colKey="phone" />
+      |                                                           ^^^^^^^^ This component is created during render
+  105 |                                         </Link>
+  106 |                                     </th>
+  107 |                                     <th className="px-6 py-5 whitespace-nowrap">
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:65:22
+  63 |     };
+  64 |
+> 65 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 66 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 67 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 68 |     };
+     | ^^^^^^ The component is created during render here
+  69 |
+  70 |     return (
+  71 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:109:54
+  107 |                                     <th className="px-6 py-5 whitespace-nowrap">
+  108 |                                         <Link href={getSortLink('address')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 109 |                                             Address <SortIcon colKey="address" />
+      |                                                      ^^^^^^^^ This component is created during render
+  110 |                                         </Link>
+  111 |                                     </th>
+  112 |                                     <th className="px-6 py-5 whitespace-nowrap">
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:65:22
+  63 |     };
+  64 |
+> 65 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 66 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 67 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 68 |     };
+     | ^^^^^^ The component is created during render here
+  69 |
+  70 |     return (
+  71 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:114:53
+  112 |                                     <th className="px-6 py-5 whitespace-nowrap">
+  113 |                                         <Link href={getSortLink('orders')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 114 |                                             Orders <SortIcon colKey="orders" />
+      |                                                     ^^^^^^^^ This component is created during render
+  115 |                                         </Link>
+  116 |                                     </th>
+  117 |                                     <th className="px-6 py-5 whitespace-nowrap">
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:65:22
+  63 |     };
+  64 |
+> 65 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 66 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 67 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 68 |     };
+     | ^^^^^^ The component is created during render here
+  69 |
+  70 |     return (
+  71 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:119:67
+  117 |                                     <th className="px-6 py-5 whitespace-nowrap">
+  118 |                                         <Link href={getSortLink('spent')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 119 |                                             Total Lifetime Value <SortIcon colKey="spent" />
+      |                                                                   ^^^^^^^^ This component is created during render
+  120 |                                         </Link>
+  121 |                                     </th>
+  122 |                                     <th className="px-6 py-5 whitespace-nowrap">
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:65:22
+  63 |     };
+  64 |
+> 65 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 66 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 67 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 68 |     };
+     | ^^^^^^ The component is created during render here
+  69 |
+  70 |     return (
+  71 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:124:59
+  122 |                                     <th className="px-6 py-5 whitespace-nowrap">
+  123 |                                         <Link href={getSortLink('joined')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 124 |                                             Member Since <SortIcon colKey="joined" />
+      |                                                           ^^^^^^^^ This component is created during render
+  125 |                                         </Link>
+  126 |                                     </th>
+  127 |                                     <th className="px-6 py-5 text-right">Actions</th>
+
+A:\Unfinished work\reham website\src\app\admin\customers\page.tsx:65:22
+  63 |     };
+  64 |
+> 65 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 66 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 67 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 68 |     };
+     | ^^^^^^ The component is created during render here
+  69 |
+  70 |     return (
+  71 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+A:\Unfinished work\reham website\src\app\admin\home\page.tsx: 1 errors
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+A:\Unfinished work\reham website\src\app\admin\inventory\DeleteProductButton.tsx: 2 errors
+  - react/no-unescaped-entities: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+  - react/no-unescaped-entities: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx: 10 errors
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:108:62
+  106 |                                     <th className="px-6 py-5">
+  107 |                                         <Link href={getSortLink('name')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 108 |                                             Product Details <SortIcon colKey="name" />
+      |                                                              ^^^^^^^^ This component is created during render
+  109 |                                         </Link>
+  110 |                                     </th>
+  111 |                                     <th className="px-6 py-5">
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:68:22
+  66 |     };
+  67 |
+> 68 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 69 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 70 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 71 |     };
+     | ^^^^^^ The component is created during render here
+  72 |
+  73 |     return (
+  74 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:113:55
+  111 |                                     <th className="px-6 py-5">
+  112 |                                         <Link href={getSortLink('category')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 113 |                                             Category <SortIcon colKey="category" />
+      |                                                       ^^^^^^^^ This component is created during render
+  114 |                                         </Link>
+  115 |                                     </th>
+  116 |                                     <th className="px-6 py-5">
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:68:22
+  66 |     };
+  67 |
+> 68 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 69 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 70 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 71 |     };
+     | ^^^^^^ The component is created during render here
+  72 |
+  73 |     return (
+  74 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:118:51
+  116 |                                     <th className="px-6 py-5">
+  117 |                                         <Link href={getSortLink('type')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 118 |                                             Type <SortIcon colKey="type" />
+      |                                                   ^^^^^^^^ This component is created during render
+  119 |                                         </Link>
+  120 |                                     </th>
+  121 |                                     <th className="px-6 py-5">
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:68:22
+  66 |     };
+  67 |
+> 68 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 69 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 70 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 71 |     };
+     | ^^^^^^ The component is created during render here
+  72 |
+  73 |     return (
+  74 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:123:52
+  121 |                                     <th className="px-6 py-5">
+  122 |                                         <Link href={getSortLink('stock')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 123 |                                             Stock <SortIcon colKey="stock" />
+      |                                                    ^^^^^^^^ This component is created during render
+  124 |                                         </Link>
+  125 |                                     </th>
+  126 |                                     <th className="px-6 py-5">
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:68:22
+  66 |     };
+  67 |
+> 68 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 69 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 70 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 71 |     };
+     | ^^^^^^ The component is created during render here
+  72 |
+  73 |     return (
+  74 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:128:57
+  126 |                                     <th className="px-6 py-5">
+  127 |                                         <Link href={getSortLink('rating')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 128 |                                             Avg Rating <SortIcon colKey="rating" />
+      |                                                         ^^^^^^^^ This component is created during render
+  129 |                                         </Link>
+  130 |                                     </th>
+  131 |                                     <th className="px-6 py-5">
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:68:22
+  66 |     };
+  67 |
+> 68 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 69 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 70 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 71 |     };
+     | ^^^^^^ The component is created during render here
+  72 |
+  73 |     return (
+  74 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:133:65
+  131 |                                     <th className="px-6 py-5">
+  132 |                                         <Link href={getSortLink('salesLastMonth')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 133 |                                             Sales (Last Month) <SortIcon colKey="salesLastMonth" />
+      |                                                                 ^^^^^^^^ This component is created during render
+  134 |                                         </Link>
+  135 |                                     </th>
+  136 |                                     <th className="px-6 py-5">
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:68:22
+  66 |     };
+  67 |
+> 68 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 69 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 70 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 71 |     };
+     | ^^^^^^ The component is created during render here
+  72 |
+  73 |     return (
+  74 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:138:59
+  136 |                                     <th className="px-6 py-5">
+  137 |                                         <Link href={getSortLink('price')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 138 |                                             Retail Price <SortIcon colKey="price" />
+      |                                                           ^^^^^^^^ This component is created during render
+  139 |                                         </Link>
+  140 |                                     </th>
+  141 |                                     <th className="px-6 py-5">
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:68:22
+  66 |     };
+  67 |
+> 68 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 69 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 70 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 71 |     };
+     | ^^^^^^ The component is created during render here
+  72 |
+  73 |     return (
+  74 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:143:54
+  141 |                                     <th className="px-6 py-5">
+  142 |                                         <Link href={getSortLink('createdAt')} className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors">
+> 143 |                                             Created <SortIcon colKey="createdAt" />
+      |                                                      ^^^^^^^^ This component is created during render
+  144 |                                         </Link>
+  145 |                                     </th>
+  146 |                                     <th className="px-6 py-5 text-right">Actions</th>
+
+A:\Unfinished work\reham website\src\app\admin\inventory\page.tsx:68:22
+  66 |     };
+  67 |
+> 68 |     const SortIcon = ({ colKey }: { colKey: string }) => {
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 69 |         if (sortBy !== colKey) return <ArrowUpDown className="w-3 h-3 text-gray-300" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 70 |         return order === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 71 |     };
+     | ^^^^^^ The component is created during render here
+  72 |
+  73 |     return (
+  74 |         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
+A:\Unfinished work\reham website\src\app\admin\inventory\ratings\[id]\page.tsx: 2 errors
+  - react/no-unescaped-entities: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+  - react/no-unescaped-entities: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+A:\Unfinished work\reham website\src\app\error.tsx: 1 errors
+  - react/no-unescaped-entities: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+A:\Unfinished work\reham website\src\components\layout\CartIcon.tsx: 1 errors
+  - react-hooks/set-state-in-effect: Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+A:\Unfinished work\reham website\src\components\layout\CartIcon.tsx:13:9
+  11 |
+  12 |     useEffect(() => {
+> 13 |         setMounted(true);
+     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  14 |     }, []);
+  15 |
+  16 |     const displayCount = mounted ? count : 0;
+A:\Unfinished work\reham website\src\components\layout\WishlistIcon.tsx: 1 errors
+  - react-hooks/set-state-in-effect: Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+A:\Unfinished work\reham website\src\components\layout\WishlistIcon.tsx:13:9
+  11 |
+  12 |     useEffect(() => {
+> 13 |         setMounted(true);
+     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  14 |     }, []);
+  15 |
+  16 |     const displayCount = mounted ? count : 0;
+A:\Unfinished work\reham website\src\components\product\ProductInfo.tsx: 1 errors
+  - react-hooks/set-state-in-effect: Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+A:\Unfinished work\reham website\src\components\product\ProductInfo.tsx:45:17
+  43 |             );
+  44 |             if (!variant || (variant.quantity || 0) <= 0) {
+> 45 |                 setSelectedSize("");
+     |                 ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  46 |             }
+  47 |         }
+  48 |     }, [effectiveColor, product.imageVariants, selectedSize]);
+A:\Unfinished work\reham website\src\components\product\ProductReviews.tsx: 2 errors
+  - react/no-unescaped-entities: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+  - react/no-unescaped-entities: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+A:\Unfinished work\reham website\src\components\shop\FilterSidebar.tsx: 3 errors
+  - react-hooks/set-state-in-effect: Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+A:\Unfinished work\reham website\src\components\shop\FilterSidebar.tsx:69:13
+  67 |     useEffect(() => {
+  68 |         if (currentCategory === "women") {
+> 69 |             setActiveCategory("Women");
+     |             ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  70 |         } else if (currentCategory === "men") {
+  71 |             setActiveCategory("Men");
+  72 |         }
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\components\shop\FilterSidebar.tsx:435:18
+  433 |             {/* Desktop Sidebar */}
+  434 |             <aside className="hidden md:block w-64 flex-shrink-0 sticky top-24 self-start max-h-[85vh] overflow-y-auto pr-6 custom-scrollbar">
+> 435 |                 <FilterContent />
+      |                  ^^^^^^^^^^^^^ This component is created during render
+  436 |             </aside>
+  437 |
+  438 |             {/* Mobile Bottom Sheet (Framer Motion) */}
+
+A:\Unfinished work\reham website\src\components\shop\FilterSidebar.tsx:131:27
+  129 |     const hasAnyFilter = !!(currentSize || currentColor || currentMinPrice || currentMaxPrice || currentMinRating || isPopularOnly);
+  130 |
+> 131 |     const FilterContent = () => (
+      |                           ^^^^^^^
+> 132 |         <>
+      | ^^^^^^^^^^
+> 133 |             {/* Mobile Header */}
+      ΓÇª
+      | ^^^^^^^^^^
+> 419 |         </>
+      | ^^^^^^^^^^
+> 420 |     );
+      | ^^^^^^ The component is created during render here
+  421 |
+  422 |     return (
+  423 |         <>
+  - react-hooks/static-components: Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+A:\Unfinished work\reham website\src\components\shop\FilterSidebar.tsx:456:30
+  454 |                             className="fixed inset-x-0 bottom-0 max-h-[85vh] h-full bg-white dark:bg-neutral-950 z-50 rounded-t-3xl overflow-y-auto px-6 pt-6 pb-20 md:hidden shadow-2xl"
+  455 |                         >
+> 456 |                             <FilterContent />
+      |                              ^^^^^^^^^^^^^ This component is created during render
+  457 |                         </motion.div>
+  458 |                     </>
+  459 |                 )}
+
+A:\Unfinished work\reham website\src\components\shop\FilterSidebar.tsx:131:27
+  129 |     const hasAnyFilter = !!(currentSize || currentColor || currentMinPrice || currentMaxPrice || currentMinRating || isPopularOnly);
+  130 |
+> 131 |     const FilterContent = () => (
+      |                           ^^^^^^^
+> 132 |         <>
+      | ^^^^^^^^^^
+> 133 |             {/* Mobile Header */}
+      ΓÇª
+      | ^^^^^^^^^^
+> 419 |         </>
+      | ^^^^^^^^^^
+> 420 |     );
+      | ^^^^^^ The component is created during render here
+  421 |
+  422 |     return (
+  423 |         <>
+A:\Unfinished work\reham website\src\components\shop\WishlistToggle.tsx: 1 errors
+  - react-hooks/set-state-in-effect: Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+A:\Unfinished work\reham website\src\components\shop\WishlistToggle.tsx:19:9
+  17 |
+  18 |     useEffect(() => {
+> 19 |         setMounted(true);
+     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |     }, []);
+  21 |
+  22 |     const isFavorite = mounted && items.includes(productId);
+A:\Unfinished work\reham website\src\components\ui\Skeleton.tsx: 1 errors
+  - @typescript-eslint/no-empty-object-type: An interface declaring no members is equivalent to its supertype.
+A:\Unfinished work\reham website\src\lib\db.ts: 4 errors
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+A:\Unfinished work\reham website\src\lib\error-handling.ts: 2 errors
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.
+A:\Unfinished work\reham website\src\store\useHomeStore.ts: 1 errors
+  - @typescript-eslint/no-explicit-any: Unexpected any. Specify a different type.

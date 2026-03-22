@@ -1,0 +1,68 @@
+[
+  {
+    "id": "summer-2024",
+    "name": "SUMMER 2024",
+    "subtitle": "The Golden Hour Series",
+    "image": "",
+    "status": "Draft",
+    "itemsCount": 0,
+    "link": "/collections/summer-2024",
+    "createdAt": "2026-03-17T16:41:13.723Z"
+  },
+  {
+    "id": "tech-essentials",
+    "name": "TECH ESSENTIALS",
+    "subtitle": "Latest gadgets and gear",
+    "image": "",
+    "status": "Draft",
+    "productIds": [
+      "1773623588212",
+      "1773669234705"
+    ],
+    "itemsCount": 2,
+    "link": "/collections/tech-essentials",
+    "createdAt": "2026-03-17T16:46:44.289Z"
+  },
+  {
+    "id": "summern",
+    "name": "summern",
+    "subtitle": "jsdmxj",
+    "image": "/uploads/collection-1773766386918-WhatsApp_Image_2026_03_15_at_6.43.26_PM.jpeg",
+    "status": "Active",
+    "productIds": [
+      "1773669234705",
+      "1773623588212"
+    ],
+    "itemsCount": 2,
+    "link": "/collections/summern",
+    "createdAt": "2026-03-17T16:53:06.928Z"
+  },
+  {
+    "id": "dscjsdnjc",
+    "name": "dscjsdnjc",
+    "subtitle": "jndjkscn",
+    "image": "/uploads/collection-1774021423696-Gemini_Generated_Image_iyout9iyout9iyou.jpg",
+    "status": "Active",
+    "productIds": [
+      "1773772807626",
+      "1773669234705"
+    ],
+    "itemsCount": 2,
+    "link": "/collections/dscjsdnjc",
+    "createdAt": "2026-03-20T15:43:43.716Z"
+  },
+  {
+    "id": "dsavcsdvasd",
+    "name": "dsavcsdvasd",
+    "subtitle": "dvsadsv",
+    "image": "/uploads/collection-1774021436342-WhatsApp_Image_2024_12_24_at_02.37.49_a1035410.jpg",
+    "status": "Active",
+    "productIds": [
+      "1773772807626",
+      "1773669234705"
+    ],
+    "itemsCount": 2,
+    "link": "/collections/dsavcsdvasd",
+    "createdAt": "2026-03-20T15:43:56.346Z"
+  }
+]

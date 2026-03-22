@@ -1,0 +1,18 @@
+[
+  {
+    "id": "women",
+    "label": "Women"
+  },
+  {
+    "id": "men",
+    "label": "Men"
+  },
+  {
+    "id": "children",
+    "label": "Children"
+  },
+  {
+    "id": "accessories",
+    "label": "Accessories"
+  }
+]

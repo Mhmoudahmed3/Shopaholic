@@ -1,0 +1,23 @@
+
+> temp-app@0.1.0 dev
+> next dev
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.14:3000
+
+Γ£ô Starting...
+Γ£ô Ready in 916ms
+ GET / 200 in 2.7s (compile: 2.1s, render: 582ms)
+ GET / 200 in 529ms (compile: 17ms, render: 512ms)
+ GET / 200 in 249ms (compile: 12ms, render: 236ms)
+
+-----
+FATAL: An unexpected Turbopack error occurred. A panic log has been written to C:\Users\MHMOUD~1\AppData\Local\Temp\next-panic-c66c66c35fb6e103db50059438786ed3.log.
+
+To help make Turbopack better, report this error by clicking here.
+-----
+
+Γ£ô Compiled in 521ms
+ GET / 500 in 272ms (compile: 156ms, render: 115ms)
+ GET / 500 in 30ms (compile: 9ms, render: 21ms)

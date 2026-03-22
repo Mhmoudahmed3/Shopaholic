@@ -1,0 +1,11 @@
+
+> temp-app@0.1.0 lint
+> eslint
+
+
+A:\Unfinished work\reham website\src\app\admin\home\page.tsx
+   9:5  warning  'Trash2' is defined but never used        @typescript-eslint/no-unused-vars
+  10:5  warning  'CheckCircle2' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 2 problems (0 errors, 2 warnings)
+

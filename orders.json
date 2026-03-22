@@ -1,0 +1,56 @@
+[
+  {
+    "id": "REH-49201",
+    "date": "Mar 12, 2026",
+    "customer": "Amira Youssef",
+    "email": "amira@example.com",
+    "items": 3,
+    "total": 18450,
+    "status": "Processing"
+  },
+  {
+    "id": "REH-49198",
+    "date": "Mar 11, 2026",
+    "customer": "Karim Hassan",
+    "email": "karim@example.com",
+    "items": 1,
+    "total": 4200,
+    "status": "Shipped"
+  },
+  {
+    "id": "REH-49195",
+    "date": "Mar 11, 2026",
+    "customer": "Laila Ibrahim",
+    "email": "laila@example.com",
+    "items": 2,
+    "total": 12500,
+    "status": "Delivered"
+  },
+  {
+    "id": "REH-49190",
+    "date": "Mar 10, 2026",
+    "customer": "Omar Farouk",
+    "email": "omar@example.com",
+    "items": 4,
+    "total": 28900,
+    "status": "Delivered"
+  },
+  {
+    "id": "REH-49187",
+    "date": "Mar 09, 2026",
+    "customer": "Noura Ali",
+    "email": "noura@example.com",
+    "items": 2,
+    "total": 9500,
+    "status": "Cancelled"
+  },
+  {
+    "id": "REH-49185",
+    "date": "Mar 09, 2026",
+    "customer": "Zaid Mansour",
+    "email": "zaid@example.com",
+    "items": 1,
+    "total": 1250,
+    "status": "Shipped"
+  }
+]

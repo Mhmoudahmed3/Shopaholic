@@ -1,0 +1,207 @@
+[
+  {
+    "id": "1773623588212",
+    "name": "jgvhg",
+    "description": "GHCDHFXGFX",
+    "price": 5575,
+    "discountPrice": 567,
+    "category": "men",
+    "type": "sweaters",
+    "images": [
+      "/uploads/1773623588224-WhatsApp_Image_2026_03_12_at_11.11.14_PM__1_.jpeg",
+      "/uploads/1773623588237-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg"
+    ],
+    "imageVariants": [
+      {
+        "url": "/uploads/1773623588224-WhatsApp_Image_2026_03_12_at_11.11.14_PM__1_.jpeg",
+        "color": "Black",
+        "size": "XL",
+        "quantity": 7
+      },
+      {
+        "url": "/uploads/1773623588224-WhatsApp_Image_2026_03_12_at_11.11.14_PM__1_.jpeg",
+        "color": "Black",
+        "size": "XXL",
+        "quantity": 89
+      },
+      {
+        "url": "/uploads/1773623588237-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg",
+        "color": "Navy",
+        "size": "M",
+        "quantity": 56
+      },
+      {
+        "url": "/uploads/1773623588237-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg",
+        "color": "Navy",
+        "size": "XS",
+        "quantity": 8
+      }
+    ],
+    "sizes": [
+      "XL",
+      "XXL",
+      "M",
+      "XS"
+    ],
+    "colors": [
+      "Black",
+      "Navy"
+    ],
+    "createdAt": "2026-03-16T01:13:08.240Z",
+    "isNew": true,
+    "stock": 160,
+    "popularity": 88
+  },
+  {
+    "id": "1773669234705",
+    "name": "sanbcnhsab",
+    "description": "slanckjb sn cknas dkn dkn ",
+    "price": 212,
+    "discountPrice": 23,
+    "category": "women",
+    "type": "shirts",
+    "images": [
+      "/uploads/1773669234741-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg",
+      "/uploads/1773669234814-Gemini_Generated_Image_2b8rsw2b8rsw2b8r.png"
+    ],
+    "imageVariants": [
+      {
+        "url": "/uploads/1773669234741-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg",
+        "color": "Navy",
+        "size": "L",
+        "quantity": 10
+      },
+      {
+        "url": "/uploads/1773669234741-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg",
+        "color": "Navy",
+        "size": "XL",
+        "quantity": 10
+      },
+      {
+        "url": "/uploads/1773669234814-Gemini_Generated_Image_2b8rsw2b8rsw2b8r.png",
+        "color": "Black",
+        "size": "XXL",
+        "quantity": 40
+      },
+      {
+        "url": "/uploads/1773669234814-Gemini_Generated_Image_2b8rsw2b8rsw2b8r.png",
+        "color": "Black",
+        "size": "L",
+        "quantity": 12
+      }
+    ],
+    "sizes": [
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "Navy",
+      "Black"
+    ],
+    "createdAt": "2026-03-16T13:53:54.828Z",
+    "isNew": true,
+    "stock": 72,
+    "popularity": 92,
+    "rating": 4,
+    "reviewsCount": 2,
+    "reviews": [
+      {
+        "id": "1773857860592",
+        "userName": "dskfm",
+        "rating": 5,
+        "comment": "sdfksdfksdf",
+        "date": "2026-03-18",
+        "verified": true
+      },
+      {
+        "id": "1773857878862",
+        "userName": "sajdnjsand",
+        "rating": 3,
+        "comment": "dfgfdgfdg",
+        "date": "2026-03-18",
+        "verified": true
+      }
+    ]
+  },
+  {
+    "id": "1773772776862",
+    "name": "Noir Silk Ethereal Dress",
+    "description": "Handcrafted from the finest Italian silk, this floor-length gown features a cascading silhouette and delicate draping. A masterpiece of minimalist luxury.",
+    "price": 12500,
+    "discountPrice": 9500,
+    "category": "women",
+    "type": "dresses",
+    "images": [
+      "/uploads/lux_silk_dress_black.png"
+    ],
+    "imageVariants": [
+      {
+        "url": "/uploads/lux_silk_dress_black.png",
+        "color": "Black",
+        "size": "S",
+        "quantity": 5
+      },
+      {
+        "url": "/uploads/lux_silk_dress_black.png",
+        "color": "Black",
+        "size": "M",
+        "quantity": 8
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Black"
+    ],
+    "createdAt": "2026-03-17T18:38:00.000Z",
+    "isNew": true,
+    "stock": 13,
+    "popularity": 98,
+    "rating": 4.9,
+    "reviewsCount": 24
+  },
+  {
+    "id": "1773772807626",
+    "name": "Camel Tailored Wool Coat",
+    "description": "A timeless staple for the modern wardrobe. Precision-tailored from ethically sourced virgin wool, offering unmatched warmth and a refined structural drape.",
+    "price": 8900,
+    "category": "women",
+    "type": "outerwear",
+    "images": [
+      "/uploads/lux_tailored_coat_camel.png"
+    ],
+    "imageVariants": [
+      {
+        "url": "/uploads/lux_tailored_coat_camel.png",
+        "color": "Camel",
+        "size": "M",
+        "quantity": 4
+      },
+      {
+        "url": "/uploads/lux_tailored_coat_camel.png",
+        "color": "Camel",
+        "size": "L",
+        "quantity": 6
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Camel"
+    ],
+    "createdAt": "2026-03-17T18:40:00.000Z",
+    "isNew": true,
+    "stock": 10,
+    "popularity": 95,
+    "rating": 4.8,
+    "reviewsCount": 18
+  }
+]
