@@ -26,7 +26,9 @@ const getProducts = async (req, res, next) => {
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
     const limit = Math.min(50, Math.max(1, parseInt(req.query.limit, 10) || 12));
     const skip = (page - 1) * limit;
-    const { category, size, color, search } = req.query;
+    const { category, search } = req.query;
+    const sizeParam = req.query.size;
+    const colorParam = req.query.color;
     const sort = req.query.sort || 'newest';
 
     // --- Build Prisma where clause ---
@@ -35,12 +37,14 @@ const getProducts = async (req, res, next) => {
     if (category) {
       where.categoryId = category;
     }
-    // Prisma array filtering: check if the sizes/colors PostgreSQL array contains the value
-    if (size) {
-      where.sizes = { has: size };
+    // Prisma array filtering: support multi-select via hasSome (comma-separated values)
+    if (sizeParam) {
+      const sizes = sizeParam.split(',').map(s => s.trim());
+      where.sizes = { hasSome: sizes };
     }
-    if (color) {
-      where.colors = { has: color };
+    if (colorParam) {
+      const colors = colorParam.split(',').map(c => c.trim().toLowerCase());
+      where.colors = { hasSome: colors };
     }
     if (search) {
       where.OR = [

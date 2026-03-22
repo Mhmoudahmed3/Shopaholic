@@ -91,11 +91,27 @@ export function FilterSidebar() {
     };
 
     const toggleSize = (size: string) => {
-        updateParams({ size: currentSize === size ? null : size.toLowerCase() });
+        const sizes = currentSize ? currentSize.split(',') : [];
+        const sizeLow = size.toLowerCase();
+        let newSizes;
+        if (sizes.includes(sizeLow)) {
+            newSizes = sizes.filter(s => s !== sizeLow);
+        } else {
+            newSizes = [...sizes, sizeLow];
+        }
+        updateParams({ size: newSizes.length > 0 ? newSizes.join(',') : null });
     };
 
     const toggleColor = (color: string) => {
-        updateParams({ color: currentColor === color.toLowerCase() ? null : color.toLowerCase() });
+        const colors = currentColor ? currentColor.split(',') : [];
+        const colorLow = color.toLowerCase();
+        let newColors;
+        if (colors.includes(colorLow)) {
+            newColors = colors.filter(c => c !== colorLow);
+        } else {
+            newColors = [...colors, colorLow];
+        }
+        updateParams({ color: newColors.length > 0 ? newColors.join(',') : null });
     };
 
     const togglePrice = (min: number, max: number) => {
@@ -239,7 +255,7 @@ export function FilterSidebar() {
                 <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] mb-6 text-neutral-400">Select Size</h3>
                 <div className="grid grid-cols-4 gap-2">
                     {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => {
-                        const isActive = currentSize === size.toLowerCase();
+                        const isActive = currentSize?.split(',').includes(size.toLowerCase());
                         return (
                             <button
                                 key={size}
@@ -270,7 +286,7 @@ export function FilterSidebar() {
                         { name: 'Camel', hex: '#C19A6B' },
                         { name: 'Grey', hex: '#808080' }
                     ].map((color) => {
-                        const isActive = currentColor === color.name.toLowerCase();
+                        const isActive = currentColor?.split(',').includes(color.name.toLowerCase());
                         return (
                             <button
                                 key={color.name}
