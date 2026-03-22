@@ -200,6 +200,8 @@ export async function getProducts(options: {
         result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     } else if (sort === 'popularity') {
         result.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+    } else if (sort === 'rating') {
+        result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     }
 
     return result;

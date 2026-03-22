@@ -8,6 +8,7 @@ const SORT_OPTIONS = [
     { value: "price-low", label: "Price: Low to High" },
     { value: "price-high", label: "Price: High to Low" },
     { value: "popularity", label: "Popularity" },
+    { value: "rating", label: "Customer Rating" },
 ];
 
 export function ShopSortSelect({ initialSort }: { initialSort: string }) {

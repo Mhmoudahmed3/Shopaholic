@@ -4,7 +4,6 @@ import Link from "next/link";
 import { User, Search } from "lucide-react";
 import { CartIcon } from "./CartIcon";
 import { WishlistIcon } from "./WishlistIcon";
-import { MegaMenu } from "./MegaMenu";
 import { SearchModal } from "./SearchModal";
 import { useSearchStore } from "@/lib/useSearchStore";
 

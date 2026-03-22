@@ -1,8 +1,7 @@
-import { getProducts } from "@/lib/db";
+import { getProducts, getCategoriesDB, getAvailableFilters } from "@/lib/db";
 import { FilterSidebar } from "@/components/shop/FilterSidebar";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { ShopSortSelect } from "@/components/shop/ShopSortSelect";
-import { getCategoriesDB } from "@/lib/db";
 
 interface ShopPageProps {
     searchParams: Promise<{ [key: string]: string | undefined }>;

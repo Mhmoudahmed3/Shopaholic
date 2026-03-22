@@ -56,8 +56,10 @@ const getProducts = async (req, res, next) => {
     // --- Determine orderBy ---
     const orderByMap = {
       newest:     { createdAt: 'desc' },
-      price_asc:  { price: 'asc' },
-      price_desc: { price: 'desc' },
+      "price-low": { price: 'asc' },
+      "price-high":{ price: 'desc' },
+      popularity: { popularity: 'desc' },
+      rating:     { rating: 'desc' },
     };
     const orderBy = orderByMap[sort] || orderByMap.newest;
 
