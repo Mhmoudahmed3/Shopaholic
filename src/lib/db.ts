@@ -1,11 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import { Product, Category, Order, Homepage, Collection, SiteSettings } from './types';
+import { mockProducts } from './mock-data';
 
 const isVercel = !!process.env.VERCEL;
+// Force it to use the project root in local dev to ensure persistence consistency
 const getDbPath = (filename: string) => isVercel ? path.join('/tmp', filename) : path.join(process.cwd(), filename);
 
 const settingsDbPath = getDbPath('settings.json');
+const productsDbPath = getDbPath('products.json');
+const homepageDbPath = getDbPath('homepage.json');
+const categoriesDbPath = getDbPath('categories.json');
+const ordersDbPath = getDbPath('orders.json');
+const collectionsDbPath = getDbPath('collections.json');
 
 const DEFAULT_SETTINGS: SiteSettings = {
     storeName: "Reham Website",
@@ -29,54 +36,104 @@ const DEFAULT_SETTINGS: SiteSettings = {
     freeShippingThreshold: 5000
 };
 
+const DEFAULT_CATEGORIES: Category[] = [
+    { id: "women", label: "Women" },
+    { id: "men", label: "Men" },
+    { id: "children", label: "Children" },
+    { id: "accessories", label: "Accessories" }
+];
+
+// Utility to safely write JSON
+const writeJson = (filePath: string, data: any) => {
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    } catch (error) {
+        console.error(`Error writing to ${filePath}:`, error);
+        throw error;
+    }
+};
+
+// Settings
 export function initSettingsDB() {
     if (!fs.existsSync(settingsDbPath)) {
-        fs.writeFileSync(settingsDbPath, JSON.stringify(DEFAULT_SETTINGS, null, 2));
+        writeJson(settingsDbPath, DEFAULT_SETTINGS);
     }
 }
 
 export function getSettingsDB(): SiteSettings {
     if (!fs.existsSync(settingsDbPath)) return DEFAULT_SETTINGS;
-    const data = fs.readFileSync(settingsDbPath, 'utf8');
     try {
-        return JSON.parse(data);
+        const data = fs.readFileSync(settingsDbPath, 'utf8');
+        return JSON.parse(data) || DEFAULT_SETTINGS;
     } catch {
         return DEFAULT_SETTINGS;
     }
 }
 
 export function saveSettingsDB(settings: SiteSettings) {
-    fs.writeFileSync(settingsDbPath, JSON.stringify(settings, null, 2));
+    writeJson(settingsDbPath, settings);
 }
 
-import { mockProducts } from './mock-data';
-
-const dbPath = getDbPath('products.json');
-
-// Initialize DB if it doesn't exist
+// Products
 export function initDB() {
-    if (!fs.existsSync(dbPath) || fs.readFileSync(dbPath, 'utf8').trim() === '[]') {
-        fs.writeFileSync(dbPath, JSON.stringify(mockProducts, null, 2));
+    if (!fs.existsSync(productsDbPath) || fs.readFileSync(productsDbPath, 'utf8').trim() === '[]') {
+        writeJson(productsDbPath, mockProducts);
     }
 }
 
 export function getProductsDB(): Product[] {
-    if (!fs.existsSync(dbPath)) return mockProducts;
-    const data = fs.readFileSync(dbPath, 'utf8');
+    if (!fs.existsSync(productsDbPath)) return mockProducts;
     try {
+        const data = fs.readFileSync(productsDbPath, 'utf8');
         const parsed = JSON.parse(data);
-        return parsed && parsed.length > 0 ? parsed : mockProducts;
+        // FIX: Only return mock if file is totally invalid, not if it's empty
+        return Array.isArray(parsed) ? parsed : mockProducts;
     } catch {
         return mockProducts;
     }
 }
 
 export function saveProductsDB(products: Product[]) {
-    fs.writeFileSync(dbPath, JSON.stringify(products, null, 2));
+    writeJson(productsDbPath, products);
 }
 
-const homepageDbPath = getDbPath('homepage.json');
+// Categories
+export function initCategoriesDB() {
+    if (!fs.existsSync(categoriesDbPath) || fs.readFileSync(categoriesDbPath, 'utf8').trim() === '') {
+        writeJson(categoriesDbPath, DEFAULT_CATEGORIES);
+    }
+}
 
+export function getCategoriesDB(): Category[] {
+    if (!fs.existsSync(categoriesDbPath)) return DEFAULT_CATEGORIES;
+    try {
+        const data = fs.readFileSync(categoriesDbPath, 'utf8');
+        const parsed = JSON.parse(data);
+        // FIX: Allow empty array, don't fallback to defaults if users deleted everything
+        return Array.isArray(parsed) ? parsed : DEFAULT_CATEGORIES;
+    } catch {
+        return DEFAULT_CATEGORIES;
+    }
+}
+
+export function saveCategoriesDB(categories: Category[]) {
+    writeJson(categoriesDbPath, categories);
+}
+
+export function deleteCategoryDB(categoryId: string) {
+    console.log(`[DB] Deleting category: ${categoryId}`);
+    const categories = getCategoriesDB();
+    const updatedCategories = categories.filter(c => c.id !== categoryId);
+    saveCategoriesDB(updatedCategories);
+
+    // Cascade delete products
+    const products = getProductsDB();
+    const updatedProducts = products.filter(p => p.category !== categoryId);
+    saveProductsDB(updatedProducts);
+    console.log(`[DB] Category deleted and ${products.length - updatedProducts.length} related products removed.`);
+}
+
+// Homepage
 export function initHomepageDB() {
     if (!fs.existsSync(homepageDbPath)) {
         const defaultHomepage = {
@@ -98,238 +155,74 @@ export function initHomepageDB() {
                 description: "Handcrafted pieces using the finest silks and sustainable materials. Every detail is a statement of luxury.",
                 ctaText: "Explore Now",
                 ctaLink: "/shop?collection=summer",
-                backgroundImage: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80"
-            },
-            newsletter: {
-                title: "Join the Inner Circle",
-                description: "Be the first to know about new arrivals, private sales, and exclusive events."
+                image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80"
             }
         };
-        fs.writeFileSync(homepageDbPath, JSON.stringify(defaultHomepage, null, 2));
+        writeJson(homepageDbPath, defaultHomepage);
     }
 }
 
-export function getHomepageDB(): Homepage | null {
-    if (!fs.existsSync(homepageDbPath)) return null;
-    const data = fs.readFileSync(homepageDbPath, 'utf8');
+export function getHomepageDB(): Homepage {
+    if (!fs.existsSync(homepageDbPath)) return {} as Homepage;
     try {
+        const data = fs.readFileSync(homepageDbPath, 'utf8');
         return JSON.parse(data);
     } catch {
-        return null;
+        return {} as Homepage;
     }
 }
 
 export function saveHomepageDB(content: Homepage) {
-    fs.writeFileSync(homepageDbPath, JSON.stringify(content, null, 2));
+    writeJson(homepageDbPath, content);
 }
 
-const categoriesDbPath = getDbPath('categories.json');
-
-const DEFAULT_CATEGORIES: Category[] = [
-    { id: "women", label: "Women" },
-    { id: "men", label: "Men" },
-    { id: "children", label: "Children" },
-    { id: "accessories", label: "Accessories" }
-];
-
-export function initCategoriesDB() {
-    if (!fs.existsSync(categoriesDbPath) || fs.readFileSync(categoriesDbPath, 'utf8').trim() === '') {
-        fs.writeFileSync(categoriesDbPath, JSON.stringify(DEFAULT_CATEGORIES, null, 2));
-    }
-}
-
-export function getCategoriesDB(): Category[] {
-    if (!fs.existsSync(categoriesDbPath)) return DEFAULT_CATEGORIES;
-    const data = fs.readFileSync(categoriesDbPath, 'utf8');
-    try {
-        const parsed = JSON.parse(data);
-        return parsed && parsed.length > 0 ? parsed : DEFAULT_CATEGORIES;
-    } catch {
-        return DEFAULT_CATEGORIES;
-    }
-}
-
-export function saveCategoriesDB(categories: Category[]) {
-    fs.writeFileSync(categoriesDbPath, JSON.stringify(categories, null, 2));
-}
-
-export function deleteCategoryDB(categoryId: string) {
-    const categories = getCategoriesDB();
-    const updatedCategories = categories.filter(c => c.id !== categoryId);
-    saveCategoriesDB(updatedCategories);
-
-    // Cascade delete products
-    const products = getProductsDB();
-    const updatedProducts = products.filter(p => p.category !== categoryId);
-    saveProductsDB(updatedProducts);
-}
-
-const ordersDbPath = getDbPath('orders.json');
-
+// Orders
 export function initOrdersDB() {
     if (!fs.existsSync(ordersDbPath)) {
-        fs.writeFileSync(ordersDbPath, JSON.stringify([], null, 2));
+        writeJson(ordersDbPath, []);
     }
 }
 
 export function getOrdersDB(): Order[] {
     if (!fs.existsSync(ordersDbPath)) return [];
-    const data = fs.readFileSync(ordersDbPath, 'utf8');
     try {
-        return JSON.parse(data);
+        const data = fs.readFileSync(ordersDbPath, 'utf8');
+        return JSON.parse(data) || [];
     } catch {
         return [];
     }
 }
 
 export function saveOrdersDB(orders: Order[]) {
-    fs.writeFileSync(ordersDbPath, JSON.stringify(orders, null, 2));
+    writeJson(ordersDbPath, orders);
 }
 
-const collectionsDbPath = getDbPath('collections.json');
-
-const DEFAULT_COLLECTIONS: Collection[] = [
-    {
-        id: "women",
-        name: "Women",
-        subtitle: "Elegance and Style",
-        image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80",
-        status: 'Active',
-        productIds: [],
-        itemsCount: 12,
-        link: "/shop?category=women",
-        createdAt: new Date().toISOString()
-    },
-    {
-        id: "men",
-        name: "Men",
-        subtitle: "Modern Classics",
-        image: "https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&q=80",
-        status: 'Active',
-        productIds: [],
-        itemsCount: 12,
-        link: "/shop?category=men",
-        createdAt: new Date().toISOString()
-    },
-    {
-        id: "children",
-        name: "Children",
-        subtitle: "Playful Comfort",
-        image: "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
-        status: 'Active',
-        productIds: [],
-        itemsCount: 12,
-        link: "/shop?category=children",
-        createdAt: new Date().toISOString()
-    },
-    {
-        id: "accessories",
-        name: "Accessories",
-        subtitle: "Finishing Touches",
-        image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80",
-        status: 'Active',
-        productIds: [],
-        itemsCount: 13,
-        link: "/shop?category=accessories",
-        createdAt: new Date().toISOString()
-    }
-];
-
-export function initCollectionsDB() {
-    if (!fs.existsSync(collectionsDbPath) || fs.readFileSync(collectionsDbPath, 'utf8').trim() === '[]') {
-        fs.writeFileSync(collectionsDbPath, JSON.stringify(DEFAULT_COLLECTIONS, null, 2));
-    }
-}
-
+// Collections
 export function getCollectionsDB(): Collection[] {
-    if (!fs.existsSync(collectionsDbPath)) return DEFAULT_COLLECTIONS;
-    const data = fs.readFileSync(collectionsDbPath, 'utf8');
+    if (!fs.existsSync(collectionsDbPath)) return [];
     try {
-        const parsed = JSON.parse(data);
-        return parsed && parsed.length > 0 ? parsed : DEFAULT_COLLECTIONS;
+        const data = fs.readFileSync(collectionsDbPath, 'utf8');
+        return JSON.parse(data) || [];
     } catch {
-        return DEFAULT_COLLECTIONS;
+        return [];
     }
 }
 
 export function saveCollectionsDB(collections: Collection[]) {
-    fs.writeFileSync(collectionsDbPath, JSON.stringify(collections, null, 2));
+    writeJson(collectionsDbPath, collections);
 }
 
-// These functions were moved from data.ts to ensure they only run on the server
-export async function getProducts(options: {
-    category?: string;
-    type?: string;
-    sort?: string;
-    size?: string;
-    color?: string;
-    minPrice?: number;
-    maxPrice?: number;
-    minRating?: number;
-    isPopular?: boolean;
-} = {}) {
-    const { category, type, sort, size, color, minPrice, maxPrice, minRating, isPopular } = options;
-    
-    let result = getProductsDB();
-
-    if (category && category !== 'all') {
-        result = result.filter(p => p.category === category);
-    }
-
-    if (type) {
-        result = result.filter(p => p.type === type);
-    }
-
-    if (size) {
-        const sizes = size.split(',').map(s => s.trim().toLowerCase());
-        result = result.filter(p => p.sizes.some(s => sizes.includes(s.toLowerCase())));
-    }
-
-    if (color) {
-        const colors = color.split(',').map(c => c.trim().toLowerCase());
-        result = result.filter(p => p.colors.some(c => colors.includes(c.toLowerCase())));
-    }
-
-    if (minPrice !== undefined) {
-        result = result.filter(p => p.price >= minPrice);
-    }
-
-    if (maxPrice !== undefined) {
-        result = result.filter(p => p.price <= maxPrice);
-    }
-
-    if (minRating !== undefined && minRating > 0) {
-        result = result.filter(p => (p.rating || 0) >= minRating);
-    }
-
-    if (isPopular) {
-        result = result.filter(p => (p.popularity || 0) >= 85);
-    }
-
-    if (sort === 'price-low') {
-        result.sort((a, b) => a.price - b.price);
-    } else if (sort === 'price-high') {
-        result.sort((a, b) => b.price - a.price);
-    } else if (sort === 'newest') {
-        result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    } else if (sort === 'popularity') {
-        result.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
-    } else if (sort === 'rating') {
-        result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-    }
-
-    return result;
+export function getCollection(id: string) {
+    const collections = getCollectionsDB();
+    return collections.find(c => c.id === id);
 }
 
-export async function getProduct(id: string) {
-    return getProductsDB().find(p => p.id === id);
+export function getCollectionProducts(productIds: string[]) {
+    const products = getProductsDB();
+    return products.filter(p => productIds.includes(p.id));
 }
 
-export async function getRelatedProducts(id: string, category: string) {
-    return getProductsDB().filter(p => p.category === category && p.id !== id).slice(0, 4);
-}
-
-export async function getAvailableFilters(options: { category?: string, type?: string } = {}) {
+export function getAvailableFilters(options: { category?: string, type?: string } = {}) {
     const { category, type } = options;
     const products = getProductsDB();
     let filtered = products;
@@ -345,13 +238,4 @@ export async function getAvailableFilters(options: { category?: string, type?: s
     const colors = Array.from(new Set(filtered.flatMap(p => p.colors || []).map(c => c.toLowerCase())));
 
     return { sizes, colors };
-}
-export async function getCollection(id: string) {
-    const collections = getCollectionsDB();
-    return collections.find(c => c.id === id);
-}
-
-export async function getCollectionProducts(productIds: string[]) {
-    const products = getProductsDB();
-    return products.filter(p => productIds.includes(p.id));
 }

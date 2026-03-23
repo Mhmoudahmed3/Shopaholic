@@ -1,13 +1,14 @@
-import { getSiteSettings, getCategories } from "../actions";
+import { getSiteSettings, getCategories, getCategoryProductCounts } from "../actions";
 import SettingsForm from "./SettingsForm";
 import { Settings, ShieldCheck } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
-    const [settings, categories] = await Promise.all([
+    const [settings, categories, categoryCounts] = await Promise.all([
         getSiteSettings(),
-        getCategories()
+        getCategories(),
+        getCategoryProductCounts()
     ]);
 
     return (
@@ -26,8 +27,12 @@ export default async function SettingsPage() {
             </div>
 
             {/* Form Section */}
-            <div className="max-w-4xl">
-                <SettingsForm initialSettings={settings} initialCategories={categories} />
+            <div className="w-full">
+                <SettingsForm 
+                    initialSettings={settings} 
+                    initialCategories={categories} 
+                    categoryCounts={categoryCounts} 
+                />
             </div>
         </div>
     );
