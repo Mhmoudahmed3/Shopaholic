@@ -35,8 +35,8 @@ export function MobileBottomNav() {
     ];
 
     return (
-        <nav className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] w-[calc(100%-3rem)] max-w-[320px] bg-white/80 dark:bg-black/80 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-full shadow-[0_8px_32px_-4px_rgba(0,0,0,0.15)] pb-safe-area-inset-bottom">
-            <div className="flex items-center justify-around h-16 w-full px-2">
+        <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-[60] bg-white/95 dark:bg-black/95 backdrop-blur-2xl border-t border-black/5 dark:border-white/5 pb-safe-area-inset-bottom">
+            <div className="flex items-center justify-around h-16 w-full max-w-md mx-auto px-2">
                 {navItems.map((item) => {
                     const isActive = item.href ? pathname === item.href : false;
                     
