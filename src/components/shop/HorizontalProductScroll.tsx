@@ -27,7 +27,7 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
     return (
         <div className="relative w-full py-2 md:py-10">
             {title && <h2 className="text-xl font-serif mb-6 md:mb-8 px-4 md:px-0 uppercase tracking-widest">{title}</h2>}
-            <div className="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar scroll-smooth pb-8 touch-pan-x -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0">
+            <div className="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar scroll-smooth pb-8 -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0">
                 {products.map((product, index) => (
                     <div 
                         key={`${product.id}-${index}`}
