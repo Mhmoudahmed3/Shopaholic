@@ -1,151 +1,2542 @@
 [
   {
-    "id": "1773623588212",
-    "name": "jgvhg",
-    "description": "GHCDHFXGFX",
-    "price": 5575,
-    "discountPrice": 567,
+    "id": "generated-product-1",
+    "name": "Premium Men shirts",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1330,
+    "discountPrice": 1064,
     "category": "men",
-    "type": "sweaters",
+    "type": "shirts",
     "images": [
-      "/uploads/1773623588224-WhatsApp_Image_2026_03_12_at_11.11.14_PM__1_.jpeg",
-      "/uploads/1773623588237-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg"
+      "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80"
     ],
     "imageVariants": [
       {
-        "url": "/uploads/1773623588224-WhatsApp_Image_2026_03_12_at_11.11.14_PM__1_.jpeg",
-        "color": "Black",
-        "size": "XL",
-        "quantity": 7
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "S",
+        "quantity": 5
       },
       {
-        "url": "/uploads/1773623588224-WhatsApp_Image_2026_03_12_at_11.11.14_PM__1_.jpeg",
-        "color": "Black",
-        "size": "XXL",
-        "quantity": 89
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "M",
+        "quantity": 12
       },
       {
-        "url": "/uploads/1773623588237-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg",
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "L",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "S",
+        "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "M",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "L",
+        "quantity": 10
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "White",
+      "Beige"
+    ],
+    "stock": 54,
+    "isNew": true,
+    "createdAt": "2026-03-23T01:49:31.772Z",
+    "popularity": 99
+  },
+  {
+    "id": "generated-product-2",
+    "name": "Premium Children pants",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1140,
+    "category": "children",
+    "type": "pants",
+    "images": [
+      "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
         "color": "Navy",
         "size": "M",
-        "quantity": 56
+        "quantity": 1
       },
       {
-        "url": "/uploads/1773623588237-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg",
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
         "color": "Navy",
+        "size": "L",
+        "quantity": 3
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XL",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "M",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "L",
+        "quantity": 3
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XL",
+        "quantity": 5
+      }
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Navy",
+      "Grey"
+    ],
+    "stock": 46,
+    "isNew": true,
+    "createdAt": "2026-03-23T00:49:31.772Z",
+    "popularity": 98
+  },
+  {
+    "id": "generated-product-3",
+    "name": "Premium Accessories jackets",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 570,
+    "discountPrice": 456,
+    "category": "accessories",
+    "type": "jackets",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "L",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XL",
+        "quantity": 12
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
         "size": "XS",
+        "quantity": 12
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "L",
+        "quantity": 12
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XL",
+        "quantity": 20
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XS",
+        "quantity": 16
+      }
+    ],
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      "Beige",
+      "Red"
+    ],
+    "stock": 89,
+    "isNew": true,
+    "createdAt": "2026-03-22T23:49:31.772Z",
+    "popularity": 97
+  },
+  {
+    "id": "generated-product-4",
+    "name": "Premium Women sneakers",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1780,
+    "discountPrice": 1424,
+    "category": "women",
+    "type": "sneakers",
+    "images": [
+      "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XL",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XS",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "S",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XL",
         "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XS",
+        "quantity": 20
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "S",
+        "quantity": 4
       }
     ],
     "sizes": [
       "XL",
-      "XXL",
+      "XS",
+      "S"
+    ],
+    "colors": [
+      "Grey",
+      "Olive"
+    ],
+    "stock": 85,
+    "isNew": true,
+    "createdAt": "2026-03-22T22:49:31.772Z",
+    "popularity": 96
+  },
+  {
+    "id": "generated-product-5",
+    "name": "Premium Men bags",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1610,
+    "category": "men",
+    "type": "bags",
+    "images": [
+      "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XS",
+        "quantity": 1
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "S",
+        "quantity": 11
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "M",
+        "quantity": 20
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XS",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "S",
+        "quantity": 5
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "M",
+        "quantity": 1
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M"
+    ],
+    "colors": [
+      "Red",
+      "Black"
+    ],
+    "stock": 42,
+    "isNew": true,
+    "createdAt": "2026-03-22T21:49:31.772Z",
+    "popularity": 95
+  },
+  {
+    "id": "generated-product-6",
+    "name": "Premium Children watches",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1440,
+    "category": "children",
+    "type": "watches",
+    "images": [
+      "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "S",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "M",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "L",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "S",
+        "quantity": 6
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "M",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "L",
+        "quantity": 15
+      }
+    ],
+    "sizes": [
+      "S",
       "M",
-      "XS"
+      "L"
+    ],
+    "colors": [
+      "Olive",
+      "White"
+    ],
+    "stock": 83,
+    "isNew": true,
+    "createdAt": "2026-03-22T20:49:31.772Z",
+    "popularity": 94
+  },
+  {
+    "id": "generated-product-7",
+    "name": "Premium Accessories dresses",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 730,
+    "category": "accessories",
+    "type": "dresses",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "M",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "L",
+        "quantity": 2
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XL",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "M",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "L",
+        "quantity": 6
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XL",
+        "quantity": 17
+      }
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
     ],
     "colors": [
       "Black",
       "Navy"
     ],
-    "createdAt": "2026-03-16T01:13:08.240Z",
+    "stock": 77,
     "isNew": true,
-    "stock": 160,
-    "popularity": 88
+    "createdAt": "2026-03-22T19:49:31.772Z",
+    "popularity": 93
   },
   {
-    "id": "1773669234705",
-    "name": "sanbcnhsab",
-    "description": "slanckjb sn cknas dkn dkn ",
-    "price": 212,
-    "discountPrice": 23,
+    "id": "generated-product-8",
+    "name": "Premium Women shirts",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 2140,
     "category": "women",
     "type": "shirts",
     "images": [
-      "/uploads/1773669234741-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg",
-      "/uploads/1773669234814-Gemini_Generated_Image_2b8rsw2b8rsw2b8r.png"
+      "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80"
     ],
     "imageVariants": [
       {
-        "url": "/uploads/1773669234741-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg",
-        "color": "Navy",
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "L",
+        "quantity": 7
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XL",
+        "quantity": 1
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XS",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "Beige",
         "size": "L",
         "quantity": 10
       },
       {
-        "url": "/uploads/1773669234741-WhatsApp_Image_2026_03_12_at_11.11.14_PM.jpeg",
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XL",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XS",
+        "quantity": 17
+      }
+    ],
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      "White",
+      "Beige"
+    ],
+    "stock": 53,
+    "isNew": true,
+    "createdAt": "2026-03-22T18:49:31.772Z",
+    "popularity": 92
+  },
+  {
+    "id": "generated-product-9",
+    "name": "Premium Men pants",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 630,
+    "category": "men",
+    "type": "pants",
+    "images": [
+      "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
         "color": "Navy",
+        "size": "XL",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XS",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "S",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XL",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XS",
+        "quantity": 3
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "S",
+        "quantity": 14
+      }
+    ],
+    "sizes": [
+      "XL",
+      "XS",
+      "S"
+    ],
+    "colors": [
+      "Navy",
+      "Grey"
+    ],
+    "stock": 82,
+    "isNew": false,
+    "createdAt": "2026-03-22T17:49:31.772Z",
+    "popularity": 91
+  },
+  {
+    "id": "generated-product-10",
+    "name": "Premium Children jackets",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 990,
+    "category": "children",
+    "type": "jackets",
+    "images": [
+      "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XS",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "S",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "M",
+        "quantity": 5
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XS",
+        "quantity": 1
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "S",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "M",
+        "quantity": 12
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M"
+    ],
+    "colors": [
+      "Beige",
+      "Red"
+    ],
+    "stock": 57,
+    "isNew": false,
+    "createdAt": "2026-03-22T16:49:31.772Z",
+    "popularity": 90
+  },
+  {
+    "id": "generated-product-11",
+    "name": "Premium Accessories sneakers",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 2130,
+    "category": "accessories",
+    "type": "sneakers",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "S",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "M",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "L",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "S",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "M",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "L",
+        "quantity": 19
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Grey",
+      "Olive"
+    ],
+    "stock": 93,
+    "isNew": false,
+    "createdAt": "2026-03-22T15:49:31.772Z",
+    "popularity": 89
+  },
+  {
+    "id": "generated-product-12",
+    "name": "Premium Women bags",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 2380,
+    "category": "women",
+    "type": "bags",
+    "images": [
+      "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "M",
+        "quantity": 20
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "L",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XL",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "M",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "L",
+        "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XL",
+        "quantity": 14
+      }
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Red",
+      "Black"
+    ],
+    "stock": 80,
+    "isNew": false,
+    "createdAt": "2026-03-22T14:49:31.772Z",
+    "popularity": 88
+  },
+  {
+    "id": "generated-product-13",
+    "name": "Premium Men watches",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 2020,
+    "category": "men",
+    "type": "watches",
+    "images": [
+      "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "L",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XL",
+        "quantity": 2
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XS",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "L",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XL",
+        "quantity": 1
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XS",
+        "quantity": 13
+      }
+    ],
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      "Olive",
+      "White"
+    ],
+    "stock": 50,
+    "isNew": false,
+    "createdAt": "2026-03-22T13:49:31.772Z",
+    "popularity": 87
+  },
+  {
+    "id": "generated-product-14",
+    "name": "Premium Children dresses",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1110,
+    "category": "children",
+    "type": "dresses",
+    "images": [
+      "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XL",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XS",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "S",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XL",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XS",
+        "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "S",
+        "quantity": 2
+      }
+    ],
+    "sizes": [
+      "XL",
+      "XS",
+      "S"
+    ],
+    "colors": [
+      "Black",
+      "Navy"
+    ],
+    "stock": 81,
+    "isNew": false,
+    "createdAt": "2026-03-22T12:49:31.772Z",
+    "popularity": 86
+  },
+  {
+    "id": "generated-product-15",
+    "name": "Premium Accessories shirts",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 890,
+    "category": "accessories",
+    "type": "shirts",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XS",
+        "quantity": 1
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "S",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "M",
+        "quantity": 14
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XS",
+        "quantity": 3
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "S",
+        "quantity": 6
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "M",
+        "quantity": 19
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M"
+    ],
+    "colors": [
+      "White",
+      "Beige"
+    ],
+    "stock": 58,
+    "isNew": false,
+    "createdAt": "2026-03-22T11:49:31.773Z",
+    "popularity": 85
+  },
+  {
+    "id": "generated-product-16",
+    "name": "Premium Women pants",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1680,
+    "category": "women",
+    "type": "pants",
+    "images": [
+      "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "S",
+        "quantity": 20
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "M",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "L",
+        "quantity": 3
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "S",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "M",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "L",
+        "quantity": 16
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Navy",
+      "Grey"
+    ],
+    "stock": 80,
+    "isNew": false,
+    "createdAt": "2026-03-22T10:49:31.773Z",
+    "popularity": 84
+  },
+  {
+    "id": "generated-product-17",
+    "name": "Premium Men jackets",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 820,
+    "discountPrice": 656,
+    "category": "men",
+    "type": "jackets",
+    "images": [
+      "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "M",
+        "quantity": 12
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "L",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XL",
+        "quantity": 20
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "M",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "L",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XL",
+        "quantity": 7
+      }
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Beige",
+      "Red"
+    ],
+    "stock": 62,
+    "isNew": false,
+    "createdAt": "2026-03-22T09:49:31.773Z",
+    "popularity": 83
+  },
+  {
+    "id": "generated-product-18",
+    "name": "Premium Children sneakers",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 980,
+    "category": "children",
+    "type": "sneakers",
+    "images": [
+      "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "L",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XL",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XS",
+        "quantity": 6
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "L",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XL",
+        "quantity": 14
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XS",
+        "quantity": 17
+      }
+    ],
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      "Grey",
+      "Olive"
+    ],
+    "stock": 87,
+    "isNew": false,
+    "createdAt": "2026-03-22T08:49:31.773Z",
+    "popularity": 82
+  },
+  {
+    "id": "generated-product-19",
+    "name": "Premium Accessories bags",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1870,
+    "category": "accessories",
+    "type": "bags",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XL",
+        "quantity": 2
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XS",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "S",
+        "quantity": 1
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XL",
+        "quantity": 11
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XS",
+        "quantity": 12
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "S",
+        "quantity": 15
+      }
+    ],
+    "sizes": [
+      "XL",
+      "XS",
+      "S"
+    ],
+    "colors": [
+      "Red",
+      "Black"
+    ],
+    "stock": 57,
+    "isNew": false,
+    "createdAt": "2026-03-22T07:49:31.773Z",
+    "popularity": 81
+  },
+  {
+    "id": "generated-product-20",
+    "name": "Premium Women watches",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1120,
+    "category": "women",
+    "type": "watches",
+    "images": [
+      "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XS",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "S",
+        "quantity": 3
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "M",
+        "quantity": 1
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XS",
+        "quantity": 3
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "S",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "M",
+        "quantity": 6
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M"
+    ],
+    "colors": [
+      "Olive",
+      "White"
+    ],
+    "stock": 37,
+    "isNew": false,
+    "createdAt": "2026-03-22T06:49:31.773Z",
+    "popularity": 80
+  },
+  {
+    "id": "generated-product-21",
+    "name": "Premium Men dresses",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1310,
+    "category": "men",
+    "type": "dresses",
+    "images": [
+      "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "S",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "M",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "L",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "S",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "M",
+        "quantity": 14
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "L",
+        "quantity": 1
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Black",
+      "Navy"
+    ],
+    "stock": 71,
+    "isNew": false,
+    "createdAt": "2026-03-22T05:49:31.773Z",
+    "popularity": 79
+  },
+  {
+    "id": "generated-product-22",
+    "name": "Premium Children shirts",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 810,
+    "discountPrice": 648,
+    "category": "children",
+    "type": "shirts",
+    "images": [
+      "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "M",
+        "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "L",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XL",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "M",
+        "quantity": 7
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "L",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XL",
+        "quantity": 18
+      }
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "White",
+      "Beige"
+    ],
+    "stock": 68,
+    "isNew": false,
+    "createdAt": "2026-03-22T04:49:31.773Z",
+    "popularity": 78
+  },
+  {
+    "id": "generated-product-23",
+    "name": "Premium Accessories pants",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 570,
+    "discountPrice": 456,
+    "category": "accessories",
+    "type": "pants",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "L",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XL",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XS",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "L",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Grey",
         "size": "XL",
         "quantity": 10
       },
       {
-        "url": "/uploads/1773669234814-Gemini_Generated_Image_2b8rsw2b8rsw2b8r.png",
-        "color": "Black",
-        "size": "XXL",
-        "quantity": 40
-      },
-      {
-        "url": "/uploads/1773669234814-Gemini_Generated_Image_2b8rsw2b8rsw2b8r.png",
-        "color": "Black",
-        "size": "L",
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XS",
         "quantity": 12
       }
     ],
     "sizes": [
       "L",
       "XL",
-      "XXL"
+      "XS"
     ],
     "colors": [
       "Navy",
-      "Black"
+      "Grey"
     ],
-    "createdAt": "2026-03-16T13:53:54.828Z",
-    "isNew": true,
-    "stock": 72,
-    "popularity": 92,
-    "rating": 4,
-    "reviewsCount": 2,
-    "reviews": [
-      {
-        "id": "1773857860592",
-        "userName": "dskfm",
-        "rating": 5,
-        "comment": "sdfksdfksdf",
-        "date": "2026-03-18",
-        "verified": true
-      },
-      {
-        "id": "1773857878862",
-        "userName": "sajdnjsand",
-        "rating": 3,
-        "comment": "dfgfdgfdg",
-        "date": "2026-03-18",
-        "verified": true
-      }
-    ]
+    "stock": 87,
+    "isNew": false,
+    "createdAt": "2026-03-22T03:49:31.773Z",
+    "popularity": 77
   },
   {
-    "id": "1773772776862",
-    "name": "Noir Silk Ethereal Dress",
-    "description": "Handcrafted from the finest Italian silk, this floor-length gown features a cascading silhouette and delicate draping. A masterpiece of minimalist luxury.",
-    "price": 12500,
-    "discountPrice": 9500,
+    "id": "generated-product-24",
+    "name": "Premium Women jackets",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1320,
+    "discountPrice": 1056,
     "category": "women",
-    "type": "dresses",
+    "type": "jackets",
     "images": [
-      "/uploads/lux_silk_dress_black.png"
+      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80"
     ],
     "imageVariants": [
       {
-        "url": "/uploads/lux_silk_dress_black.png",
+        "url": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XL",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XS",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "S",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XL",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XS",
+        "quantity": 5
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "S",
+        "quantity": 8
+      }
+    ],
+    "sizes": [
+      "XL",
+      "XS",
+      "S"
+    ],
+    "colors": [
+      "Beige",
+      "Red"
+    ],
+    "stock": 61,
+    "isNew": false,
+    "createdAt": "2026-03-22T02:49:31.773Z",
+    "popularity": 76
+  },
+  {
+    "id": "generated-product-25",
+    "name": "Premium Men sneakers",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1490,
+    "category": "men",
+    "type": "sneakers",
+    "images": [
+      "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XS",
+        "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "S",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "M",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XS",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "S",
+        "quantity": 2
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "M",
+        "quantity": 12
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M"
+    ],
+    "colors": [
+      "Grey",
+      "Olive"
+    ],
+    "stock": 60,
+    "isNew": false,
+    "createdAt": "2026-03-22T01:49:31.773Z",
+    "popularity": 75
+  },
+  {
+    "id": "generated-product-26",
+    "name": "Premium Children bags",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 990,
+    "category": "children",
+    "type": "bags",
+    "images": [
+      "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "S",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "M",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "L",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
         "color": "Black",
         "size": "S",
         "quantity": 5
       },
       {
-        "url": "/uploads/lux_silk_dress_black.png",
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
         "color": "Black",
         "size": "M",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "L",
+        "quantity": 3
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Red",
+      "Black"
+    ],
+    "stock": 72,
+    "isNew": false,
+    "createdAt": "2026-03-22T00:49:31.773Z",
+    "popularity": 74
+  },
+  {
+    "id": "generated-product-27",
+    "name": "Premium Accessories watches",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1230,
+    "category": "accessories",
+    "type": "watches",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "M",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "L",
+        "quantity": 20
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XL",
+        "quantity": 2
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "M",
+        "quantity": 3
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "L",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XL",
+        "quantity": 16
+      }
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Olive",
+      "White"
+    ],
+    "stock": 61,
+    "isNew": false,
+    "createdAt": "2026-03-21T23:49:31.773Z",
+    "popularity": 73
+  },
+  {
+    "id": "generated-product-28",
+    "name": "Premium Women dresses",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 810,
+    "category": "women",
+    "type": "dresses",
+    "images": [
+      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "L",
+        "quantity": 6
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XL",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XS",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "L",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XL",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XS",
+        "quantity": 20
+      }
+    ],
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      "Black",
+      "Navy"
+    ],
+    "stock": 96,
+    "isNew": false,
+    "createdAt": "2026-03-21T22:49:31.773Z",
+    "popularity": 72
+  },
+  {
+    "id": "generated-product-29",
+    "name": "Premium Men shirts",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1460,
+    "category": "men",
+    "type": "shirts",
+    "images": [
+      "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XL",
+        "quantity": 5
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XS",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "S",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XL",
+        "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XS",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "S",
+        "quantity": 5
+      }
+    ],
+    "sizes": [
+      "XL",
+      "XS",
+      "S"
+    ],
+    "colors": [
+      "White",
+      "Beige"
+    ],
+    "stock": 53,
+    "isNew": false,
+    "createdAt": "2026-03-21T21:49:31.773Z",
+    "popularity": 71
+  },
+  {
+    "id": "generated-product-30",
+    "name": "Premium Children pants",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 750,
+    "discountPrice": 600,
+    "category": "children",
+    "type": "pants",
+    "images": [
+      "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XS",
+        "quantity": 5
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "S",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "M",
+        "quantity": 14
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XS",
+        "quantity": 11
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "S",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "M",
+        "quantity": 2
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M"
+    ],
+    "colors": [
+      "Navy",
+      "Grey"
+    ],
+    "stock": 61,
+    "isNew": false,
+    "createdAt": "2026-03-21T20:49:31.773Z",
+    "popularity": 70
+  },
+  {
+    "id": "generated-product-31",
+    "name": "Premium Accessories jackets",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 800,
+    "discountPrice": 640,
+    "category": "accessories",
+    "type": "jackets",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "S",
+        "quantity": 7
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "M",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "L",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "S",
+        "quantity": 2
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "M",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "L",
+        "quantity": 20
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Beige",
+      "Red"
+    ],
+    "stock": 76,
+    "isNew": false,
+    "createdAt": "2026-03-21T19:49:31.773Z",
+    "popularity": 69
+  },
+  {
+    "id": "generated-product-32",
+    "name": "Premium Women sneakers",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 2180,
+    "category": "women",
+    "type": "sneakers",
+    "images": [
+      "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "M",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "L",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XL",
+        "quantity": 1
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "M",
+        "quantity": 7
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "L",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XL",
+        "quantity": 20
+      }
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Grey",
+      "Olive"
+    ],
+    "stock": 74,
+    "isNew": false,
+    "createdAt": "2026-03-21T18:49:31.773Z",
+    "popularity": 68
+  },
+  {
+    "id": "generated-product-33",
+    "name": "Premium Men bags",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1080,
+    "category": "men",
+    "type": "bags",
+    "images": [
+      "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "L",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XL",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XS",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "L",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XL",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XS",
+        "quantity": 7
+      }
+    ],
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      "Red",
+      "Black"
+    ],
+    "stock": 81,
+    "isNew": false,
+    "createdAt": "2026-03-21T17:49:31.773Z",
+    "popularity": 67
+  },
+  {
+    "id": "generated-product-34",
+    "name": "Premium Children watches",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 2160,
+    "category": "children",
+    "type": "watches",
+    "images": [
+      "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XL",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XS",
+        "quantity": 5
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "S",
+        "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XL",
+        "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XS",
+        "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "S",
+        "quantity": 12
+      }
+    ],
+    "sizes": [
+      "XL",
+      "XS",
+      "S"
+    ],
+    "colors": [
+      "Olive",
+      "White"
+    ],
+    "stock": 56,
+    "isNew": false,
+    "createdAt": "2026-03-21T16:49:31.773Z",
+    "popularity": 66
+  },
+  {
+    "id": "generated-product-35",
+    "name": "Premium Accessories dresses",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 840,
+    "discountPrice": 672,
+    "category": "accessories",
+    "type": "dresses",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XS",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "S",
+        "quantity": 11
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "M",
+        "quantity": 12
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XS",
+        "quantity": 12
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "S",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "M",
+        "quantity": 14
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M"
+    ],
+    "colors": [
+      "Black",
+      "Navy"
+    ],
+    "stock": 83,
+    "isNew": false,
+    "createdAt": "2026-03-21T15:49:31.773Z",
+    "popularity": 65
+  },
+  {
+    "id": "generated-product-36",
+    "name": "Premium Women shirts",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 620,
+    "category": "women",
+    "type": "shirts",
+    "images": [
+      "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "S",
+        "quantity": 6
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "M",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "L",
+        "quantity": 2
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "S",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "M",
+        "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "L",
+        "quantity": 20
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "White",
+      "Beige"
+    ],
+    "stock": 68,
+    "isNew": false,
+    "createdAt": "2026-03-21T14:49:31.773Z",
+    "popularity": 64
+  },
+  {
+    "id": "generated-product-37",
+    "name": "Premium Men pants",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1250,
+    "discountPrice": 1000,
+    "category": "men",
+    "type": "pants",
+    "images": [
+      "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "M",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "L",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XL",
+        "quantity": 2
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "M",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "L",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XL",
+        "quantity": 5
+      }
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Navy",
+      "Grey"
+    ],
+    "stock": 29,
+    "isNew": false,
+    "createdAt": "2026-03-21T13:49:31.773Z",
+    "popularity": 63
+  },
+  {
+    "id": "generated-product-38",
+    "name": "Premium Children jackets",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1760,
+    "discountPrice": 1408,
+    "category": "children",
+    "type": "jackets",
+    "images": [
+      "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "L",
+        "quantity": 20
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XL",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XS",
+        "quantity": 7
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "L",
+        "quantity": 14
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XL",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XS",
+        "quantity": 15
+      }
+    ],
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      "Beige",
+      "Red"
+    ],
+    "stock": 88,
+    "isNew": false,
+    "createdAt": "2026-03-21T12:49:31.773Z",
+    "popularity": 62
+  },
+  {
+    "id": "generated-product-39",
+    "name": "Premium Accessories sneakers",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 2180,
+    "discountPrice": 1744,
+    "category": "accessories",
+    "type": "sneakers",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XL",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XS",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "S",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XL",
+        "quantity": 12
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XS",
+        "quantity": 3
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "S",
+        "quantity": 13
+      }
+    ],
+    "sizes": [
+      "XL",
+      "XS",
+      "S"
+    ],
+    "colors": [
+      "Grey",
+      "Olive"
+    ],
+    "stock": 55,
+    "isNew": false,
+    "createdAt": "2026-03-21T11:49:31.773Z",
+    "popularity": 61
+  },
+  {
+    "id": "generated-product-40",
+    "name": "Premium Women bags",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1180,
+    "category": "women",
+    "type": "bags",
+    "images": [
+      "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XS",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "S",
+        "quantity": 12
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "M",
+        "quantity": 20
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XS",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "S",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "M",
+        "quantity": 20
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M"
+    ],
+    "colors": [
+      "Red",
+      "Black"
+    ],
+    "stock": 86,
+    "isNew": false,
+    "createdAt": "2026-03-21T10:49:31.773Z",
+    "popularity": 60
+  },
+  {
+    "id": "generated-product-41",
+    "name": "Premium Men watches",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 530,
+    "category": "men",
+    "type": "watches",
+    "images": [
+      "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "S",
+        "quantity": 3
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "M",
+        "quantity": 14
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "L",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "S",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "M",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "L",
         "quantity": 8
       }
     ],
@@ -155,13 +2546,512 @@
       "L"
     ],
     "colors": [
+      "Olive",
+      "White"
+    ],
+    "stock": 59,
+    "isNew": false,
+    "createdAt": "2026-03-21T09:49:31.773Z",
+    "popularity": 59
+  },
+  {
+    "id": "generated-product-42",
+    "name": "Premium Children dresses",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 2330,
+    "discountPrice": 1864,
+    "category": "children",
+    "type": "dresses",
+    "images": [
+      "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "M",
+        "quantity": 2
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "L",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XL",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "M",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "L",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XL",
+        "quantity": 15
+      }
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Black",
+      "Navy"
+    ],
+    "stock": 86,
+    "isNew": false,
+    "createdAt": "2026-03-21T08:49:31.773Z",
+    "popularity": 58
+  },
+  {
+    "id": "generated-product-43",
+    "name": "Premium Accessories shirts",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 2140,
+    "category": "accessories",
+    "type": "shirts",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "L",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XL",
+        "quantity": 14
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XS",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "L",
+        "quantity": 7
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XL",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XS",
+        "quantity": 9
+      }
+    ],
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      "White",
+      "Beige"
+    ],
+    "stock": 68,
+    "isNew": false,
+    "createdAt": "2026-03-21T07:49:31.773Z",
+    "popularity": 57
+  },
+  {
+    "id": "generated-product-44",
+    "name": "Premium Women pants",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1790,
+    "discountPrice": 1432,
+    "category": "women",
+    "type": "pants",
+    "images": [
+      "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XL",
+        "quantity": 2
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XS",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "S",
+        "quantity": 3
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XL",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "XS",
+        "quantity": 17
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "S",
+        "quantity": 18
+      }
+    ],
+    "sizes": [
+      "XL",
+      "XS",
+      "S"
+    ],
+    "colors": [
+      "Navy",
+      "Grey"
+    ],
+    "stock": 73,
+    "isNew": false,
+    "createdAt": "2026-03-21T06:49:31.773Z",
+    "popularity": 56
+  },
+  {
+    "id": "generated-product-45",
+    "name": "Premium Men jackets",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1110,
+    "category": "men",
+    "type": "jackets",
+    "images": [
+      "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "XS",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "S",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Beige",
+        "size": "M",
+        "quantity": 1
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XS",
+        "quantity": 16
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "S",
+        "quantity": 18
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "M",
+        "quantity": 11
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M"
+    ],
+    "colors": [
+      "Beige",
+      "Red"
+    ],
+    "stock": 72,
+    "isNew": false,
+    "createdAt": "2026-03-21T05:49:31.773Z",
+    "popularity": 55
+  },
+  {
+    "id": "generated-product-46",
+    "name": "Premium Children sneakers",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 930,
+    "category": "children",
+    "type": "sneakers",
+    "images": [
+      "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "S",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "M",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Grey",
+        "size": "L",
+        "quantity": 12
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "S",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "M",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "L",
+        "quantity": 5
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "colors": [
+      "Grey",
+      "Olive"
+    ],
+    "stock": 60,
+    "isNew": false,
+    "createdAt": "2026-03-21T04:49:31.773Z",
+    "popularity": 54
+  },
+  {
+    "id": "generated-product-47",
+    "name": "Premium Accessories bags",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 2160,
+    "discountPrice": 1728,
+    "category": "accessories",
+    "type": "bags",
+    "images": [
+      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "M",
+        "quantity": 1
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "L",
+        "quantity": 19
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Red",
+        "size": "XL",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "M",
+        "quantity": 14
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "L",
+        "quantity": 20
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XL",
+        "quantity": 6
+      }
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "colors": [
+      "Red",
       "Black"
     ],
-    "createdAt": "2026-03-17T18:38:00.000Z",
-    "isNew": true,
-    "stock": 13,
-    "popularity": 98,
-    "rating": 4.9,
-    "reviewsCount": 24
+    "stock": 73,
+    "isNew": false,
+    "createdAt": "2026-03-21T03:49:31.773Z",
+    "popularity": 53
+  },
+  {
+    "id": "generated-product-48",
+    "name": "Premium Women watches",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1550,
+    "category": "women",
+    "type": "watches",
+    "images": [
+      "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "L",
+        "quantity": 15
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XL",
+        "quantity": 8
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "Olive",
+        "size": "XS",
+        "quantity": 12
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "L",
+        "quantity": 2
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XL",
+        "quantity": 14
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+        "color": "White",
+        "size": "XS",
+        "quantity": 2
+      }
+    ],
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      "Olive",
+      "White"
+    ],
+    "stock": 53,
+    "isNew": false,
+    "createdAt": "2026-03-21T02:49:31.773Z",
+    "popularity": 52
+  },
+  {
+    "id": "generated-product-49",
+    "name": "Premium Men dresses",
+    "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
+    "price": 1390,
+    "discountPrice": 1112,
+    "category": "men",
+    "type": "dresses",
+    "images": [
+      "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80"
+    ],
+    "imageVariants": [
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XL",
+        "quantity": 9
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "XS",
+        "quantity": 10
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Black",
+        "size": "S",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XL",
+        "quantity": 13
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "XS",
+        "quantity": 4
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
+        "color": "Navy",
+        "size": "S",
+        "quantity": 18
+      }
+    ],
+    "sizes": [
+      "XL",
+      "XS",
+      "S"
+    ],
+    "colors": [
+      "Black",
+      "Navy"
+    ],
+    "stock": 67,
+    "isNew": false,
+    "createdAt": "2026-03-21T01:49:31.773Z",
+    "popularity": 51
   }
 ]
