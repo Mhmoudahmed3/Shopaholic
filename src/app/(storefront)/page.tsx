@@ -189,7 +189,7 @@ export default function Home() {
       {/* Best Sellers */}
       <section className="py-16 md:py-32 bg-neutral-50 dark:bg-zinc-900/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-16 gap-6 md:gap-10 overflow-hidden">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-10 gap-6 md:gap-10 overflow-hidden">
             <div className="space-y-6 md:space-y-8 w-full">
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif tracking-tight">Best Sellers</h2>
               
