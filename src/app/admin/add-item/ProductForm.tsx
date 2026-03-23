@@ -5,13 +5,8 @@ import { Save, Image as ImageIcon, Plus, Trash2, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Product } from "@/lib/types";
+import { Product, Category } from "@/lib/types";
 import { updateProduct, addProduct } from "../actions";
-
-interface Category {
-    id: string;
-    label: string;
-}
 
 interface SizeInventory {
     id: string;
