@@ -84,6 +84,7 @@ export interface HomepagePromo {
 export interface HomepageNewsletter {
     title: string;
     description: string;
+    ctaText: string;
 }
 
 export interface Homepage {

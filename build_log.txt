@@ -1,0 +1,44 @@
+
+> temp-app@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Experiments (use with caution):
+  ┬╖ serverActions
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 2.9s
+  Running TypeScript ...
+  Collecting page data using 19 workers ...
+  Generating static pages using 19 workers (0/10) ...
+  Generating static pages using 19 workers (2/10) 
+  Generating static pages using 19 workers (4/10) 
+  Generating static pages using 19 workers (7/10) 
+Γ£ô Generating static pages using 19 workers (10/10) in 384.9ms
+  Finalizing page optimization ...
+
+Route (app)                        Revalidate  Expire
+Γöî Γùï /                                      1m      1y
+Γö£ Γùï /_not-found
+Γö£ Γùï /account
+Γö£ ╞Æ /admin
+Γö£ ╞Æ /admin/add-item
+Γö£ Γùï /admin/collections
+Γö£ ╞Æ /admin/customers
+Γö£ Γùï /admin/home
+Γö£ ╞Æ /admin/inventory
+Γö£ ╞Æ /admin/inventory/ratings/[id]
+Γö£ ╞Æ /admin/orders
+Γö£ ╞Æ /admin/orders/[id]
+Γö£ ╞Æ /admin/settings
+Γö£ Γùï /cart
+Γö£ Γùï /checkout
+Γö£ ╞Æ /collections/[id]
+Γö£ Γùï /favorites
+Γö£ ╞Æ /shop
+Γöö ╞Æ /shop/[id]
+
+
+Γùï  (Static)   prerendered as static content
+╞Æ  (Dynamic)  server-rendered on demand
+

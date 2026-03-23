@@ -97,6 +97,114 @@ export function saveProductsDB(products: Product[]) {
     writeJson(productsDbPath, products);
 }
 
+export async function getProducts(filters: { 
+    category?: string, 
+    type?: string, 
+    minRating?: number, 
+    isPopular?: boolean,
+    q?: string,
+    sort?: string,
+    sortBy?: string,
+    order?: 'asc' | 'desc',
+    size?: string,
+    color?: string,
+    minPrice?: number,
+    maxPrice?: number
+} = {}) {
+    const products = getProductsDB();
+    let filtered = [...products];
+
+    // Filter by search query
+    if (filters.q) {
+        const q = filters.q.toLowerCase();
+        filtered = filtered.filter(p => 
+            p.name.toLowerCase().includes(q) || 
+            p.id.toLowerCase().includes(q) ||
+            p.category.toLowerCase().includes(q)
+        );
+    }
+
+    // Filter by category
+    if (filters.category && filters.category !== 'all') {
+        filtered = filtered.filter(p => p.category === filters.category);
+    }
+    
+    // Filter by type
+    if (filters.type && filters.type !== 'all') {
+        filtered = filtered.filter(p => p.type?.toLowerCase() === filters.type?.toLowerCase());
+    }
+
+    // Filter by rating
+    if (filters.minRating) {
+        filtered = filtered.filter(p => (p.rating || 0) >= filters.minRating!);
+    }
+
+    // Filter by popularity
+    if (filters.isPopular) {
+        filtered = filtered.filter(p => (p.popularity || 0) >= 80);
+    }
+
+    // Filter by size
+    if (filters.size && filters.size !== 'all') {
+        filtered = filtered.filter(p => p.sizes?.some(s => s.toLowerCase() === filters.size?.toLowerCase()));
+    }
+
+    // Filter by color
+    if (filters.color && filters.color !== 'all') {
+        filtered = filtered.filter(p => p.colors?.some(c => c.toLowerCase() === filters.color?.toLowerCase()));
+    }
+
+    // Filter by price
+    if (filters.minPrice !== undefined) {
+        filtered = filtered.filter(p => p.price >= filters.minPrice!);
+    }
+    if (filters.maxPrice !== undefined) {
+        filtered = filtered.filter(p => p.price <= filters.maxPrice!);
+    }
+
+    // Sort products
+    const sortField = filters.sortBy || 'createdAt';
+    const sortOrder = filters.order || 'desc';
+
+    // Special handling for shop specific sorts
+    if (filters.sort) {
+        switch (filters.sort) {
+            case 'price-low':
+                filtered.sort((a,b) => a.price - b.price);
+                break;
+            case 'price-high':
+                filtered.sort((a,b) => b.price - a.price);
+                break;
+            case 'newest':
+            default:
+                filtered.sort((a,b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+                break;
+        }
+    } else {
+        filtered.sort((a, b) => {
+            const aVal = a[sortField as keyof typeof a];
+            const bVal = b[sortField as keyof typeof b];
+            if (aVal! < bVal!) return sortOrder === 'asc' ? -1 : 1;
+            if (aVal! > bVal!) return sortOrder === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }
+
+    return filtered;
+}
+
+export async function getProduct(id: string) {
+    const products = getProductsDB();
+    return products.find(p => p.id === id);
+}
+
+export async function getRelatedProducts(productId: string, category: string) {
+    const products = getProductsDB();
+    return products
+        .filter(p => p.category === category && p.id !== productId)
+        .slice(0, 4);
+}
+
 // Categories
 export function initCategoriesDB() {
     if (!fs.existsSync(categoriesDbPath) || fs.readFileSync(categoriesDbPath, 'utf8').trim() === '') {
@@ -136,7 +244,7 @@ export function deleteCategoryDB(categoryId: string) {
 // Homepage
 export function initHomepageDB() {
     if (!fs.existsSync(homepageDbPath)) {
-        const defaultHomepage = {
+        const defaultHomepage: Homepage = {
             hero: {
                 subtitle: "PREMIUM COLLECTION 2024",
                 title: "Elegance Redefined",
@@ -155,20 +263,61 @@ export function initHomepageDB() {
                 description: "Handcrafted pieces using the finest silks and sustainable materials. Every detail is a statement of luxury.",
                 ctaText: "Explore Now",
                 ctaLink: "/shop?collection=summer",
-                image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80"
+                backgroundImage: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80"
+            },
+            newsletter: {
+                title: "Join the Elite",
+                description: "Subscribe to receive exclusive access to our newest collections, private sales, and fashion insights.",
+                ctaText: "Subscribe"
             }
         };
         writeJson(homepageDbPath, defaultHomepage);
     }
 }
 
+const DEFAULT_HOMEPAGE: Homepage = {
+    hero: {
+        subtitle: "PREMIUM COLLECTION 2024",
+        title: "Elegance Redefined",
+        titleAccent: "for the Modern Woman",
+        description: "Discover our curated collection of high-end fashion pieces designed to empower and inspire.",
+        ctaText: "Shop Collection",
+        ctaLink: "/shop",
+        secondaryLinkText: "View Lookbook",
+        secondaryLink: "/lookbook",
+        backgroundImage: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80"
+    },
+    promo: {
+        subtitle: "LIMITED EDITION",
+        title: "The Summer Collection",
+        titleAccent: "Is Here",
+        description: "Handcrafted pieces using the finest silks and sustainable materials. Every detail is a statement of luxury.",
+        ctaText: "Explore Now",
+        ctaLink: "/shop?collection=summer",
+        backgroundImage: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80"
+    },
+    newsletter: {
+        title: "Join the Elite",
+        description: "Subscribe to receive exclusive access to our newest collections, private sales, and fashion insights.",
+        ctaText: "Subscribe"
+    }
+};
+
 export function getHomepageDB(): Homepage {
-    if (!fs.existsSync(homepageDbPath)) return {} as Homepage;
+    if (!fs.existsSync(homepageDbPath)) return DEFAULT_HOMEPAGE;
     try {
         const data = fs.readFileSync(homepageDbPath, 'utf8');
-        return JSON.parse(data);
+        const parsed = JSON.parse(data);
+        return {
+            ...DEFAULT_HOMEPAGE,
+            ...parsed,
+            newsletter: {
+                ...DEFAULT_HOMEPAGE.newsletter,
+                ...(parsed.newsletter || {})
+            }
+        };
     } catch {
-        return {} as Homepage;
+        return DEFAULT_HOMEPAGE;
     }
 }
 
