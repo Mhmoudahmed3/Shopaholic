@@ -133,19 +133,67 @@ export function saveOrdersDB(orders: Order[]) {
 
 const collectionsDbPath = getDbPath('collections.json');
 
+const DEFAULT_COLLECTIONS: Collection[] = [
+    {
+        id: "women",
+        name: "Women",
+        subtitle: "Elegance and Style",
+        image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80",
+        status: 'Active',
+        productIds: [],
+        itemsCount: 12,
+        link: "/shop?category=women",
+        createdAt: new Date().toISOString()
+    },
+    {
+        id: "men",
+        name: "Men",
+        subtitle: "Modern Classics",
+        image: "https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&q=80",
+        status: 'Active',
+        productIds: [],
+        itemsCount: 12,
+        link: "/shop?category=men",
+        createdAt: new Date().toISOString()
+    },
+    {
+        id: "children",
+        name: "Children",
+        subtitle: "Playful Comfort",
+        image: "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
+        status: 'Active',
+        productIds: [],
+        itemsCount: 12,
+        link: "/shop?category=children",
+        createdAt: new Date().toISOString()
+    },
+    {
+        id: "accessories",
+        name: "Accessories",
+        subtitle: "Finishing Touches",
+        image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80",
+        status: 'Active',
+        productIds: [],
+        itemsCount: 13,
+        link: "/shop?category=accessories",
+        createdAt: new Date().toISOString()
+    }
+];
+
 export function initCollectionsDB() {
-    if (!fs.existsSync(collectionsDbPath)) {
-        fs.writeFileSync(collectionsDbPath, JSON.stringify([], null, 2));
+    if (!fs.existsSync(collectionsDbPath) || fs.readFileSync(collectionsDbPath, 'utf8').trim() === '[]') {
+        fs.writeFileSync(collectionsDbPath, JSON.stringify(DEFAULT_COLLECTIONS, null, 2));
     }
 }
 
 export function getCollectionsDB(): Collection[] {
-    if (!fs.existsSync(collectionsDbPath)) return [];
+    if (!fs.existsSync(collectionsDbPath)) return DEFAULT_COLLECTIONS;
     const data = fs.readFileSync(collectionsDbPath, 'utf8');
     try {
-        return JSON.parse(data);
+        const parsed = JSON.parse(data);
+        return parsed && parsed.length > 0 ? parsed : DEFAULT_COLLECTIONS;
     } catch {
-        return [];
+        return DEFAULT_COLLECTIONS;
     }
 }
 
