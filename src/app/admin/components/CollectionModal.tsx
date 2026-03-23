@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { X, Upload, Check, Loader2, Search, Package } from "lucide-react";
+import { clsx } from "clsx";
 import { createCuratedCollection, getAvailableProducts } from "../actions";
 import { Product, Collection } from "@/lib/types";
 
@@ -20,6 +21,7 @@ export function CollectionModal({ isOpen, onClose, initialCollection }: Collecti
     const [availableProducts, setAvailableProducts] = useState<Product[]>([]);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState<string>("All");
     const [isFetchingProducts, setIsFetchingProducts] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -93,10 +95,14 @@ export function CollectionModal({ isOpen, onClose, initialCollection }: Collecti
         );
     };
 
-    const filteredProducts = availableProducts.filter(p => 
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.category.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const categories = ["All", ...Array.from(new Set(availableProducts.map(p => p.category)))];
+
+    const filteredProducts = availableProducts.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                             p.category.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = selectedCategory === "All" || p.category === selectedCategory;
+        return matchesSearch && matchesCategory;
+    });
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -224,6 +230,25 @@ export function CollectionModal({ isOpen, onClose, initialCollection }: Collecti
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="w-full pl-10 pr-4 py-3 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-[1.2rem] text-xs focus:ring-2 focus:ring-black dark:focus:ring-white outline-none transition-all placeholder:text-gray-300"
                             />
+                        </div>
+
+                        {/* Category Filter */}
+                        <div className="flex gap-2 overflow-x-auto pb-4 mb-2 no-scrollbar scroll-smooth">
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat}
+                                    type="button"
+                                    onClick={() => setSelectedCategory(cat)}
+                                    className={clsx(
+                                        "px-4 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest whitespace-nowrap transition-all border",
+                                        selectedCategory === cat 
+                                            ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white shadow-lg" 
+                                            : "bg-white dark:bg-zinc-900 text-gray-400 border-gray-100 dark:border-zinc-800 hover:border-gray-200 dark:hover:border-zinc-700"
+                                    )}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
                         </div>
 
                         <div className="flex-1 overflow-y-auto pr-2 space-y-2 custom-scrollbar">

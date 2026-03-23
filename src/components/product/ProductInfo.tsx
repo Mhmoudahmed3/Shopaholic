@@ -9,6 +9,7 @@ import { ColorVariant } from "./ProductGallery";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { WishlistToggle } from "@/components/shop/WishlistToggle";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 // ── Static data — defined once at module level, never recreated on re-render ───
 const ACCORDION_ITEMS = [
@@ -42,6 +43,7 @@ export default function ProductInfo({ product, colorVariants, activeColor, onCol
     const [added,         setAdded]         = useState(false);
     const [showStickyBar, setShowStickyBar] = useState(false);
     const [openAccordion, setOpenAccordion] = useState<string>("details");
+    const [alertModal, setAlertModal] = useState<{ open: boolean; title: string; desc: string }>({ open: false, title: "", desc: "" });
 
     // The effective color comes from the parent (gallery) when it's controlled
     const effectiveColor = activeColor ?? selectedColor ?? colorVariants?.[0]?.colorName ?? "";
@@ -65,7 +67,11 @@ export default function ProductInfo({ product, colorVariants, activeColor, onCol
 
     const handleAddToCart = useCallback(() => {
         if (!selectedSize) {
-            alert("Please select a size");
+            setAlertModal({ 
+                open: true, 
+                title: "Selection Required", 
+                desc: "Please select a size before adding to cart." 
+            });
             return;
         }
         addItem({
@@ -363,6 +369,15 @@ export default function ProductInfo({ product, colorVariants, activeColor, onCol
                     </motion.div>
                 )}
             </AnimatePresence>
+            <ConfirmModal
+                isOpen={alertModal.open}
+                onClose={() => setAlertModal(p => ({ ...p, open: false }))}
+                title={alertModal.title}
+                description={alertModal.desc}
+                confirmText="Got it"
+                showCancel={false}
+                variant="info"
+            />
         </div>
     );
 }

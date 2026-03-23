@@ -5,6 +5,7 @@ import Image from "next/image";
 import { AdminHeader } from "../components/AdminLayout";
 import { Library, Plus, Pencil, Trash2, Layers, Loader2 } from "lucide-react";
 import { CollectionModal } from "../components/CollectionModal";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { getCuratedCollections, deleteCollection } from "../actions";
 import { Collection } from "@/lib/types";
 
@@ -12,7 +13,10 @@ export default function AdminCollectionsPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [collections, setCollections] = useState<Collection[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [editingCollection, setEditingCollection] = useState<Collection | null>(null);
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState<{ id: string; name: string } | null>(null);
 
     const fetchCollections = async () => {
         setIsLoading(true);
@@ -35,14 +39,24 @@ export default function AdminCollectionsPage() {
         setIsModalOpen(true);
     };
 
-    const handleDelete = async (id: string, name: string) => {
-        if (window.confirm(`Are you sure you want to delete the collection "${name}"?`)) {
-            try {
-                await deleteCollection(id);
-                fetchCollections();
-            } catch (error) {
-                console.error("Failed to delete collection:", error);
-            }
+    const handleDeleteClick = (id: string, name: string) => {
+        setItemToDelete({ id, name });
+        setDeleteConfirmOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!itemToDelete) return;
+        
+        setIsDeleting(true);
+        try {
+            await deleteCollection(itemToDelete.id);
+            setDeleteConfirmOpen(false);
+            setItemToDelete(null);
+            fetchCollections();
+        } catch (error) {
+            console.error("Failed to delete collection:", error);
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -123,7 +137,7 @@ export default function AdminCollectionsPage() {
                                             <Pencil className="w-3.5 h-3.5" />
                                         </button>
                                         <button 
-                                            onClick={() => handleDelete(collection.id, collection.name)}
+                                            onClick={() => handleDeleteClick(collection.id, collection.name)}
                                             className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-full transition-all"
                                         >
                                             <Trash2 className="w-3.5 h-3.5" />
@@ -154,6 +168,16 @@ export default function AdminCollectionsPage() {
                 isOpen={isModalOpen} 
                 onClose={handleModalClose}
                 initialCollection={editingCollection}
+            />
+            <ConfirmModal
+                isOpen={deleteConfirmOpen}
+                onClose={() => setDeleteConfirmOpen(false)}
+                onConfirm={handleConfirmDelete}
+                title="Delete Collection?"
+                description={`Are you sure you want to delete "${itemToDelete?.name}"? This action is permanent and cannot be undone.`}
+                confirmText="Delete Collection"
+                isLoading={isDeleting}
+                variant="danger"
             />
         </div>
     );

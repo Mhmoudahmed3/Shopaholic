@@ -9,6 +9,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { useEffect } from "react";
 import clsx from "clsx";
 import { COLOR_MAP_HEX } from "@/lib/constants";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 interface QuickAddModalProps {
     product: Product | null;
@@ -35,6 +36,7 @@ export function QuickAddModal({ product, onClose }: QuickAddModalProps) {
     const [selectedColor, setSelectedColor] = useState<string>("");
     const [quantity, setQuantity] = useState(1);
     const [added, setAdded] = useState(false);
+    const [alertModal, setAlertModal] = useState<{ open: boolean; title: string; desc: string }>({ open: false, title: "", desc: "" });
 
     // Sync selections and body-overflow lock whenever the product changes
     useEffect(() => {
@@ -53,7 +55,11 @@ export function QuickAddModal({ product, onClose }: QuickAddModalProps) {
     const handleAddToCart = useCallback(() => {
         if (!product) return;
         if (!selectedSize && product.sizes?.length > 0) {
-            alert("Please select a size");
+            setAlertModal({
+                open: true,
+                title: "Select Size",
+                desc: "Please select a size to continue."
+            });
             return;
         }
         addItem({
@@ -233,6 +239,15 @@ export function QuickAddModal({ product, onClose }: QuickAddModalProps) {
                     </motion.div>
                 </div>
             )}
+            <ConfirmModal
+                isOpen={alertModal.open}
+                onClose={() => setAlertModal(p => ({ ...p, open: false }))}
+                title={alertModal.title}
+                description={alertModal.desc}
+                confirmText="Got it"
+                showCancel={false}
+                variant="info"
+            />
         </AnimatePresence>
     );
 }

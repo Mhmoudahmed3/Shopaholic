@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Lock, CreditCard, Apple, Banknote, QrCode, Zap, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -13,6 +14,7 @@ export default function CheckoutPage() {
     const { items, getCartTotal, clearCart } = useCartStore();
     const [isProcessing, setIsProcessing] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("credit-card");
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -38,9 +40,13 @@ export default function CheckoutPage() {
         setTimeout(() => {
             clearCart();
             setIsProcessing(false);
-            alert("Order placed successfully! This is a mock checkout flow.");
-            router.push("/");
+            setShowSuccessModal(true);
         }, 2000);
+    };
+
+    const handleSuccessClose = () => {
+        setShowSuccessModal(false);
+        router.push("/");
     };
 
     return (
@@ -374,6 +380,16 @@ export default function CheckoutPage() {
                 </div>
 
             </div>
+            <ConfirmModal
+                isOpen={showSuccessModal}
+                onClose={handleSuccessClose}
+                onConfirm={handleSuccessClose}
+                title="Order Received"
+                description="Your order has been placed successfully. You will receive a confirmation email shortly with your order details."
+                confirmText="Continue Shopping"
+                showCancel={false}
+                variant="success"
+            />
         </div>
     );
 }
