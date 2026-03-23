@@ -65,6 +65,7 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
                                 fill
                                 sizes="(max-width: 768px) 280px, 350px"
                                 className="object-cover transition-all duration-1000 opacity-0 group-hover/item:opacity-100 group-hover/item:scale-105 absolute inset-0"
+                                loading="lazy"
                             />
                         )}
                     </div>

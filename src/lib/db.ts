@@ -215,9 +215,6 @@ export async function getProducts(options: {
 } = {}) {
     const { category, type, sort, size, color, minPrice, maxPrice, minRating, isPopular } = options;
     
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 800));
-
     let result = getProductsDB();
 
     if (category && category !== 'all') {
@@ -270,12 +267,10 @@ export async function getProducts(options: {
 }
 
 export async function getProduct(id: string) {
-    await new Promise(resolve => setTimeout(resolve, 500));
     return getProductsDB().find(p => p.id === id);
 }
 
 export async function getRelatedProducts(id: string, category: string) {
-    await new Promise(resolve => setTimeout(resolve, 500));
     return getProductsDB().filter(p => p.category === category && p.id !== id).slice(0, 4);
 }
 

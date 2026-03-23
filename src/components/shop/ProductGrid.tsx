@@ -61,8 +61,10 @@ export function ProductGrid({ products }: ProductGridProps) {
                             src={product.images[0]}
                             alt={product.name}
                             fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                             className={`object-cover transition-transform duration-1000 group-hover:scale-105 ${product.images.length > 1 ? 'opacity-100 group-hover:opacity-0' : ''}`}
+                            priority={index < 4}
+                            loading={index < 4 ? 'eager' : 'lazy'}
                         />
 
                         {/* Secondary Image (Image Swap Interaction) */}
@@ -71,8 +73,9 @@ export function ProductGrid({ products }: ProductGridProps) {
                                 src={product.images[1]}
                                 alt={`${product.name} - Alternate View`}
                                 fill
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                                 className="object-cover transition-all duration-1000 opacity-0 group-hover:opacity-100 group-hover:scale-105 absolute inset-0"
+                                loading="lazy"
                             />
                         )}
                     </div>

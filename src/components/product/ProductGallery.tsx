@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -22,6 +22,30 @@ interface ProductGalleryProps {
     onIndexChange?: (index: number) => void;
 }
 
+// ── Subcomponents ─────────────────────────────────────────────────────────────
+
+interface ThumbnailProps {
+    src: string;
+    index: number;
+    isActive: boolean;
+    onClick: (index: number) => void;
+}
+
+function Thumbnail({ src, index, isActive, onClick }: ThumbnailProps) {
+    return (
+        <button
+            onClick={() => onClick(index)}
+            className={`relative aspect-[3/4] w-full overflow-hidden transition-all duration-500 rounded-[2px] ${
+                isActive
+                    ? "ring-1 ring-black dark:ring-white ring-offset-2 dark:ring-offset-black opacity-100"
+                    : "opacity-40 hover:opacity-100"
+            }`}
+        >
+            <Image src={src} alt={`Thumbnail ${index + 1}`} fill sizes="80px" className="object-cover" loading="lazy" />
+        </button>
+    );
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function ProductGallery({
@@ -33,7 +57,6 @@ export function ProductGallery({
     const [internalIndex, setInternalIndex] = useState(0);
     const currentIndex = activeIndex !== undefined ? activeIndex : internalIndex;
 
-    // Main image state
     const [displayedSrc, setDisplayedSrc] = useState(images[0]);
 
     // Color-wash burst state
@@ -43,88 +66,81 @@ export function ProductGallery({
     const fadeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const burstTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // ── Image preloading on mount ──────────────────────────────────────────────
+    // Cleanup timers on unmount
     useEffect(() => {
-        const srcs = colorVariants
-            ? colorVariants.map((v) => v.imageSrc)
-            : images;
-        srcs.forEach((src) => {
-            const img = new window.Image();
-            img.src = src;
-        });
-    }, [images, colorVariants]);
+        return () => {
+            if (fadeTimer.current) clearTimeout(fadeTimer.current);
+            if (burstTimer.current) clearTimeout(burstTimer.current);
+        };
+    }, []);
 
-    // ── Image effect trigger ──────────────────────────────────────────────────
+    const handleImageInteraction = useCallback(
+        (newSrc: string, hex: string | null) => {
+            if (hex) {
+                setBurstColor(hex);
+                setBurstVisible(true);
+                if (burstTimer.current) clearTimeout(burstTimer.current);
+                burstTimer.current = setTimeout(() => setBurstVisible(false), 800);
+            }
+            if (newSrc !== displayedSrc) {
+                if (fadeTimer.current) clearTimeout(fadeTimer.current);
+                fadeTimer.current = setTimeout(() => setDisplayedSrc(newSrc), 350);
+            }
+        },
+        [displayedSrc]
+    );
+
+    // Sync displayed image when the controlled index changes (e.g., color swatch click)
     useEffect(() => {
         const variant = colorVariants?.[currentIndex];
         const src = variant?.imageSrc ?? images[currentIndex];
         const hex = variant?.colorHex ?? null;
-        
-        if (src) {
-            handleImageInteraction(src, hex);
-        }
+        if (src) handleImageInteraction(src, hex);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentIndex, colorVariants]);
 
-    const handleImageInteraction = useCallback((newSrc: string, hex: string | null) => {
-        // ALWAYS trigger the color burst if hex is provided for visual feedback
-        if (hex) {
-            setBurstColor(hex);
-            setBurstVisible(true);
-            if (burstTimer.current) clearTimeout(burstTimer.current);
-            burstTimer.current = setTimeout(() => setBurstVisible(false), 800);
-        }
+    const setIndex = useCallback(
+        (next: number) => {
+            setInternalIndex(next);
+            onIndexChange?.(next);
+            const src = colorVariants ? (colorVariants[next]?.imageSrc ?? images[next]) : images[next];
+            if (src) handleImageInteraction(src, null);
+        },
+        [colorVariants, images, handleImageInteraction, onIndexChange]
+    );
 
-        // Only trigger cross-fade if the image actually changed
-        if (newSrc !== displayedSrc) {
-            if (fadeTimer.current) clearTimeout(fadeTimer.current);
-            
-            fadeTimer.current = setTimeout(() => {
-                setDisplayedSrc(newSrc);
-            }, 350);
-        }
-    }, [displayedSrc]);
+    const nextImage = useCallback(
+        () => setIndex((currentIndex + 1) % images.length),
+        [currentIndex, images.length, setIndex]
+    );
+    const prevImage = useCallback(
+        () => setIndex((currentIndex - 1 + images.length) % images.length),
+        [currentIndex, images.length, setIndex]
+    );
 
-    const setIndex = (next: number) => {
-        setInternalIndex(next);
-        onIndexChange?.(next);
-        const src = colorVariants
-            ? colorVariants[next]?.imageSrc ?? images[next]
-            : images[next];
-        if (src) handleImageInteraction(src, null);
-    };
-
-    const nextImage = () => setIndex((currentIndex + 1) % images.length);
-    const prevImage = () => setIndex((currentIndex - 1 + images.length) % images.length);
+    const hasMultiple = images.length > 1;
 
     // ── Render ─────────────────────────────────────────────────────────────────
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col lg:flex-row gap-6">
                 {/* ── Thumbnails (Desktop: Vertical Sidebar) ── */}
-                {images.length > 1 && (
+                {hasMultiple && (
                     <div className="hidden lg:flex flex-col gap-4 w-20 flex-shrink-0">
                         {images.map((img, idx) => (
-                            <motion.button
-                                key={idx}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: idx * 0.1 }}
-                                onClick={() => setIndex(idx)}
-                                className={`relative aspect-[3/4] w-full overflow-hidden transition-all duration-500 rounded-[2px] ${
-                                    currentIndex === idx
-                                        ? "ring-1 ring-black dark:ring-white ring-offset-2 dark:ring-offset-black opacity-100"
-                                        : "opacity-40 hover:opacity-100"
-                                }`}
-                            >
-                                <Image src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="80px" className="object-cover" />
-                            </motion.button>
+                            <Thumbnail
+                                key={img}
+                                src={img}
+                                index={idx}
+                                isActive={currentIndex === idx}
+                                onClick={setIndex}
+                            />
                         ))}
                     </div>
                 )}
 
                 {/* ── Main Image Frame ── */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -142,11 +158,8 @@ export function ProductGallery({
                             drag="x"
                             dragConstraints={{ left: 0, right: 0 }}
                             onDragEnd={(_, info) => {
-                                if (info.offset.x > 100) {
-                                    prevImage();
-                                } else if (info.offset.x < -100) {
-                                    nextImage();
-                                }
+                                if (info.offset.x > 100) prevImage();
+                                else if (info.offset.x < -100) nextImage();
                             }}
                         >
                             <Image
@@ -174,7 +187,7 @@ export function ProductGallery({
                     />
 
                     {/* Navigation Arrows (Desktop Only) */}
-                    {images.length > 1 && (
+                    {hasMultiple && (
                         <div className="hidden lg:block">
                             <button
                                 onClick={prevImage}
@@ -194,17 +207,18 @@ export function ProductGallery({
                     )}
 
                     {/* Mobile Pagination Dots */}
-                    {images.length > 1 && (
+                    {hasMultiple && (
                         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20 lg:hidden">
                             {images.map((_, idx) => (
                                 <button
                                     key={idx}
                                     onClick={() => setIndex(idx)}
-                                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                                        currentIndex === idx 
-                                            ? "bg-black dark:bg-white w-4" 
-                                            : "bg-black/20 dark:bg-white/20"
+                                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                                        currentIndex === idx
+                                            ? "bg-black dark:bg-white w-4"
+                                            : "bg-black/20 dark:bg-white/20 w-1.5"
                                     }`}
+                                    aria-label={`Image ${idx + 1}`}
                                 />
                             ))}
                         </div>
@@ -217,11 +231,11 @@ export function ProductGallery({
                 </motion.div>
 
                 {/* ── Thumbnails (Mobile: Horizontal Scroll) ── */}
-                {images.length > 1 && (
-                    <div className="flex lg:hidden gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                {hasMultiple && (
+                    <div className="flex lg:hidden gap-3 overflow-x-auto pb-2 no-scrollbar">
                         {images.map((img, idx) => (
                             <button
-                                key={idx}
+                                key={img}
                                 onClick={() => setIndex(idx)}
                                 className={`relative aspect-[3/4] w-20 flex-shrink-0 overflow-hidden rounded-[2px] transition-all duration-300 ${
                                     currentIndex === idx
@@ -229,7 +243,7 @@ export function ProductGallery({
                                         : "opacity-60"
                                 }`}
                             >
-                                <Image src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="80px" className="object-cover" />
+                                <Image src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="80px" className="object-cover" loading="lazy" />
                             </button>
                         ))}
                     </div>

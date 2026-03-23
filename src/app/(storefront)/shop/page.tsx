@@ -21,21 +21,12 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     const minRating = resolvedParams.rating ? parseInt(resolvedParams.rating) : undefined;
     const isPopular = resolvedParams.popular === "true";
 
-    const categories = await getCategoriesDB();
-    const [products, filterOptions] = await Promise.all([
-        getProducts({ 
-            category, 
-            sort, 
-            type, 
-            size, 
-            color, 
-            minPrice, 
-            maxPrice,
-            minRating,
-            isPopular
-        }),
-        getAvailableFilters({ category, type })
+    const [categories, products, filterOptions] = await Promise.all([
+        getCategoriesDB(),
+        getProducts({ category, sort, type, size, color, minPrice, maxPrice, minRating, isPopular }),
+        getAvailableFilters({ category, type }),
     ]);
+
 
     const currentCategoryLabel = category === "all" ? "All Products" : (categories.find(c => c.id === category)?.label || category);
 

@@ -2,6 +2,9 @@ import Link from "next/link";
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import { getCategoriesDB } from "@/lib/db";
 
+// Computed once at module load — stable across all renders
+const CURRENT_YEAR = new Date().getFullYear();
+
 export async function Footer() {
     const categories = getCategoriesDB();
 
@@ -80,7 +83,7 @@ export async function Footer() {
 
                 <div className="mt-20 pt-8 border-t border-black/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
                     <p className="text-[10px] uppercase tracking-widest opacity-40 font-bold">
-                        &copy; {new Date().getFullYear()} Shopaholic Fashion. All rights reserved.
+                        &copy; {CURRENT_YEAR} Shopaholic Fashion. All rights reserved.
                     </p>
 
                     {/* Trust Signals - Payment Methods */}
