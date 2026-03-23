@@ -49,19 +49,21 @@ export async function addCategory(category: { label: string, type?: string }) {
     try {
         const { getCategoriesDB, saveCategoriesDB } = await import("@/lib/db");
         const categories = getCategoriesDB();
-        const id = category.label.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
         
-        if (categories.some(c => c.id === id)) {
-            throw new Error("Category already exists");
-        }
-
-        categories.push({ id, label: category.label, type: category.type });
+        // Generate unique ID by appending a random suffix to the label-based slug
+        const slug = category.label.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
+        const uniqueId = `${slug}-${Math.random().toString(36).substr(2, 5)}`;
+        
+        const newCategory: Category = { id: uniqueId, label: category.label, type: category.type };
+        categories.push(newCategory);
         saveCategoriesDB(categories);
+        
         revalidatePath('/', 'layout');
         revalidatePath('/shop');
         revalidatePath('/admin/settings');
-        console.log(`[ACTION] Category ${id} added.`);
-        return { success: true };
+        
+        console.log(`[ACTION] Category ${uniqueId} added.`);
+        return { success: true, category: newCategory };
     } catch (error) {
         console.error("Error adding category:", error);
         throw new Error(error instanceof Error ? error.message : "Failed to add category");

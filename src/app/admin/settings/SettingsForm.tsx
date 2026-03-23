@@ -101,11 +101,13 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
         const label = "New Sub-category";
         setIsLoading(true);
         try {
-            await addCategory({ label, type: typeName });
-            // Re-fetch categories via local refresh for responsive feel
-            const newId = label.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
-            setCategories(prev => [...prev, { id: newId, label, type: typeName }]);
-            setMessage({ type: 'success', text: `Added sub-category to ${typeName}` });
+            const result = await addCategory({ label, type: typeName });
+            if (result?.success && result.category) {
+                setCategories(prev => [...prev, result.category]);
+                setEditingCategoryId(result.category.id);
+                setEditCategoryData({ label: result.category.label, type: result.category.type || '' });
+                setMessage({ type: 'success', text: `Added sub-category to ${typeName}. Click to rename.` });
+            }
         } catch (error) {
             setMessage({ type: 'error', text: "Failed to add sub-category" });
         } finally {

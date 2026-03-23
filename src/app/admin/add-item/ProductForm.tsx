@@ -88,6 +88,14 @@ export default function ProductForm({ categories, initialProduct }: { categories
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
+    // Independent Category Selection State
+    const initialMainCategory = categories.find(c => c.id === initialProduct?.category)?.type || "";
+    const [selectedMainCategory, setSelectedMainCategory] = useState<string>(initialMainCategory);
+
+    // Get unique main categories (types) from categories list
+    const mainCategories = Array.from(new Set(categories.map(c => c.type || 'General'))).sort();
+    const subCategories = categories.filter(c => (c.type || 'General') === (selectedMainCategory || 'General'));
+
     const totalStock = images.reduce((sum, img) => 
         sum + (img.sizes || []).reduce((sSum: number, s: SizeInventory) => sSum + (isNaN(s.quantity) ? 0 : (s.quantity || 0)), 0), 0
     );
@@ -231,8 +239,24 @@ export default function ProductForm({ categories, initialProduct }: { categories
 
                     <input type="hidden" name="stock" value={totalStock} />
 
-                    <div>
-                        <label htmlFor="category" className="block text-xs font-medium uppercase tracking-wider mb-2 text-gray-400">Product Type <span className="text-red-500">*</span></label>
+                    <div className="md:col-span-1">
+                        <label htmlFor="mainCategory" className="block text-xs font-medium uppercase tracking-wider mb-2 text-gray-400">PRODUCT TYPE (Main Category) <span className="text-red-500">*</span></label>
+                        <select
+                            id="mainCategory"
+                            required
+                            value={selectedMainCategory}
+                            onChange={(e) => setSelectedMainCategory(e.target.value)}
+                            className="w-full p-4 text-sm bg-transparent border border-gray-100 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all rounded-xl focus:ring-4 ring-black/5"
+                        >
+                            <option value="" disabled className="bg-white dark:bg-black">Select Main Category...</option>
+                            {mainCategories.map((type) => (
+                                <option key={type} value={type} className="bg-white dark:bg-black font-medium">{type}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="md:col-span-1">
+                        <label htmlFor="category" className="block text-xs font-medium uppercase tracking-wider mb-2 text-gray-400">PRODUCT TYPE (Sub-category) <span className="text-red-500">*</span></label>
                         <select
                             id="category"
                             name="category"
@@ -240,70 +264,10 @@ export default function ProductForm({ categories, initialProduct }: { categories
                             defaultValue={initialProduct?.category || ""}
                             className="w-full p-4 text-sm bg-transparent border border-gray-100 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all rounded-xl focus:ring-4 ring-black/5"
                         >
-                            <option value="" disabled className="text-black dark:text-white bg-white dark:bg-black font-medium">None (Generic Product)</option>
-                            {Object.entries(
-                                categories.reduce((acc, cat) => {
-                                    const type = cat.type || 'General';
-                                    if (!acc[type]) acc[type] = [];
-                                    acc[type].push(cat);
-                                    return acc;
-                                }, {} as Record<string, typeof categories>)
-                            ).map(([type, cats]) => (
-                                <optgroup 
-                                    key={type} 
-                                    label={type.toUpperCase()} 
-                                    className="bg-white dark:bg-zinc-950 text-[10px] font-bold tracking-[0.2em] text-gray-400 py-4"
-                                >
-                                    {cats.map((c) => (
-                                        <option 
-                                            key={c.id} 
-                                            value={c.id} 
-                                            className="text-black dark:text-white bg-white dark:bg-black font-medium text-sm py-2"
-                                        >
-                                            {c.label}
-                                        </option>
-                                    ))}
-                                </optgroup>
+                            <option value="" disabled className="bg-white dark:bg-black">None (Generic Product)</option>
+                            {subCategories.map((c) => (
+                                <option key={c.id} value={c.id} className="bg-white dark:bg-black font-medium">{c.label}</option>
                             ))}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label htmlFor="type" className="block text-xs font-medium uppercase tracking-wider mb-2">Product Type</label>
-                        <select
-                            id="type"
-                            name="type"
-                            defaultValue={initialProduct?.type || ""}
-                            className="w-full p-3 text-sm bg-transparent border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
-                        >
-                            <option value="" className="text-black dark:text-white bg-white dark:bg-black">None (Generic Product)</option>
-                            <optgroup label="Clothing">
-                                <option value="t-shirts" className="text-black dark:text-white bg-white dark:bg-black">T-Shirts</option>
-                                <option value="shirts" className="text-black dark:text-white bg-white dark:bg-black">Shirts & Blouses</option>
-                                <option value="sweaters" className="text-black dark:text-white bg-white dark:bg-black">Sweaters</option>
-                                <option value="jackets" className="text-black dark:text-white bg-white dark:bg-black">Jackets & Coats</option>
-                                <option value="pants" className="text-black dark:text-white bg-white dark:bg-black">Pants</option>
-                                <option value="jeans" className="text-black dark:text-white bg-white dark:bg-black">Jeans</option>
-                                <option value="skirts" className="text-black dark:text-white bg-white dark:bg-black">Skirts</option>
-                                <option value="shorts" className="text-black dark:text-white bg-white dark:bg-black">Shorts</option>
-                                <option value="dresses" className="text-black dark:text-white bg-white dark:bg-black">Dresses</option>
-                            </optgroup>
-                            <optgroup label="Footwear">
-                                <option value="sneakers" className="text-black dark:text-white bg-white dark:bg-black">Sneakers</option>
-                                <option value="boots" className="text-black dark:text-white bg-white dark:bg-black">Boots</option>
-                                <option value="loafers" className="text-black dark:text-white bg-white dark:bg-black">Loafers</option>
-                                <option value="heels" className="text-black dark:text-white bg-white dark:bg-black">Heels</option>
-                                <option value="shoes" className="text-black dark:text-white bg-white dark:bg-black">Shoes</option>
-                            </optgroup>
-                            <optgroup label="Accessories">
-                                <option value="bags" className="text-black dark:text-white bg-white dark:bg-black">Bags & Wallets</option>
-                                <option value="belts" className="text-black dark:text-white bg-white dark:bg-black">Belts</option>
-                                <option value="hats" className="text-black dark:text-white bg-white dark:bg-black">Hats & Caps</option>
-                                <option value="jewelry" className="text-black dark:text-white bg-white dark:bg-black">Jewelry</option>
-                                <option value="sunglasses" className="text-black dark:text-white bg-white dark:bg-black">Sunglasses</option>
-                                <option value="scarves" className="text-black dark:text-white bg-white dark:bg-black">Scarves</option>
-                                <option value="watches" className="text-black dark:text-white bg-white dark:bg-black">Watches</option>
-                            </optgroup>
                         </select>
                     </div>
 
