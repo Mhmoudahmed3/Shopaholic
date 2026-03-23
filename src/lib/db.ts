@@ -79,11 +79,9 @@ export function saveHomepageDB(content: Homepage) {
 const categoriesDbPath = getDbPath('categories.json');
 
 const DEFAULT_CATEGORIES: Category[] = [
-    { id: "new-arrivals", label: "New Arrivals" },
-    { id: "clothing", label: "Clothing" },
-    { id: "dresses", label: "Dresses" },
-    { id: "tops", label: "Tops" },
-    { id: "bottoms", label: "Bottoms" },
+    { id: "women", label: "Women" },
+    { id: "men", label: "Men" },
+    { id: "children", label: "Children" },
     { id: "accessories", label: "Accessories" }
 ];
 
