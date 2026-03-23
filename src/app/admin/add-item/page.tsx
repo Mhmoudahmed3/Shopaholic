@@ -10,7 +10,7 @@ export default async function AddItemPage({
 }: { 
     searchParams: Promise<{ [key: string]: string | undefined }> 
 }) {
-    const categories = getCategoriesDB();
+    const categories = await getCategoriesDB();
     const resolvedParams = await searchParams;
     const productId = resolvedParams.productId;
     

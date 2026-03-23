@@ -114,3 +114,25 @@ export interface SiteSettings {
     shippingFee: number;
     freeShippingThreshold: number;
 }
+
+export interface PaginatedResponse<T> {
+    data: T[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+}
+
+export type ApiProduct = Product;
+
+export interface CreateOrderPayload {
+    items: { product_id: string; quantity: number }[];
+    shipping_address?: Record<string, string>;
+}
+
+export interface CreateOrderResponse {
+    message: string;
+    order: Order;
+}
+
+export interface ApiOrder extends Order {}

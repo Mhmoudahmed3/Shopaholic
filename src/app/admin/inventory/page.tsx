@@ -49,7 +49,7 @@ export default async function InventoryPage({
         return 0;
     });
 
-    const categories = getCategoriesDB();
+    const categories = await getCategoriesDB();
 
     const getSortLink = (key: string) => {
         const params = new URLSearchParams();

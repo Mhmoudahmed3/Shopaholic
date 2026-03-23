@@ -6,8 +6,8 @@ import { getCategoriesDB, getSettingsDB } from "@/lib/db";
 const CURRENT_YEAR = new Date().getFullYear();
 
 export async function Footer() {
-    const rawCategories = getCategoriesDB();
-    const settings = getSettingsDB();
+    const rawCategories = await getCategoriesDB();
+    const settings = await getSettingsDB();
 
     // Group categories by type (Main Categories)
     const mainCategories = Array.from(new Set(rawCategories.map(c => c.type).filter((t): t is string => !!t)));

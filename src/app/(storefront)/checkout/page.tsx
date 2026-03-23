@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Lock, CreditCard, Apple, Banknote, QrCode, Zap, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { createOrder } from "../actions";
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -32,16 +33,33 @@ export default function CheckoutPage() {
     const shipping = subtotal > 5000 ? 0 : 250;
     const total = subtotal + shipping;
 
-    const handleCheckout = (e: React.FormEvent) => {
+    const handleCheckout = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsProcessing(true);
 
-        // Mock processing delay
-        setTimeout(() => {
+        const formData = new FormData(e.currentTarget as HTMLFormElement);
+        const email = formData.get("email") as string;
+        const firstName = formData.get("firstName") as string;
+        const lastName = formData.get("lastName") as string;
+
+        const orderData = {
+            customer_name: `${firstName} ${lastName}`,
+            email,
+            items_count: items.reduce((sum, item) => sum + item.quantity, 0),
+            total_amount: total,
+            status: 'Processing'
+        };
+
+        const result = await createOrder(orderData);
+        
+        if (result.success) {
             clearCart();
             setIsProcessing(false);
             setShowSuccessModal(true);
-        }, 2000);
+        } else {
+            setIsProcessing(false);
+            alert("Something went wrong. Please try again.");
+        }
     };
 
     const handleSuccessClose = () => {
@@ -74,6 +92,7 @@ export default function CheckoutPage() {
                                     <input
                                         type="email"
                                         id="email"
+                                        name="email"
                                         placeholder="Email address"
                                         required
                                         className="w-full p-3 bg-transparent border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
@@ -88,12 +107,14 @@ export default function CheckoutPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <input
                                     type="text"
+                                    name="firstName"
                                     placeholder="First name"
                                     required
                                     className="w-full p-3 bg-transparent border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
                                 />
                                 <input
                                     type="text"
+                                    name="lastName"
                                     placeholder="Last name"
                                     required
                                     className="w-full p-3 bg-transparent border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-black dark:focus:border-white transition-colors"

@@ -1,415 +1,159 @@
-import fs from 'fs';
-import path from 'path';
-import { Product, Category, Order, Homepage, Collection, SiteSettings } from './types';
-import { mockProducts } from './mock-data';
+import { supabase } from './supabase';
+import { SiteSettings, Category, Product, Collection, Homepage } from './types';
 
-const isVercel = !!process.env.VERCEL;
-// Force it to use the project root in local dev to ensure persistence consistency
-const getDbPath = (filename: string) => isVercel ? path.join('/tmp', filename) : path.join(process.cwd(), filename);
-
-const settingsDbPath = getDbPath('settings.json');
-const productsDbPath = getDbPath('products.json');
-const homepageDbPath = getDbPath('homepage.json');
-const categoriesDbPath = getDbPath('categories.json');
-const ordersDbPath = getDbPath('orders.json');
-const collectionsDbPath = getDbPath('collections.json');
-
-const DEFAULT_SETTINGS: SiteSettings = {
-    storeName: "Reham Website",
-    storeDescription: "Luxury fashion for the modern woman.",
-    contactEmail: "support@reham.com",
-    contactPhone: "+20 123 456 7890",
-    address: "Cairo, Egypt",
-    currency: "EGP",
-    currencySymbol: "EGP",
-    maintenanceMode: false,
-    socialLinks: {
-        instagram: "reham_fashion",
-        facebook: "rehamfashion",
-        twitter: "reham_fashion",
-        tiktok: "reham_fashion",
-        whatsapp: ""
-    },
-    footerText: "© 2024 Reham Website. All rights reserved.",
-    taxRate: 14,
-    shippingFee: 250,
-    freeShippingThreshold: 5000
-};
-
-const DEFAULT_CATEGORIES: Category[] = [
-    // Women
-    { id: "women-tshirts", label: "T-Shirts", type: "Women" },
-    { id: "women-pants", label: "Pants", type: "Women" },
-    { id: "women-dresses", label: "Dresses", type: "Women" },
-    
-    // Men
-    { id: "men-tshirts", label: "T-Shirts", type: "Men" },
-    { id: "men-jeans", label: "Jeans", type: "Men" },
-    
-    // Children
-    { id: "children-wear", label: "Casual Wear", type: "Children" },
-    
-    // Accessories
-    { id: "acc-bags", label: "Bags & Wallets", type: "Accessories" },
-    { id: "acc-belts", label: "Belts", type: "Accessories" }
-];
-
-// Utility to safely write JSON
-const writeJson = (filePath: string, data: any) => {
-    try {
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-    } catch (error) {
-        console.error(`Error writing to ${filePath}:`, error);
-        throw error;
-    }
-};
-
-// Settings
-export function initSettingsDB() {
-    if (!fs.existsSync(settingsDbPath)) {
-        writeJson(settingsDbPath, DEFAULT_SETTINGS);
-    }
+// Site Settings
+export async function getSettingsDB(): Promise<SiteSettings> {
+  const { data, error } = await supabase.from('site_settings').select('*').eq('id', 1).single();
+  if (error) return {} as SiteSettings;
+  return {
+    ...data,
+    storeName: data.store_name,
+    storeDescription: data.store_description,
+    contactEmail: data.contact_email,
+    contactPhone: data.contact_phone,
+    address: data.address,
+    currency: data.currency,
+    currencySymbol: data.currency_symbol,
+    maintenanceMode: data.maintenance_mode,
+    socialLinks: data.social_links,
+    footerText: data.footer_text,
+    taxRate: data.tax_rate,
+    shippingFee: data.shipping_fee,
+    freeShippingThreshold: data.free_shipping_threshold
+  } as any;
 }
 
-export function getSettingsDB(): SiteSettings {
-    if (!fs.existsSync(settingsDbPath)) return DEFAULT_SETTINGS;
-    try {
-        const data = fs.readFileSync(settingsDbPath, 'utf8');
-        return JSON.parse(data) || DEFAULT_SETTINGS;
-    } catch {
-        return DEFAULT_SETTINGS;
-    }
-}
-
-export function saveSettingsDB(settings: SiteSettings) {
-    writeJson(settingsDbPath, settings);
+export async function saveSettingsDB(settings: SiteSettings) {
+  const { error } = await supabase.from('site_settings').upsert({
+    id: 1,
+    store_name: settings.storeName,
+    social_links: settings.socialLinks,
+    // ...other fields as needed
+  });
+  if (error) throw error;
 }
 
 // Products
-export function initDB() {
-    if (!fs.existsSync(productsDbPath) || fs.readFileSync(productsDbPath, 'utf8').trim() === '[]') {
-        writeJson(productsDbPath, mockProducts);
-    }
+export async function getProductsDB(): Promise<Product[]> {
+  const { data, error } = await supabase.from('products').select('*');
+  if (error) return [];
+  return data.map(p => ({
+    ...p,
+    discountPrice: p.discount_price,
+    imageVariants: p.image_variants,
+    reviewsCount: p.reviews_count,
+    createdAt: p.created_at
+  })) as any;
 }
 
-export function getProductsDB(): Product[] {
-    if (!fs.existsSync(productsDbPath)) return mockProducts;
-    try {
-        const data = fs.readFileSync(productsDbPath, 'utf8');
-        const parsed = JSON.parse(data);
-        // FIX: Only return mock if file is totally invalid, not if it's empty
-        return Array.isArray(parsed) ? parsed : mockProducts;
-    } catch {
-        return mockProducts;
-    }
+export async function getProduct(id: string): Promise<Product | undefined> {
+  const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
+  if (error || !data) return undefined;
+  return {
+    ...data,
+    discountPrice: data.discount_price,
+    imageVariants: data.image_variants,
+    reviewsCount: data.reviews_count,
+    createdAt: data.created_at
+  } as any;
 }
 
-export function saveProductsDB(products: Product[]) {
-    writeJson(productsDbPath, products);
-}
-
-export async function getProducts(filters: { 
-    category?: string, 
-    type?: string, 
-    minRating?: number, 
-    isPopular?: boolean,
-    q?: string,
-    sort?: string,
-    sortBy?: string,
-    order?: 'asc' | 'desc',
-    size?: string,
-    color?: string,
-    minPrice?: number,
-    maxPrice?: number
-} = {}) {
-    const products = getProductsDB();
-    let filtered = [...products];
-
-    // Filter by search query
-    if (filters.q) {
-        const q = filters.q.toLowerCase();
-        filtered = filtered.filter(p => 
-            p.name.toLowerCase().includes(q) || 
-            p.id.toLowerCase().includes(q) ||
-            p.category.toLowerCase().includes(q)
-        );
-    }
-
-    // Filter by category
-    if (filters.category && filters.category !== 'all') {
-        filtered = filtered.filter(p => p.category === filters.category);
-    }
-    
-    // Filter by type
-    if (filters.type && filters.type !== 'all') {
-        filtered = filtered.filter(p => p.type?.toLowerCase() === filters.type?.toLowerCase());
-    }
-
-    // Filter by rating
-    if (filters.minRating) {
-        filtered = filtered.filter(p => (p.rating || 0) >= filters.minRating!);
-    }
-
-    // Filter by popularity
-    if (filters.isPopular) {
-        filtered = filtered.filter(p => (p.popularity || 0) >= 80);
-    }
-
-    // Filter by size
-    if (filters.size && filters.size !== 'all') {
-        filtered = filtered.filter(p => p.sizes?.some(s => s.toLowerCase() === filters.size?.toLowerCase()));
-    }
-
-    // Filter by color
-    if (filters.color && filters.color !== 'all') {
-        filtered = filtered.filter(p => p.colors?.some(c => c.toLowerCase() === filters.color?.toLowerCase()));
-    }
-
-    // Filter by price
-    if (filters.minPrice !== undefined) {
-        filtered = filtered.filter(p => p.price >= filters.minPrice!);
-    }
-    if (filters.maxPrice !== undefined) {
-        filtered = filtered.filter(p => p.price <= filters.maxPrice!);
-    }
-
-    // Sort products
-    const sortField = filters.sortBy || 'createdAt';
-    const sortOrder = filters.order || 'desc';
-
-    // Special handling for shop specific sorts
-    if (filters.sort) {
-        switch (filters.sort) {
-            case 'price-low':
-                filtered.sort((a,b) => a.price - b.price);
-                break;
-            case 'price-high':
-                filtered.sort((a,b) => b.price - a.price);
-                break;
-            case 'newest':
-            default:
-                filtered.sort((a,b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
-                break;
-        }
-    } else {
-        filtered.sort((a, b) => {
-            const aVal = a[sortField as keyof typeof a];
-            const bVal = b[sortField as keyof typeof b];
-            if (aVal! < bVal!) return sortOrder === 'asc' ? -1 : 1;
-            if (aVal! > bVal!) return sortOrder === 'asc' ? 1 : -1;
-            return 0;
-        });
-    }
-
-    return filtered;
-}
-
-export async function getProduct(id: string) {
-    const products = getProductsDB();
-    return products.find(p => p.id === id);
-}
-
-export async function getRelatedProducts(productId: string, category: string) {
-    const products = getProductsDB();
-    return products
-        .filter(p => p.category === category && p.id !== productId)
-        .slice(0, 4);
+export async function saveProductsDB(products: Product[]) {
+  // Not used anymore in the new Supabase actions, but kept for compatibility
 }
 
 // Categories
-export function initCategoriesDB() {
-    if (!fs.existsSync(categoriesDbPath) || fs.readFileSync(categoriesDbPath, 'utf8').trim() === '') {
-        writeJson(categoriesDbPath, DEFAULT_CATEGORIES);
-    }
+export async function getCategoriesDB(): Promise<Category[]> {
+  const { data, error } = await supabase.from('categories').select('*');
+  return data || [];
 }
 
-export function getCategoriesDB(): Category[] {
-    if (!fs.existsSync(categoriesDbPath)) {
-        writeJson(categoriesDbPath, DEFAULT_CATEGORIES);
-        return DEFAULT_CATEGORIES;
-    }
-    try {
-        const data = fs.readFileSync(categoriesDbPath, 'utf8');
-        const parsed = JSON.parse(data);
-        if (!Array.isArray(parsed)) {
-            writeJson(categoriesDbPath, DEFAULT_CATEGORIES);
-            return DEFAULT_CATEGORIES;
-        }
-        // Auto-migrate: if categories are missing `type`, they are old-format main-only entries
-        // Reset to defaults so the hierarchical structure is restored
-        if (parsed.length > 0 && parsed.every((c: any) => !c.type)) {
-            console.log('[DB] Old category format detected (no type field). Migrating to hierarchical defaults.');
-            writeJson(categoriesDbPath, DEFAULT_CATEGORIES);
-            return DEFAULT_CATEGORIES;
-        }
-        return parsed;
-    } catch {
-        writeJson(categoriesDbPath, DEFAULT_CATEGORIES);
-        return DEFAULT_CATEGORIES;
-    }
+export async function saveCategoriesDB(categories: Category[]) {
+  // Not used
 }
 
-export function saveCategoriesDB(categories: Category[]) {
-    writeJson(categoriesDbPath, categories);
-}
-
-export function deleteCategoryDB(categoryId: string) {
-    console.log(`[DB] Deleting category: ${categoryId}`);
-    const categories = getCategoriesDB();
-    const updatedCategories = categories.filter(c => c.id !== categoryId);
-    saveCategoriesDB(updatedCategories);
-
-    // Cascade delete products
-    const products = getProductsDB();
-    const updatedProducts = products.filter(p => p.category !== categoryId);
-    saveProductsDB(updatedProducts);
-    console.log(`[DB] Category deleted and ${products.length - updatedProducts.length} related products removed.`);
-}
-
-// Homepage
-export function initHomepageDB() {
-    if (!fs.existsSync(homepageDbPath)) {
-        const defaultHomepage: Homepage = {
-            hero: {
-                subtitle: "PREMIUM COLLECTION 2024",
-                title: "Elegance Redefined",
-                titleAccent: "for the Modern Woman",
-                description: "Discover our curated collection of high-end fashion pieces designed to empower and inspire.",
-                ctaText: "Shop Collection",
-                ctaLink: "/shop",
-                secondaryLinkText: "View Lookbook",
-                secondaryLink: "/lookbook",
-                backgroundImage: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80"
-            },
-            promo: {
-                subtitle: "LIMITED EDITION",
-                title: "The Summer Collection",
-                titleAccent: "Is Here",
-                description: "Handcrafted pieces using the finest silks and sustainable materials. Every detail is a statement of luxury.",
-                ctaText: "Explore Now",
-                ctaLink: "/shop?collection=summer",
-                backgroundImage: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80"
-            },
-            newsletter: {
-                title: "Join the Elite",
-                description: "Subscribe to receive exclusive access to our newest collections, private sales, and fashion insights.",
-                ctaText: "Subscribe"
-            }
-        };
-        writeJson(homepageDbPath, defaultHomepage);
-    }
-}
-
-const DEFAULT_HOMEPAGE: Homepage = {
-    hero: {
-        subtitle: "PREMIUM COLLECTION 2024",
-        title: "Elegance Redefined",
-        titleAccent: "for the Modern Woman",
-        description: "Discover our curated collection of high-end fashion pieces designed to empower and inspire.",
-        ctaText: "Shop Collection",
-        ctaLink: "/shop",
-        secondaryLinkText: "View Lookbook",
-        secondaryLink: "/lookbook",
-        backgroundImage: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80"
-    },
-    promo: {
-        subtitle: "LIMITED EDITION",
-        title: "The Summer Collection",
-        titleAccent: "Is Here",
-        description: "Handcrafted pieces using the finest silks and sustainable materials. Every detail is a statement of luxury.",
-        ctaText: "Explore Now",
-        ctaLink: "/shop?collection=summer",
-        backgroundImage: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80"
-    },
-    newsletter: {
-        title: "Join the Elite",
-        description: "Subscribe to receive exclusive access to our newest collections, private sales, and fashion insights.",
-        ctaText: "Subscribe"
-    }
-};
-
-export function getHomepageDB(): Homepage {
-    if (!fs.existsSync(homepageDbPath)) return DEFAULT_HOMEPAGE;
-    try {
-        const data = fs.readFileSync(homepageDbPath, 'utf8');
-        const parsed = JSON.parse(data);
-        return {
-            ...DEFAULT_HOMEPAGE,
-            ...parsed,
-            newsletter: {
-                ...DEFAULT_HOMEPAGE.newsletter,
-                ...(parsed.newsletter || {})
-            }
-        };
-    } catch {
-        return DEFAULT_HOMEPAGE;
-    }
-}
-
-export function saveHomepageDB(content: Homepage) {
-    writeJson(homepageDbPath, content);
+export async function deleteCategoryDB(id: string) {
+  await supabase.from('categories').delete().eq('id', id);
 }
 
 // Orders
-export function initOrdersDB() {
-    if (!fs.existsSync(ordersDbPath)) {
-        writeJson(ordersDbPath, []);
-    }
-}
-
-export function getOrdersDB(): Order[] {
-    if (!fs.existsSync(ordersDbPath)) return [];
-    try {
-        const data = fs.readFileSync(ordersDbPath, 'utf8');
-        return JSON.parse(data) || [];
-    } catch {
-        return [];
-    }
-}
-
-export function saveOrdersDB(orders: Order[]) {
-    writeJson(ordersDbPath, orders);
+export async function getOrdersDB(): Promise<any[]> {
+  const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
+  return data || [];
 }
 
 // Collections
-export function getCollectionsDB(): Collection[] {
-    if (!fs.existsSync(collectionsDbPath)) return [];
-    try {
-        const data = fs.readFileSync(collectionsDbPath, 'utf8');
-        return JSON.parse(data) || [];
-    } catch {
-        return [];
-    }
+export async function getCollectionsDB(): Promise<Collection[]> {
+  const { data, error } = await supabase.from('collections').select('*');
+  if (error) return [];
+  return data.map(c => ({
+    ...c,
+    productIds: c.product_ids,
+    itemsCount: c.items_count,
+    createdAt: c.created_at
+  })) as any;
 }
 
-export function saveCollectionsDB(collections: Collection[]) {
-    writeJson(collectionsDbPath, collections);
+export async function saveCollectionsDB(collections: Collection[]) {
+  // Not used
 }
 
-export function getCollection(id: string) {
-    const collections = getCollectionsDB();
-    return collections.find(c => c.id === id);
+// Homepage
+export async function getHomepageDB(): Promise<Homepage> {
+  const { data, error } = await supabase.from('homepage_content').select('*').eq('id', 1).single();
+  if (error) return {} as Homepage;
+  return data as any;
 }
 
-export function getCollectionProducts(productIds: string[]) {
-    const products = getProductsDB();
-    return products.filter(p => productIds.includes(p.id));
+export async function saveHomepageDB(content: Homepage) {
+  await supabase.from('homepage_content').update(content).eq('id', 1);
 }
 
-export function getAvailableFilters(options: { category?: string, type?: string } = {}) {
-    const { category, type } = options;
-    const products = getProductsDB();
-    let filtered = products;
+// Advanced Shop Queries
+export async function getProducts(params: any): Promise<Product[]> {
+  let query = supabase.from('products').select('*');
 
-    if (category && category !== 'all') {
-        filtered = filtered.filter(p => p.category === category);
-    }
-    if (type) {
-        filtered = filtered.filter(p => p.type?.toLowerCase() === type.toLowerCase());
-    }
+  if (params.category && params.category !== 'all') {
+    query = query.eq('category', params.category);
+  }
+  if (params.type) query = query.eq('type', params.type);
+  if (params.minPrice) query = query.gte('price', params.minPrice);
+  if (params.maxPrice) query = query.lte('price', params.maxPrice);
+  if (params.minRating) query = query.gte('rating', params.minRating);
 
-    const sizes = Array.from(new Set(filtered.flatMap(p => p.sizes || []).map(s => s.toLowerCase())));
-    const colors = Array.from(new Set(filtered.flatMap(p => p.colors || []).map(c => c.toLowerCase())));
+  if (params.sort === 'price_asc') query = query.order('price', { ascending: true });
+  else if (params.sort === 'price_desc') query = query.order('price', { ascending: false });
+  else if (params.sort === 'popular') query = query.order('popularity', { ascending: false });
+  else query = query.order('created_at', { ascending: false });
 
-    return { sizes, colors };
+  const { data, error } = await query;
+  if (error) return [];
+  
+  return (data || []).map(p => ({
+    ...p,
+    discountPrice: p.discount_price,
+    imageVariants: p.image_variants,
+    createdAt: p.created_at
+  })) as any;
+}
+
+export async function getAvailableFilters(params: any) {
+  // Simplify: Return all available colors and sizes from all products (can be optimized)
+  const { data } = await supabase.from('products').select('colors, sizes, price');
+  
+  const allColors = new Set<string>();
+  const allSizes = new Set<string>();
+  let maxPrice = 0;
+
+  data?.forEach(p => {
+    p.colors?.forEach((c: string) => allColors.add(c));
+    p.sizes?.forEach((s: string) => allSizes.add(s));
+    if (p.price > maxPrice) maxPrice = p.price;
+  });
+
+  return {
+    colors: Array.from(allColors),
+    sizes: Array.from(allSizes),
+    maxPrice
+  };
 }

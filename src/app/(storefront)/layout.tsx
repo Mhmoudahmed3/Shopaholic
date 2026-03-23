@@ -3,8 +3,8 @@ import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { getSettingsDB } from "@/lib/db";
 
-export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
-    const settings = getSettingsDB();
+export default async function StorefrontLayout({ children }: { children: React.ReactNode }) {
+    const settings = await getSettingsDB();
 
     return (
         <div className="flex flex-col min-h-screen">
