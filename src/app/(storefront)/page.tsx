@@ -112,18 +112,18 @@ export default function Home() {
       </section>
 
       {/* Collections Showcase - Dynamic Horizontal Slider */}
-      <section className="bg-[#f5f5f5] dark:bg-zinc-950 py-32 overflow-hidden">
+      <section className="bg-[#f5f5f5] dark:bg-zinc-950 py-16 md:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-8"
+            className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-24 gap-6 md:gap-8"
           >
             <div className="max-w-xl">
 
-              <h2 className="text-4xl sm:text-5xl md:text-7xl font-serif italic mb-8 leading-tight">Collections</h2>
+              <h2 className="text-4xl sm:text-5xl md:text-7xl font-serif italic mb-4 md:mb-8 leading-tight">Collections</h2>
               <p className="text-neutral-500 dark:text-neutral-400 text-sm uppercase tracking-widest leading-loose max-w-sm">
                 A vision of contemporary luxury. Each series reflects our commitment to form, function, and artistic expression.
               </p>
@@ -136,7 +136,7 @@ export default function Home() {
           {/* Horizontal Auto-Scrolling Container - Now inside max-w-7xl */}
           <div className="relative w-full">
             <motion.div
-              className="flex gap-8 pb-12 overflow-x-auto no-scrollbar scroll-smooth"
+              className="flex gap-8 pb-6 md:pb-12 overflow-x-auto no-scrollbar scroll-smooth"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -187,10 +187,10 @@ export default function Home() {
       </section>
 
       {/* Best Sellers */}
-      <section className="py-32 bg-neutral-50 dark:bg-zinc-900/30">
+      <section className="py-16 md:py-32 bg-neutral-50 dark:bg-zinc-900/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8 md:gap-10 overflow-hidden">
-            <div className="space-y-8 w-full">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-16 gap-6 md:gap-10 overflow-hidden">
+            <div className="space-y-6 md:space-y-8 w-full">
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif tracking-tight">Best Sellers</h2>
               
               <div className="flex gap-6 md:gap-10 overflow-x-auto pb-2 no-scrollbar w-full pr-4">
@@ -233,8 +233,8 @@ export default function Home() {
       </section>
 
       {/* Social Proof Section (Marquee) */}
-      <section className="py-20 border-y border-neutral-100 dark:border-neutral-900 bg-white dark:bg-black overflow-hidden relative">
-        <div className="flex flex-col items-center mb-12">
+      <section className="py-10 md:py-20 border-y border-neutral-100 dark:border-neutral-900 bg-white dark:bg-black overflow-hidden relative">
+        <div className="flex flex-col items-center mb-6 md:mb-12">
           <span className="text-[10px] font-bold tracking-[0.4em] text-neutral-400 uppercase">Globally Recognized By</span>
         </div>
         
@@ -260,7 +260,7 @@ export default function Home() {
       </section>
 
       {/* Promotional Banner */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
         <motion.div
           initial={{ scale: 1.1 }}
           whileInView={{ scale: 1 }}
@@ -306,10 +306,10 @@ export default function Home() {
       </section>
 
       {/* Newsletter Preview / Minimalist CTA */}
-      <section className="py-32 bg-white dark:bg-black">
+      <section className="py-16 md:py-32 bg-white dark:bg-black">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-serif mb-8">{newsletter.title}</h2>
-          <p className="text-neutral-500 dark:text-neutral-400 mb-12 max-w-md mx-auto leading-relaxed">
+          <h2 className="text-3xl font-serif mb-6 md:mb-8">{newsletter.title}</h2>
+          <p className="text-neutral-500 dark:text-neutral-400 mb-8 md:mb-12 max-w-md mx-auto leading-relaxed">
             {newsletter.description}
           </p>
           <Link href="/account" className="inline-flex items-center gap-4 group">

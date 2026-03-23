@@ -223,7 +223,7 @@ export default function CheckoutPage() {
                                                                     <div className="text-[10px] bg-pink-500 text-white px-2 py-0.5 rounded-full font-bold">LIVE</div>
                                                                 </div>
                                                                 <p className="text-[10px] text-zinc-400 mt-3 leading-relaxed">
-                                                                    Please complete the transfer via Instapay app, then click "Pay" to finish your order.
+                                                                    Please complete the transfer via Instapay app, then click &quot;Pay&quot; to finish your order.
                                                                 </p>
                                                             </div>
                                                         </div>
