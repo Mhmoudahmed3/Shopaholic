@@ -224,13 +224,27 @@ export function initCategoriesDB() {
 }
 
 export function getCategoriesDB(): Category[] {
-    if (!fs.existsSync(categoriesDbPath)) return DEFAULT_CATEGORIES;
+    if (!fs.existsSync(categoriesDbPath)) {
+        writeJson(categoriesDbPath, DEFAULT_CATEGORIES);
+        return DEFAULT_CATEGORIES;
+    }
     try {
         const data = fs.readFileSync(categoriesDbPath, 'utf8');
         const parsed = JSON.parse(data);
-        // FIX: Allow empty array, don't fallback to defaults if users deleted everything
-        return Array.isArray(parsed) ? parsed : DEFAULT_CATEGORIES;
+        if (!Array.isArray(parsed)) {
+            writeJson(categoriesDbPath, DEFAULT_CATEGORIES);
+            return DEFAULT_CATEGORIES;
+        }
+        // Auto-migrate: if categories are missing `type`, they are old-format main-only entries
+        // Reset to defaults so the hierarchical structure is restored
+        if (parsed.length > 0 && parsed.every((c: any) => !c.type)) {
+            console.log('[DB] Old category format detected (no type field). Migrating to hierarchical defaults.');
+            writeJson(categoriesDbPath, DEFAULT_CATEGORIES);
+            return DEFAULT_CATEGORIES;
+        }
+        return parsed;
     } catch {
+        writeJson(categoriesDbPath, DEFAULT_CATEGORIES);
         return DEFAULT_CATEGORIES;
     }
 }

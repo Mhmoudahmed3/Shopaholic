@@ -1,18 +1,42 @@
 [
   {
-    "id": "women",
-    "label": "Women"
+    "id": "women-tshirts",
+    "label": "T-Shirts",
+    "type": "Women"
   },
   {
-    "id": "men",
-    "label": "Men"
+    "id": "women-pants",
+    "label": "Pants",
+    "type": "Women"
   },
   {
-    "id": "children",
-    "label": "Children"
+    "id": "women-dresses",
+    "label": "Dresses",
+    "type": "Women"
   },
   {
-    "id": "accessories",
-    "label": "Accessories"
+    "id": "men-tshirts",
+    "label": "T-Shirts",
+    "type": "Men"
+  },
+  {
+    "id": "men-jeans",
+    "label": "Jeans",
+    "type": "Men"
+  },
+  {
+    "id": "children-wear",
+    "label": "Casual Wear",
+    "type": "Children"
+  },
+  {
+    "id": "acc-bags",
+    "label": "Bags & Wallets",
+    "type": "Accessories"
+  },
+  {
+    "id": "acc-belts",
+    "label": "Belts",
+    "type": "Accessories"
   }
 ]
