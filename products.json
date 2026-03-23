@@ -4,8 +4,8 @@
     "name": "Premium Men shirts",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 990,
-    "category": "men",
-    "type": "shirts",
+    "category": "men-shirts",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&q=80"
     ],
@@ -66,8 +66,8 @@
     "name": "Premium Children pants",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 2080,
-    "category": "children",
-    "type": "pants",
+    "category": "children-pants",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -128,8 +128,8 @@
     "name": "Premium Accessories jackets",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1680,
-    "category": "accessories",
-    "type": "jackets",
+    "category": "accessories-jackets",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -191,8 +191,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1260,
     "discountPrice": 1008,
-    "category": "women",
-    "type": "sneakers",
+    "category": "women-sneakers",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80"
     ],
@@ -254,8 +254,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1290,
     "discountPrice": 1032,
-    "category": "men",
-    "type": "bags",
+    "category": "men-bags",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&q=80"
     ],
@@ -316,8 +316,8 @@
     "name": "Premium Children watches",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1870,
-    "category": "children",
-    "type": "watches",
+    "category": "children-watches",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -379,8 +379,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 970,
     "discountPrice": 776,
-    "category": "accessories",
-    "type": "dresses",
+    "category": "accessories-dresses",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -441,8 +441,8 @@
     "name": "Premium Women shirts",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 410,
-    "category": "women",
-    "type": "shirts",
+    "category": "women-shirts",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80"
     ],
@@ -503,8 +503,8 @@
     "name": "Premium Men pants",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 2110,
-    "category": "men",
-    "type": "pants",
+    "category": "men-pants",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1490578474895-699bc4e3f49f?auto=format&fit=crop&q=80"
     ],
@@ -565,8 +565,8 @@
     "name": "Premium Children jackets",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1240,
-    "category": "children",
-    "type": "jackets",
+    "category": "children-jackets",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -627,8 +627,8 @@
     "name": "Premium Accessories sneakers",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 930,
-    "category": "accessories",
-    "type": "sneakers",
+    "category": "accessories-sneakers",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -689,8 +689,8 @@
     "name": "Premium Women bags",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1680,
-    "category": "women",
-    "type": "bags",
+    "category": "women-bags",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80"
     ],
@@ -751,8 +751,8 @@
     "name": "Premium Men watches",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1030,
-    "category": "men",
-    "type": "watches",
+    "category": "men-watches",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80"
     ],
@@ -814,8 +814,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 490,
     "discountPrice": 392,
-    "category": "children",
-    "type": "dresses",
+    "category": "children-dresses",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -876,8 +876,8 @@
     "name": "Premium Accessories shirts",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 510,
-    "category": "accessories",
-    "type": "shirts",
+    "category": "accessories-shirts",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -938,8 +938,8 @@
     "name": "Premium Women pants",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 530,
-    "category": "women",
-    "type": "pants",
+    "category": "women-pants",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80"
     ],
@@ -1000,8 +1000,8 @@
     "name": "Premium Men jackets",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1570,
-    "category": "men",
-    "type": "jackets",
+    "category": "men-jackets",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80"
     ],
@@ -1063,8 +1063,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1250,
     "discountPrice": 1000,
-    "category": "children",
-    "type": "sneakers",
+    "category": "children-sneakers",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -1126,8 +1126,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1870,
     "discountPrice": 1496,
-    "category": "accessories",
-    "type": "bags",
+    "category": "accessories-bags",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -1188,8 +1188,8 @@
     "name": "Premium Women watches",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1650,
-    "category": "women",
-    "type": "watches",
+    "category": "women-watches",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80"
     ],
@@ -1250,8 +1250,8 @@
     "name": "Premium Men dresses",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1970,
-    "category": "men",
-    "type": "dresses",
+    "category": "men-dresses",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&q=80"
     ],
@@ -1312,8 +1312,8 @@
     "name": "Premium Children shirts",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 820,
-    "category": "children",
-    "type": "shirts",
+    "category": "children-shirts",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -1375,8 +1375,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 2160,
     "discountPrice": 1728,
-    "category": "accessories",
-    "type": "pants",
+    "category": "accessories-pants",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -1437,8 +1437,8 @@
     "name": "Premium Women jackets",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 2370,
-    "category": "women",
-    "type": "jackets",
+    "category": "women-jackets",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80"
     ],
@@ -1499,8 +1499,8 @@
     "name": "Premium Men sneakers",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1230,
-    "category": "men",
-    "type": "sneakers",
+    "category": "men-sneakers",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&q=80"
     ],
@@ -1562,8 +1562,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1810,
     "discountPrice": 1448,
-    "category": "children",
-    "type": "bags",
+    "category": "children-bags",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -1624,8 +1624,8 @@
     "name": "Premium Accessories watches",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1220,
-    "category": "accessories",
-    "type": "watches",
+    "category": "accessories-watches",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -1687,8 +1687,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1330,
     "discountPrice": 1064,
-    "category": "women",
-    "type": "dresses",
+    "category": "women-dresses",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80"
     ],
@@ -1749,8 +1749,8 @@
     "name": "Premium Men shirts",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1970,
-    "category": "men",
-    "type": "shirts",
+    "category": "men-shirts",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1490578474895-699bc4e3f49f?auto=format&fit=crop&q=80"
     ],
@@ -1812,8 +1812,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 980,
     "discountPrice": 784,
-    "category": "children",
-    "type": "pants",
+    "category": "children-pants",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -1874,8 +1874,8 @@
     "name": "Premium Accessories jackets",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1280,
-    "category": "accessories",
-    "type": "jackets",
+    "category": "accessories-jackets",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -1936,8 +1936,8 @@
     "name": "Premium Women sneakers",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 2080,
-    "category": "women",
-    "type": "sneakers",
+    "category": "women-sneakers",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80"
     ],
@@ -1998,8 +1998,8 @@
     "name": "Premium Men bags",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1380,
-    "category": "men",
-    "type": "bags",
+    "category": "men-bags",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80"
     ],
@@ -2060,8 +2060,8 @@
     "name": "Premium Children watches",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 590,
-    "category": "children",
-    "type": "watches",
+    "category": "children-watches",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -2123,8 +2123,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 2290,
     "discountPrice": 1832,
-    "category": "accessories",
-    "type": "dresses",
+    "category": "accessories-dresses",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -2186,8 +2186,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1880,
     "discountPrice": 1504,
-    "category": "women",
-    "type": "shirts",
+    "category": "women-shirts",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80"
     ],
@@ -2249,8 +2249,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1200,
     "discountPrice": 960,
-    "category": "men",
-    "type": "pants",
+    "category": "men-pants",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80"
     ],
@@ -2312,8 +2312,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 2010,
     "discountPrice": 1608,
-    "category": "children",
-    "type": "jackets",
+    "category": "children-jackets",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -2374,8 +2374,8 @@
     "name": "Premium Accessories sneakers",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1640,
-    "category": "accessories",
-    "type": "sneakers",
+    "category": "accessories-sneakers",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -2437,8 +2437,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 2350,
     "discountPrice": 1880,
-    "category": "women",
-    "type": "bags",
+    "category": "women-bags",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80"
     ],
@@ -2500,8 +2500,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1550,
     "discountPrice": 1240,
-    "category": "men",
-    "type": "watches",
+    "category": "men-watches",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&q=80"
     ],
@@ -2563,8 +2563,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1950,
     "discountPrice": 1560,
-    "category": "children",
-    "type": "dresses",
+    "category": "children-dresses",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -2625,8 +2625,8 @@
     "name": "Premium Accessories shirts",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 550,
-    "category": "accessories",
-    "type": "shirts",
+    "category": "accessories-shirts",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -2687,8 +2687,8 @@
     "name": "Premium Women pants",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 810,
-    "category": "women",
-    "type": "pants",
+    "category": "women-pants",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80"
     ],
@@ -2749,8 +2749,8 @@
     "name": "Premium Men jackets",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 690,
-    "category": "men",
-    "type": "jackets",
+    "category": "men-jackets",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&q=80"
     ],
@@ -2812,8 +2812,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 490,
     "discountPrice": 392,
-    "category": "children",
-    "type": "sneakers",
+    "category": "children-sneakers",
+    "type": "Children",
     "images": [
       "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80"
     ],
@@ -2874,8 +2874,8 @@
     "name": "Premium Accessories bags",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1810,
-    "category": "accessories",
-    "type": "bags",
+    "category": "accessories-bags",
+    "type": "Accessories",
     "images": [
       "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
     ],
@@ -2937,8 +2937,8 @@
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1340,
     "discountPrice": 1072,
-    "category": "women",
-    "type": "watches",
+    "category": "women-watches",
+    "type": "Women",
     "images": [
       "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80"
     ],
@@ -2999,8 +2999,8 @@
     "name": "Premium Men dresses",
     "description": "A wonderful piece crafted with the finest materials to ensure luxurious comfort and effortless style.",
     "price": 1230,
-    "category": "men",
-    "type": "dresses",
+    "category": "men-dresses",
+    "type": "Men",
     "images": [
       "https://images.unsplash.com/photo-1490578474895-699bc4e3f49f?auto=format&fit=crop&q=80"
     ],

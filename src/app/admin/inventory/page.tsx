@@ -166,16 +166,23 @@ export default async function InventoryPage({
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <span className="px-2.5 py-1 bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400 rounded text-[10px] uppercase font-bold tracking-tighter">
-                                                {product.category}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className="px-2.5 py-1 bg-gray-50 dark:bg-zinc-800/50 text-gray-500 dark:text-gray-500 rounded text-[10px] uppercase font-medium tracking-tight border border-gray-100 dark:border-gray-800">
-                                                {product.type || "N/A"}
-                                            </span>
-                                        </td>
+                                        {(() => {
+                                            const categoryObj = categories.find(c => c.id === product.category);
+                                            return (
+                                                <>
+                                                            <td className="px-6 py-4">
+                                                                <span className="px-2.5 py-1 bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400 rounded text-[10px] uppercase font-bold tracking-tighter">
+                                                                    {categoryObj?.type || "N/A"}
+                                                                </span>
+                                                            </td>
+                                                            <td className="px-6 py-4">
+                                                                <span className="px-2.5 py-1 bg-50 dark:bg-zinc-800/50 text-gray-500 dark:text-gray-500 rounded text-[10px] uppercase font-medium tracking-tight border border-gray-100 dark:border-gray-800">
+                                                                    {categoryObj?.label || "N/A"}
+                                                                </span>
+                                                            </td>
+                                                </>
+                                            );
+                                        })()}
                                         <td className="px-6 py-4">
                                             <div className="flex flex-col gap-1.5">
                                                 <div className="flex items-center gap-2">

@@ -6,6 +6,7 @@ import { CartIcon } from "./CartIcon";
 import { WishlistIcon } from "./WishlistIcon";
 import { SearchModal } from "./SearchModal";
 import { useSearchStore } from "@/lib/useSearchStore";
+import { SettingsDropdown } from "./SettingsDropdown";
 
 export function Navbar({ storeName = "REHAM" }: { storeName?: string }) {
     const { open: openSearch } = useSearchStore();
@@ -34,9 +35,14 @@ export function Navbar({ storeName = "REHAM" }: { storeName?: string }) {
                         >
                             <Search className="h-5 w-5" />
                         </button>
-                        <Link href="/admin" className="p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors">
-                            <User className="h-5 w-5" />
-                        </Link>
+                        
+                        <div className="flex items-center gap-1">
+                            <SettingsDropdown />
+                            <Link href="/admin" className="p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors">
+                                <User className="h-5 w-5" />
+                            </Link>
+                        </div>
+
                         <div className="hidden lg:flex items-center gap-1 sm:gap-2">
                             <WishlistIcon />
                             <CartIcon />

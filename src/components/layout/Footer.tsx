@@ -6,43 +6,46 @@ import { getCategoriesDB, getSettingsDB } from "@/lib/db";
 const CURRENT_YEAR = new Date().getFullYear();
 
 export async function Footer() {
-    const categories = getCategoriesDB();
+    const rawCategories = getCategoriesDB();
     const settings = getSettingsDB();
+
+    // Group categories by type (Main Categories)
+    const mainCategories = Array.from(new Set(rawCategories.map(c => c.type).filter((t): t is string => !!t)));
 
     return (
         <footer className="bg-white dark:bg-black border-t border-gray-100 dark:border-gray-800">
-            <div className="w-full px-4 sm:px-6 lg:px-8 pb-24 pt-12 lg:pb-16 lg:pt-16">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
+            <div className="w-full px-4 sm:px-6 lg:px-8 py-10 lg:py-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
 
                     {/* Brand */}
                     <div className="md:col-span-1">
-                        <Link href="/" className="text-xl font-bold tracking-[0.2em] uppercase inline-block mb-4">
+                        <Link href="/" className="text-lg font-bold tracking-[0.2em] uppercase inline-block mb-3">
                             {settings.storeName}
                         </Link>
-                        <p className="text-sm text-black/60 dark:text-white/60 max-w-xs font-light leading-relaxed">
+                        <p className="text-[13px] text-black/60 dark:text-white/60 max-w-xs font-light leading-relaxed">
                             {settings.storeDescription}
                         </p>
-                        <div className="flex items-center space-x-4 mt-6">
+                        <div className="flex items-center space-x-4 mt-5">
                             {settings.socialLinks.instagram && (
-                                <a href={`https://instagram.com/${settings.socialLinks.instagram}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
+                                <a href={`https://instagram.com/${settings.socialLinks.instagram}`} target="_blank" rel="noopener noreferrer" className="opacity-40 hover:opacity-100 transition-opacity">
                                     <span className="sr-only">Instagram</span>
                                     <Instagram className="h-4 w-4" />
                                 </a>
                             )}
                             {settings.socialLinks.facebook && (
-                                <a href={`https://facebook.com/${settings.socialLinks.facebook}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
+                                <a href={`https://facebook.com/${settings.socialLinks.facebook}`} target="_blank" rel="noopener noreferrer" className="opacity-40 hover:opacity-100 transition-opacity">
                                     <span className="sr-only">Facebook</span>
                                     <Facebook className="h-4 w-4" />
                                 </a>
                             )}
                             {settings.socialLinks.whatsapp && (
-                                <a href={`https://wa.me/${settings.socialLinks.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
+                                <a href={`https://wa.me/${settings.socialLinks.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="opacity-40 hover:opacity-100 transition-opacity">
                                     <span className="sr-only">WhatsApp</span>
                                     <MessageCircle className="h-4 w-4" />
                                 </a>
                             )}
                             {settings.socialLinks.twitter && (
-                                <a href={`https://twitter.com/${settings.socialLinks.twitter}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
+                                <a href={`https://twitter.com/${settings.socialLinks.twitter}`} target="_blank" rel="noopener noreferrer" className="opacity-40 hover:opacity-100 transition-opacity">
                                     <span className="sr-only">Twitter</span>
                                     <Twitter className="h-4 w-4" />
                                 </a>
@@ -52,40 +55,42 @@ export async function Footer() {
 
                     {/* Links */}
                     <div>
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] mb-6">Shop</h3>
-                        <ul className="space-y-4">
-                            <li><Link href="/shop" className="text-sm opacity-60 hover:opacity-100 transition-opacity font-light">All Products</Link></li>
-                            {categories.map((c) => (
-                                <li key={c.id}><Link href={`/shop?category=${c.id}`} className="text-sm opacity-60 hover:opacity-100 transition-opacity font-light capitalize">{c.label}</Link></li>
+                        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4 opacity-40">Shop</h3>
+                        <ul className="space-y-3">
+                            <li><Link href="/shop" className="text-[13px] opacity-60 hover:opacity-100 transition-opacity font-light">All Collections</Link></li>
+                            {mainCategories.map((type) => (
+                                <li key={type}>
+                                    <Link href={`/shop?type=${type.toLowerCase()}`} className="text-[13px] opacity-60 hover:opacity-100 transition-opacity font-light">{type}</Link>
+                                </li>
                             ))}
                         </ul>
                     </div>
 
                     <div>
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] mb-6">Support</h3>
-                        <ul className="space-y-4">
-                            <li><Link href="/faq" className="text-sm opacity-60 hover:opacity-100 transition-opacity font-light">FAQ</Link></li>
-                            <li><Link href="/shipping" className="text-sm opacity-60 hover:opacity-100 transition-opacity font-light">Shipping & Returns</Link></li>
-                            <li><Link href="/contact" className="text-sm opacity-60 hover:opacity-100 transition-opacity font-light">Contact Us</Link></li>
+                        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4 opacity-40">Support</h3>
+                        <ul className="space-y-3">
+                            <li><Link href="/faq" className="text-[13px] opacity-60 hover:opacity-100 transition-opacity font-light">FAQ</Link></li>
+                            <li><Link href="/shipping" className="text-[13px] opacity-60 hover:opacity-100 transition-opacity font-light">Shipping & Returns</Link></li>
+                            <li><Link href="/contact" className="text-[13px] opacity-60 hover:opacity-100 transition-opacity font-light">Contact Us</Link></li>
                         </ul>
                     </div>
 
                     {/* Newsletter */}
                     <div>
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] mb-6">Stay Connected</h3>
-                        <p className="text-sm opacity-60 font-light mb-6 max-w-xs leading-relaxed">
-                            Subscribe to receive updates, access to exclusive deals, and more.
+                        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4 opacity-40">Stay Connected</h3>
+                        <p className="text-[12px] opacity-50 font-light mb-4 max-w-xs leading-relaxed">
+                            Subscribe for exclusive updates and collections.
                         </p>
                         <form className="flex flex-col gap-3">
                             <input
                                 type="email"
-                                placeholder="Enter your email"
-                                className="w-full px-0 py-2 text-sm border-b border-black/20 dark:border-white/20 bg-transparent focus:outline-none focus:border-black dark:focus:border-white transition-colors placeholder:text-black/30 dark:placeholder:text-white/30"
+                                placeholder="Email Address"
+                                className="w-full px-0 py-2 text-[13px] border-b border-black/10 dark:border-white/10 bg-transparent focus:outline-none focus:border-black dark:focus:border-white transition-colors placeholder:text-black/20 dark:placeholder:text-white/20"
                                 required
                             />
                             <button
                                 type="submit"
-                                className="w-fit text-[11px] font-bold uppercase tracking-[0.2em] py-2 border-b border-transparent hover:border-black dark:hover:border-white transition-all mt-2"
+                                className="w-fit text-[10px] font-bold uppercase tracking-[0.25em] py-2 border-b border-transparent hover:border-black dark:hover:border-white transition-all mt-1 opacity-70 hover:opacity-100"
                             >
                                 Subscribe
                             </button>
@@ -94,7 +99,7 @@ export async function Footer() {
 
                 </div>
 
-                <div className="mt-20 pt-8 border-t border-black/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div className="mt-12 pt-6 border-t border-black/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
                     <p className="text-[10px] uppercase tracking-widest opacity-40 font-bold">
                         &copy; {CURRENT_YEAR} {settings.storeName}. All rights reserved.
                     </p>

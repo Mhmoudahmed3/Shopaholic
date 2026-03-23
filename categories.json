@@ -38,5 +38,135 @@
     "id": "acc-belts",
     "label": "Belts",
     "type": "Accessories"
+  },
+  {
+    "id": "men-shirts",
+    "label": "Shirts",
+    "type": "Men"
+  },
+  {
+    "id": "children-pants",
+    "label": "Pants",
+    "type": "Children"
+  },
+  {
+    "id": "accessories-jackets",
+    "label": "Jackets",
+    "type": "Accessories"
+  },
+  {
+    "id": "women-sneakers",
+    "label": "Sneakers",
+    "type": "Women"
+  },
+  {
+    "id": "men-bags",
+    "label": "Bags",
+    "type": "Men"
+  },
+  {
+    "id": "children-watches",
+    "label": "Watches",
+    "type": "Children"
+  },
+  {
+    "id": "accessories-dresses",
+    "label": "Dresses",
+    "type": "Accessories"
+  },
+  {
+    "id": "women-shirts",
+    "label": "Shirts",
+    "type": "Women"
+  },
+  {
+    "id": "men-pants",
+    "label": "Pants",
+    "type": "Men"
+  },
+  {
+    "id": "children-jackets",
+    "label": "Jackets",
+    "type": "Children"
+  },
+  {
+    "id": "accessories-sneakers",
+    "label": "Sneakers",
+    "type": "Accessories"
+  },
+  {
+    "id": "women-bags",
+    "label": "Bags",
+    "type": "Women"
+  },
+  {
+    "id": "men-watches",
+    "label": "Watches",
+    "type": "Men"
+  },
+  {
+    "id": "children-dresses",
+    "label": "Dresses",
+    "type": "Children"
+  },
+  {
+    "id": "accessories-shirts",
+    "label": "Shirts",
+    "type": "Accessories"
+  },
+  {
+    "id": "men-jackets",
+    "label": "Jackets",
+    "type": "Men"
+  },
+  {
+    "id": "children-sneakers",
+    "label": "Sneakers",
+    "type": "Children"
+  },
+  {
+    "id": "accessories-bags",
+    "label": "Bags",
+    "type": "Accessories"
+  },
+  {
+    "id": "women-watches",
+    "label": "Watches",
+    "type": "Women"
+  },
+  {
+    "id": "men-dresses",
+    "label": "Dresses",
+    "type": "Men"
+  },
+  {
+    "id": "children-shirts",
+    "label": "Shirts",
+    "type": "Children"
+  },
+  {
+    "id": "accessories-pants",
+    "label": "Pants",
+    "type": "Accessories"
+  },
+  {
+    "id": "women-jackets",
+    "label": "Jackets",
+    "type": "Women"
+  },
+  {
+    "id": "men-sneakers",
+    "label": "Sneakers",
+    "type": "Men"
+  },
+  {
+    "id": "children-bags",
+    "label": "Bags",
+    "type": "Children"
+  },
+  {
+    "id": "accessories-watches",
+    "label": "Watches",
+    "type": "Accessories"
   }
 ]

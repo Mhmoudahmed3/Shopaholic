@@ -1,44 +1,18 @@
 [
   {
-    "id": "summern",
-    "name": "summern",
-    "subtitle": "jsdmxj",
-    "image": "/uploads/collection-1773766386918-WhatsApp_Image_2026_03_15_at_6.43.26_PM.jpeg",
+    "id": "coll-1774287079613",
+    "name": "sadassad",
+    "subtitle": "sdada",
+    "image": "/uploads/collection-1774287654605-gemini_generated_image_2b8rsw2b8rsw2b8r.png",
     "status": "Active",
     "productIds": [
-      "1773669234705",
-      "1773623588212"
+      "generated-product-1",
+      "generated-product-2",
+      "generated-product-3",
+      "generated-product-4"
     ],
-    "itemsCount": 2,
-    "link": "/collections/summern",
-    "createdAt": "2026-03-17T16:53:06.928Z"
-  },
-  {
-    "id": "dscjsdnjc",
-    "name": "dscjsdnjc",
-    "subtitle": "jndjkscn",
-    "image": "/uploads/collection-1774021423696-Gemini_Generated_Image_iyout9iyout9iyou.jpg",
-    "status": "Active",
-    "productIds": [
-      "1773772807626",
-      "1773669234705"
-    ],
-    "itemsCount": 2,
-    "link": "/collections/dscjsdnjc",
-    "createdAt": "2026-03-20T15:43:43.716Z"
-  },
-  {
-    "id": "dsavcsdvasd",
-    "name": "dsavcsdvasd",
-    "subtitle": "dvsadsv",
-    "image": "/uploads/collection-1774021436342-WhatsApp_Image_2024_12_24_at_02.37.49_a1035410.jpg",
-    "status": "Active",
-    "productIds": [
-      "1773772807626",
-      "1773669234705"
-    ],
-    "itemsCount": 2,
-    "link": "/collections/dsavcsdvasd",
-    "createdAt": "2026-03-20T15:43:56.346Z"
+    "itemsCount": 4,
+    "link": "/shop?collection=coll-1774287079613",
+    "createdAt": "2026-03-23T17:31:19.613Z"
   }
 ]

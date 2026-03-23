@@ -16,7 +16,7 @@ export function BestSellersSection({ bestSellers }: BestSellersProps) {
   const filteredBestSellers = useMemo(() => {
     if (!bestSellers) return [];
     if (activeCategory === "ALL") return bestSellers;
-    return bestSellers.filter(p => p.category?.toUpperCase() === activeCategory);
+    return bestSellers.filter(p => p.type?.toUpperCase() === activeCategory);
   }, [bestSellers, activeCategory]);
 
   return (

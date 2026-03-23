@@ -22,7 +22,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AdminHeader } from "@/app/admin/components/AdminLayout";
 import { deleteProduct } from "@/app/admin/actions";
-import { Product, Order } from "@/lib/types";
+import { Product, Order, Category } from "@/lib/types";
 
 // Sort Icon Component
 const SortIcon = ({ active, direction }: { active: boolean, direction: 'asc' | 'desc' | null }) => {
@@ -46,7 +46,7 @@ const itemVariants = {
 
 import { useState, useMemo } from "react";
 
-export default function AdminDashboard({ products, orders }: { products: Product[], orders: Order[] }) {
+export default function AdminDashboard({ products, orders, categories }: { products: Product[], orders: Order[], categories: Category[] }) {
     const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [popularOnly, setPopularOnly] = useState(false);
@@ -272,12 +272,17 @@ export default function AdminDashboard({ products, orders }: { products: Product
                                                     <SortIcon active={sortConfig.key === 'name'} direction={sortConfig.direction} />
                                                 </div>
                                             </th>
-                                            <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white transition-colors" onClick={() => handleSort('category')}>
-                                                <div className="flex items-center gap-1">
-                                                    Category
-                                                    <SortIcon active={sortConfig.key === 'category'} direction={sortConfig.direction} />
-                                                </div>
-                                            </th>
+                                             <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white transition-colors" onClick={() => handleSort('category')}>
+                                                 <div className="flex items-center gap-1">
+                                                     Category
+                                                     <SortIcon active={sortConfig.key === 'category'} direction={sortConfig.direction} />
+                                                 </div>
+                                             </th>
+                                             <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white transition-colors">
+                                                 <div className="flex items-center gap-1">
+                                                     Type
+                                                 </div>
+                                             </th>
                                             <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white transition-colors" onClick={() => handleSort('rating')}>
                                                 <div className="flex items-center gap-1">
                                                     Rating
@@ -325,11 +330,23 @@ export default function AdminDashboard({ products, orders }: { products: Product
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4">
-                                                    <span className="px-2 py-1 bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400 rounded text-[10px] uppercase font-bold tracking-tighter">
-                                                        {product.category}
-                                                    </span>
-                                                </td>
+                                                 {(() => {
+                                                    const categoryObj = categories?.find(c => c.id === product.category);
+                                                    return (
+                                                        <>
+                                                            <td className="px-6 py-4">
+                                                                <span className="px-2.5 py-1 bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400 rounded text-[10px] uppercase font-bold tracking-tighter">
+                                                                    {categoryObj?.type || "N/A"}
+                                                                </span>
+                                                            </td>
+                                                            <td className="px-6 py-4">
+                                                                <span className="px-2.5 py-1 bg-gray-50 dark:bg-zinc-800/50 text-gray-500 dark:text-gray-500 rounded text-[10px] uppercase font-medium tracking-tight border border-gray-100 dark:border-gray-800">
+                                                                    {categoryObj?.label || "N/A"}
+                                                                </span>
+                                                            </td>
+                                                        </>
+                                                    );
+                                                 })()}
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-1 text-yellow-500">
                                                         <Star className="w-3 h-3 fill-current" />

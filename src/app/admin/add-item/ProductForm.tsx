@@ -243,6 +243,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                         <label htmlFor="mainCategory" className="block text-xs font-medium uppercase tracking-wider mb-2 text-gray-400">PRODUCT TYPE (Main Category) <span className="text-red-500">*</span></label>
                         <select
                             id="mainCategory"
+                            name="type"
                             required
                             value={selectedMainCategory}
                             onChange={(e) => setSelectedMainCategory(e.target.value)}

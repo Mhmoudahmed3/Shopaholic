@@ -52,7 +52,7 @@ export async function addCategory(category: { label: string, type?: string }) {
         const uniqueId = `${slug}-${Math.random().toString(36).substr(2, 5)}`;
         
         const newCategory: Category = { id: uniqueId, label: category.label, type: category.type };
-        categories.push(newCategory);
+        categories.unshift(newCategory);
         saveCategoriesDB(categories);
         
         revalidatePath('/', 'layout');
@@ -410,32 +410,57 @@ export async function getAvailableProducts() {
     return getProductsDB();
 }
 
-export async function createCuratedCollection(data: any) {
+export async function createCuratedCollection(data: FormData | any) {
     console.log("[ACTION] Creating/Updating collection...");
     try {
         const collections = getCollectionsDB();
-        const id = data.id || `coll-${Date.now()}`;
         
-        let imageUrl = data.image;
-        if (data.imageFile && data.imageFile.size > 0) {
-            const saved = await saveFile(data.imageFile, "collection-");
-            if (saved) imageUrl = saved;
+        let id, name, subtitle, status, productIds, imageUrl;
+        
+        if (data instanceof FormData) {
+            id = (data.get("collectionId") as string) || `coll-${Date.now()}`;
+            name = data.get("name") as string;
+            subtitle = data.get("subtitle") as string;
+            status = data.get("status") as string || 'Active';
+            const productIdsRaw = data.get("productIds") as string;
+            productIds = productIdsRaw ? JSON.parse(productIdsRaw) : [];
+            imageUrl = data.get("currentImage") as string || "";
+            
+            const imageFile = data.get("image") as File | null;
+            if (imageFile && imageFile.size > 0) {
+                const saved = await saveFile(imageFile, "collection-");
+                if (saved) imageUrl = saved;
+            }
+        } else {
+            id = data.id || `coll-${Date.now()}`;
+            name = data.name;
+            subtitle = data.subtitle;
+            status = data.status || 'Active';
+            productIds = data.productIds || [];
+            imageUrl = data.image;
+            
+            if (data.imageFile && data.imageFile.size > 0) {
+                const saved = await saveFile(data.imageFile, "collection-");
+                if (saved) imageUrl = saved;
+            }
         }
 
         const newCollection: Collection = {
             id,
-            name: data.name,
-            subtitle: data.subtitle,
+            name,
+            subtitle,
             image: imageUrl,
-            status: data.status || 'Active',
-            productIds: data.productIds || [],
-            itemsCount: (data.productIds || []).length,
-            link: data.link || `/shop?collection=${id}`,
-            createdAt: data.createdAt || new Date().toISOString()
+            status: status as any,
+            productIds,
+            itemsCount: productIds.length,
+            link: `/shop?collection=${id}`,
+            createdAt: new Date().toISOString()
         };
 
         const index = collections.findIndex(c => c.id === id);
         if (index > -1) {
+            // Preserve createdAt if updating
+            newCollection.createdAt = collections[index].createdAt || newCollection.createdAt;
             collections[index] = newCollection;
         } else {
             collections.push(newCollection);
@@ -468,23 +493,67 @@ export async function deleteCollection(id: string) {
 
 // Homepage Management
 export async function getHomepageContent() {
-    return getHomepageDB();
+    const db = getHomepageDB();
+    const allCollections = getCollectionsDB();
+    const products = getProductsDB();
+    
+    // Process curated collections for homepage display
+    const curatedCollections = allCollections
+        .filter(c => c.status === 'Active')
+        .slice(0, 4) // Show top 4 active collections
+        .map(c => ({
+            id: c.id,
+            title: c.name, // Mapping name to title for homepage
+            subtitle: c.subtitle || "Curated Series",
+            image: c.image,
+            link: c.link
+        }));
+
+    // Find best sellers (sorted by popularity or sales)
+    const bestSellers = products
+        .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+        .slice(0, 8);
+
+    return {
+        ...db,
+        collections: curatedCollections,
+        bestSellers
+    };
 }
 
-export async function updateHero(data: any) {
+export async function updateHero(data: FormData | any) {
     console.log("[ACTION] Updating Hero section...");
     try {
         const content = getHomepageDB();
         
-        let backgroundImage = data.backgroundImage;
-        if (data.backgroundFile && data.backgroundFile.size > 0) {
-            const saved = await saveFile(data.backgroundFile, "hero-");
-            if (saved) backgroundImage = saved;
+        let heroData: any = {};
+        let backgroundImage;
+
+        if (data instanceof FormData) {
+            // Extract all fields from formData
+            for (const [key, value] of (data as any).entries()) {
+                if (key !== 'image' && key !== 'currentImage') {
+                    heroData[key] = value;
+                }
+            }
+            backgroundImage = data.get("currentImage") as string;
+            const imageFile = data.get("image") as File | null;
+            if (imageFile && imageFile.size > 0) {
+                const saved = await saveFile(imageFile, "hero-");
+                if (saved) backgroundImage = saved;
+            }
+        } else {
+            heroData = { ...data };
+            backgroundImage = data.backgroundImage;
+            if (data.backgroundFile && data.backgroundFile.size > 0) {
+                const saved = await saveFile(data.backgroundFile, "hero-");
+                if (saved) backgroundImage = saved;
+            }
         }
 
         content.hero = {
             ...content.hero,
-            ...data,
+            ...heroData,
             backgroundImage
         };
 
@@ -498,20 +567,38 @@ export async function updateHero(data: any) {
     }
 }
 
-export async function updatePromo(data: any) {
+export async function updatePromo(data: FormData | any) {
     console.log("[ACTION] Updating Promo section...");
     try {
         const content = getHomepageDB();
         
-        let backgroundImage = data.backgroundImage;
-        if (data.imageFile && data.imageFile.size > 0) {
-            const saved = await saveFile(data.imageFile, "promo-");
-            if (saved) backgroundImage = saved;
+        let promoData: any = {};
+        let backgroundImage;
+
+        if (data instanceof FormData) {
+            for (const [key, value] of (data as any).entries()) {
+                if (key !== 'image' && key !== 'currentImage') {
+                    promoData[key] = value;
+                }
+            }
+            backgroundImage = data.get("currentImage") as string;
+            const imageFile = data.get("image") as File | null;
+            if (imageFile && imageFile.size > 0) {
+                const saved = await saveFile(imageFile, "promo-");
+                if (saved) backgroundImage = saved;
+            }
+        } else {
+            promoData = { ...data };
+            backgroundImage = data.backgroundImage;
+            if (data.imageFile && data.imageFile.size > 0) {
+                const saved = await saveFile(data.imageFile, "promo-");
+                if (saved) backgroundImage = saved;
+            }
         }
 
         content.promo = {
             ...content.promo,
-            ...data,
+            ...promoData,
             backgroundImage
         };
 
