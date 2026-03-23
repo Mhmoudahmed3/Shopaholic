@@ -131,7 +131,7 @@ export default function CheckoutPage() {
                                         >
                                             <div className={`flex items-center p-5 transition-colors ${paymentMethod === "credit-card" ? "bg-gray-50/50 dark:bg-zinc-900/40" : "hover:bg-gray-50 dark:hover:bg-zinc-900/20"}`}>
                                                 <div className="mr-5 relative flex items-center justify-center">
-                                                    <div className={`w-5 h-5 rounded-full border transition-all flex items-center justify-center ${paymentMethod === "credit-card" ? "border-black dark:border-white bg-black dark:bg-whiteScale" : "border-gray-300 dark:border-gray-700"}`}>
+                                                    <div className={`w-5 h-5 rounded-full border transition-all flex items-center justify-center ${paymentMethod === "credit-card" ? "border-black dark:border-white bg-black dark:bg-white" : "border-gray-300 dark:border-gray-700"}`}>
                                                         {paymentMethod === "credit-card" && (
                                                             <motion.div 
                                                                 initial={{ scale: 0 }}
@@ -141,8 +141,8 @@ export default function CheckoutPage() {
                                                         )}
                                                     </div>
                                                 </div>
-                                                <CreditCard className={`w-5 h-5 mr-3 ${paymentMethod === "credit-card" ? "text-black dark:text-whiteScale" : "text-gray-400"}`} />
-                                                <span className={`font-medium text-sm tracking-wide ${paymentMethod === "credit-card" ? "text-black dark:text-whiteScale" : "text-gray-500"}`}>Credit Card</span>
+                                                <CreditCard className={`w-5 h-5 mr-3 ${paymentMethod === "credit-card" ? "text-black dark:text-white" : "text-gray-400"}`} />
+                                                <span className={`font-medium text-sm tracking-wide ${paymentMethod === "credit-card" ? "text-black dark:text-white" : "text-gray-500"}`}>Credit Card</span>
                                             </div>
                                             
                                             {/* Fake Card Form (Expanded when selected) */}
@@ -190,7 +190,7 @@ export default function CheckoutPage() {
                                         >
                                             <div className={`flex items-center p-5 transition-colors ${paymentMethod === "instapay" ? "bg-gray-50/50 dark:bg-zinc-900/40" : "hover:bg-gray-50 dark:hover:bg-zinc-900/20"}`}>
                                                 <div className="mr-5 relative flex items-center justify-center">
-                                                    <div className={`w-5 h-5 rounded-full border transition-all flex items-center justify-center ${paymentMethod === "instapay" ? "border-black dark:border-white bg-black dark:bg-whiteScale" : "border-gray-300 dark:border-gray-700"}`}>
+                                                    <div className={`w-5 h-5 rounded-full border transition-all flex items-center justify-center ${paymentMethod === "instapay" ? "border-black dark:border-white bg-black dark:bg-white" : "border-gray-300 dark:border-gray-700"}`}>
                                                         {paymentMethod === "instapay" && (
                                                             <motion.div 
                                                                 initial={{ scale: 0 }}
@@ -202,7 +202,7 @@ export default function CheckoutPage() {
                                                 </div>
                                                 <QrCode className={`w-5 h-5 mr-3 ${paymentMethod === "instapay" ? "text-pink-500" : "text-gray-400"}`} />
                                                 <div className="flex flex-col">
-                                                    <span className={`font-medium text-sm tracking-wide ${paymentMethod === "instapay" ? "text-black dark:text-whiteScale" : "text-gray-500"}`}>Instapay</span>
+                                                    <span className={`font-medium text-sm tracking-wide ${paymentMethod === "instapay" ? "text-black dark:text-white" : "text-gray-500"}`}>Instapay</span>
                                                     <span className="text-[10px] text-gray-400 uppercase tracking-tighter">Fast Bank Transfer</span>
                                                 </div>
                                             </div>
@@ -239,7 +239,7 @@ export default function CheckoutPage() {
                                         >
                                             <div className={`flex items-center p-5 transition-colors ${paymentMethod === "fawry" ? "bg-gray-50/50 dark:bg-zinc-900/40" : "hover:bg-gray-50 dark:hover:bg-zinc-900/20"}`}>
                                                 <div className="mr-5 relative flex items-center justify-center">
-                                                    <div className={`w-5 h-5 rounded-full border transition-all flex items-center justify-center ${paymentMethod === "fawry" ? "border-black dark:border-white bg-black dark:bg-whiteScale" : "border-gray-300 dark:border-gray-700"}`}>
+                                                    <div className={`w-5 h-5 rounded-full border transition-all flex items-center justify-center ${paymentMethod === "fawry" ? "border-black dark:border-white bg-black dark:bg-white" : "border-gray-300 dark:border-gray-700"}`}>
                                                         {paymentMethod === "fawry" && (
                                                             <motion.div 
                                                                 initial={{ scale: 0 }}
@@ -251,7 +251,7 @@ export default function CheckoutPage() {
                                                 </div>
                                                 <Zap className={`w-5 h-5 mr-3 ${paymentMethod === "fawry" ? "text-yellow-500" : "text-gray-400"}`} />
                                                 <div className="flex flex-col">
-                                                    <span className={`font-medium text-sm tracking-wide ${paymentMethod === "fawry" ? "text-black dark:text-whiteScale" : "text-gray-500"}`}>Fawry</span>
+                                                    <span className={`font-medium text-sm tracking-wide ${paymentMethod === "fawry" ? "text-black dark:text-white" : "text-gray-500"}`}>Fawry</span>
                                                     <span className="text-[10px] text-gray-400 uppercase tracking-tighter">Pay at any Fawry branch</span>
                                                 </div>
                                             </div>
@@ -264,7 +264,7 @@ export default function CheckoutPage() {
                                         >
                                             <div className={`flex items-center p-5 transition-colors ${paymentMethod === "apple-pay" ? "bg-gray-50/50 dark:bg-zinc-900/40" : "hover:bg-gray-50 dark:hover:bg-zinc-900/20"}`}>
                                                 <div className="mr-5 relative flex items-center justify-center">
-                                                    <div className={`w-5 h-5 rounded-full border transition-all flex items-center justify-center ${paymentMethod === "apple-pay" ? "border-black dark:border-white bg-black dark:bg-whiteScale" : "border-gray-300 dark:border-gray-700"}`}>
+                                                    <div className={`w-5 h-5 rounded-full border transition-all flex items-center justify-center ${paymentMethod === "apple-pay" ? "border-black dark:border-white bg-black dark:bg-white" : "border-gray-300 dark:border-gray-700"}`}>
                                                         {paymentMethod === "apple-pay" && (
                                                             <motion.div 
                                                                 initial={{ scale: 0 }}
@@ -274,8 +274,8 @@ export default function CheckoutPage() {
                                                         )}
                                                     </div>
                                                 </div>
-                                                <Apple className={`w-5 h-5 mr-3 ${paymentMethod === "apple-pay" ? "text-black dark:text-whiteScale" : "text-gray-400"}`} />
-                                                <span className={`font-medium text-sm tracking-wide ${paymentMethod === "apple-pay" ? "text-black dark:text-whiteScale" : "text-gray-500"}`}>Apple Pay</span>
+                                                <Apple className={`w-5 h-5 mr-3 ${paymentMethod === "apple-pay" ? "text-black dark:text-white" : "text-gray-400"}`} />
+                                                <span className={`font-medium text-sm tracking-wide ${paymentMethod === "apple-pay" ? "text-black dark:text-white" : "text-gray-500"}`}>Apple Pay</span>
                                             </div>
                                         </div>
 
@@ -286,7 +286,7 @@ export default function CheckoutPage() {
                                         >
                                             <div className={`flex items-center p-5 transition-colors ${paymentMethod === "cod" ? "bg-gray-50/50 dark:bg-zinc-900/40" : "hover:bg-gray-50 dark:hover:bg-zinc-900/20"}`}>
                                                 <div className="mr-5 relative flex items-center justify-center">
-                                                    <div className={`w-5 h-5 rounded-full border transition-all flex items-center justify-center ${paymentMethod === "cod" ? "border-black dark:border-white bg-black dark:bg-whiteScale" : "border-gray-300 dark:border-gray-700"}`}>
+                                                    <div className={`w-5 h-5 rounded-full border transition-all flex items-center justify-center ${paymentMethod === "cod" ? "border-black dark:border-white bg-black dark:bg-white" : "border-gray-300 dark:border-gray-700"}`}>
                                                         {paymentMethod === "cod" && (
                                                             <motion.div 
                                                                 initial={{ scale: 0 }}
@@ -298,7 +298,7 @@ export default function CheckoutPage() {
                                                 </div>
                                                 <Banknote className={`w-5 h-5 mr-3 ${paymentMethod === "cod" ? "text-emerald-500" : "text-gray-400"}`} />
                                                 <div className="flex flex-col">
-                                                    <span className={`font-medium text-sm tracking-wide ${paymentMethod === "cod" ? "text-black dark:text-whiteScale" : "text-gray-500"}`}>Cash on Delivery</span>
+                                                    <span className={`font-medium text-sm tracking-wide ${paymentMethod === "cod" ? "text-black dark:text-white" : "text-gray-500"}`}>Cash on Delivery</span>
                                                     <span className="text-[10px] text-gray-400 uppercase tracking-tighter">Pay when you receive your order</span>
                                                 </div>
                                             </div>
