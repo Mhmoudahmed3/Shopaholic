@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { SiteSettings, Category } from "@/lib/types";
-import { updateSiteSettings, addCategory, updateCategoryServer, deleteCategory } from "../actions";
+import { updateSiteSettings, addCategory, updateCategoryServer, deleteCategory, renameCategoryGroup } from "../actions";
 import { 
     Save, 
     Mail, 
@@ -137,9 +137,8 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
         if (!newType || oldType === newType) return;
         setIsLoading(true);
         try {
-            const group = groupedCategories[oldType];
-            if (group) {
-                await Promise.all(group.map(cat => updateCategoryServer(cat.id, { label: cat.label, type: newType })));
+            const result = await renameCategoryGroup(oldType, newType);
+            if (result.success) {
                 setCategories(prev => prev.map(c => (c.type === oldType || (oldType === 'General' && !c.type)) ? { ...c, type: newType } : c));
                 setMessage({ type: 'success', text: "Group renamed successfully." });
             }

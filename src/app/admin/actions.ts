@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getSettingsDB, saveSettingsDB, getProductsDB, saveProductsDB, getCollectionsDB, saveCollectionsDB, getHomepageDB, saveHomepageDB } from "@/lib/db";
+import { getSettingsDB, saveSettingsDB, getProductsDB, saveProductsDB, getCollectionsDB, saveCollectionsDB, getHomepageDB, saveHomepageDB, getCategoriesDB, saveCategoriesDB, deleteCategoryDB } from "@/lib/db";
 import { SiteSettings, Category, Review, Product, Collection, Homepage } from "@/lib/types";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
@@ -28,12 +28,10 @@ export async function updateSiteSettings(settings: SiteSettings) {
 // Categories
 export async function getCategories() {
     console.log("[ACTION] Fetching categories...");
-    const { getCategoriesDB } = await import("@/lib/db");
     return getCategoriesDB();
 }
 
 export async function getCategoryProductCounts() {
-    const { getProductsDB } = await import("@/lib/db");
     const products = getProductsDB();
     const counts: Record<string, number> = {};
     
@@ -47,7 +45,6 @@ export async function getCategoryProductCounts() {
 export async function addCategory(category: { label: string, type?: string }) {
     console.log(`[ACTION] Adding category: ${category.label} (${category.type || 'no type'})`);
     try {
-        const { getCategoriesDB, saveCategoriesDB } = await import("@/lib/db");
         const categories = getCategoriesDB();
         
         // Generate unique ID by appending a random suffix to the label-based slug
@@ -73,7 +70,6 @@ export async function addCategory(category: { label: string, type?: string }) {
 export async function updateCategoryServer(categoryId: string, data: { label: string, type?: string }) {
     console.log(`[ACTION] Updating category: ${categoryId}`);
     try {
-        const { getCategoriesDB, saveCategoriesDB } = await import("@/lib/db");
         const categories = getCategoriesDB();
         const index = categories.findIndex(c => c.id === categoryId);
         if (index === -1) throw new Error("Category not found");
@@ -91,10 +87,29 @@ export async function updateCategoryServer(categoryId: string, data: { label: st
     }
 }
 
+export async function renameCategoryGroup(oldType: string, newType: string) {
+    console.log(`[ACTION] Renaming category group from ${oldType} to ${newType}`);
+    try {
+        const categories = getCategoriesDB();
+        const updatedCategories = categories.map(cat => 
+            (cat.type === oldType || (oldType === 'General' && !cat.type)) 
+                ? { ...cat, type: newType } 
+                : cat
+        );
+        saveCategoriesDB(updatedCategories);
+        revalidatePath('/', 'layout');
+        revalidatePath('/shop');
+        revalidatePath('/admin/settings');
+        return { success: true };
+    } catch (error) {
+        console.error("Error renaming group:", error);
+        throw new Error("Failed to rename group");
+    }
+}
+
 export async function deleteCategory(categoryId: string) {
     console.log(`[ACTION] Deleting category: ${categoryId}`);
     try {
-        const { deleteCategoryDB } = await import("@/lib/db");
         deleteCategoryDB(categoryId);
         revalidatePath('/', 'layout');
         revalidatePath('/shop');

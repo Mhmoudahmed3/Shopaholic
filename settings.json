@@ -1,20 +1,21 @@
 {
   "storeName": "REHAM",
-  "storeDescription": "Minimalist luxury fashion for the modern woman. Experience the pinnacle of elegance and curated aesthetics.",
+  "storeDescription": "Minimalist Luxury & Timeless Aesthetics.",
   "contactEmail": "support@reham.com",
   "contactPhone": "+20 123 456 7890",
   "address": "Cairo, Egypt",
   "currency": "EGP",
   "currencySymbol": "EGP",
+  "taxRate": 14,
+  "shippingFee": 250,
+  "freeShippingThreshold": 5000,
   "maintenanceMode": false,
+  "footerText": "© 2024 Reham Website. All rights reserved.",
   "socialLinks": {
     "instagram": "reham_fashion",
     "facebook": "rehamfashion",
     "twitter": "reham_fashion",
-    "tiktok": "reham_fashion"
-  },
-  "footerText": "© 2024 Reham. All rights reserved.",
-  "taxRate": 14,
-  "shippingFee": 250,
-  "freeShippingThreshold": 5000
+    "tiktok": "reham_fashion",
+    "whatsapp": ""
+  }
 }
