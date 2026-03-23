@@ -5,22 +5,25 @@ import { Product, Category, Order, Homepage, Collection } from './types';
 const isVercel = !!process.env.VERCEL;
 const getDbPath = (filename: string) => isVercel ? path.join('/tmp', filename) : path.join(process.cwd(), filename);
 
+import { mockProducts } from './mock-data';
+
 const dbPath = getDbPath('products.json');
 
 // Initialize DB if it doesn't exist
 export function initDB() {
-    if (!fs.existsSync(dbPath)) {
-        fs.writeFileSync(dbPath, JSON.stringify([], null, 2));
+    if (!fs.existsSync(dbPath) || fs.readFileSync(dbPath, 'utf8').trim() === '[]') {
+        fs.writeFileSync(dbPath, JSON.stringify(mockProducts, null, 2));
     }
 }
 
 export function getProductsDB(): Product[] {
-    if (!fs.existsSync(dbPath)) return [];
+    if (!fs.existsSync(dbPath)) return mockProducts;
     const data = fs.readFileSync(dbPath, 'utf8');
     try {
-        return JSON.parse(data);
+        const parsed = JSON.parse(data);
+        return parsed && parsed.length > 0 ? parsed : mockProducts;
     } catch {
-        return [];
+        return mockProducts;
     }
 }
 
