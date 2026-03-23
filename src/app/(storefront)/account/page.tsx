@@ -145,7 +145,7 @@ export default function AccountPage() {
             <div className="w-full max-w-md">
 
                 <div className="text-center mb-10">
-                    <h1 className="text-3xl font-light tracking-widest uppercase mb-2">SHOPAHOLIC</h1>
+                    <h1 className="text-3xl font-light tracking-[0.3em] uppercase mb-2">SHOPOHOLIC</h1>
                     <h2 className="text-xl tracking-tight text-gray-900 dark:text-white mb-4">
                         {isLogin ? "Sign in to your account" : "Create an account"}
                     </h2>

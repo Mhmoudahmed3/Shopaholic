@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCartStore } from "@/store/useCartStore";
 import { Minus, Plus, X, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Price } from "@/components/shop/Price";
 
 export default function CartPage() {
     const [mounted, setMounted] = useState(false);
@@ -89,7 +90,7 @@ export default function CartPage() {
                                                 <Plus className="w-4 h-4" />
                                             </button>
                                         </div>
-                                        <p className="font-medium">{(item.price * item.quantity).toLocaleString()} EGP</p>
+                                        <p className="font-medium"><Price amount={item.price * item.quantity} /></p>
                                     </div>
                                 </div>
                             </div>
@@ -105,11 +106,11 @@ export default function CartPage() {
                         <div className="space-y-4 mb-6 pb-6 border-b border-gray-200 dark:border-gray-800">
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
-                                <span className="font-medium">{subtotal.toLocaleString()} EGP</span>
+                                <span className="font-medium"><Price amount={subtotal} /></span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-600 dark:text-gray-400">Shipping</span>
-                                <span className="font-medium">{shipping === 0 ? 'Free' : `${shipping.toLocaleString()} EGP`}</span>
+                                <span className="font-medium">{shipping === 0 ? 'Free' : <Price amount={shipping} />}</span>
                             </div>
                             {shipping > 0 && (
                                 <p className="text-xs text-gray-500">Free shipping on orders over 5,000 EGP</p>
@@ -118,7 +119,7 @@ export default function CartPage() {
 
                         <div className="flex justify-between items-center mb-8">
                             <span className="text-base font-medium uppercase tracking-wider">Total</span>
-                            <span className="text-xl font-medium">{total.toLocaleString()} EGP</span>
+                            <span className="text-xl font-medium"><Price amount={total} /></span>
                         </div>
 
                         <Link

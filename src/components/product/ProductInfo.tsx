@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { WishlistToggle } from "@/components/shop/WishlistToggle";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { Price } from "@/components/shop/Price";
 
 // ── Static data — defined once at module level, never recreated on re-render ───
 const ACCORDION_ITEMS = [
@@ -138,7 +139,7 @@ export default function ProductInfo({ product, colorVariants, activeColor, onCol
 
                 <div className="flex items-center gap-6 mb-6">
                     <p className="text-2xl font-light tracking-tight text-neutral-900 dark:text-neutral-100">
-                        {product.price.toLocaleString()} EGP
+                        <Price amount={product.price} />
                     </p>
                     {rating > 0 && (
                         <div className="flex items-center gap-2 pl-6 border-l border-neutral-200 dark:border-neutral-800">
@@ -355,7 +356,7 @@ export default function ProductInfo({ product, colorVariants, activeColor, onCol
                                 </div>
                                 <div className="min-w-0">
                                     <h4 className="text-[10px] font-bold uppercase tracking-widest truncate">{product.name}</h4>
-                                    <p className="text-xs font-light mt-0.5">{product.price.toLocaleString()} EGP</p>
+                                    <p className="text-xs font-light mt-0.5"><Price amount={product.price} /></p>
                                 </div>
                             </div>
                             <button

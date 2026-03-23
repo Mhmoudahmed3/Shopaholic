@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { X, Upload, Check, Loader2, Search, Package } from "lucide-react";
 import { clsx } from "clsx";
-import { createCuratedCollection, getAvailableProducts } from "../actions";
+import { createCuratedCollection, updateCuratedCollection, getAvailableProducts } from "../actions";
 import { Product, Collection } from "@/lib/types";
 
 interface CollectionModalProps {
@@ -119,7 +119,6 @@ export function CollectionModal({ isOpen, onClose, initialCollection }: Collecti
 
         try {
             if (initialCollection) {
-                const { updateCuratedCollection } = await import("../actions");
                 await updateCuratedCollection(formData);
             } else {
                 await createCuratedCollection(formData);

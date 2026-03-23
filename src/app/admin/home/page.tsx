@@ -64,7 +64,7 @@ export default function AdminHomePage() {
                         ? await updateHero(formData)
                         : await updatePromo(formData);
 
-                    if (result.success) {
+                    if (result.success && result.data) {
                         if (section === 'hero') setHero(result.data);
                         else setPromo(result.data);
                     }

@@ -11,6 +11,7 @@ import { WishlistToggle } from "./WishlistToggle";
 import { useState } from "react";
 import { QuickAddModal } from "./QuickAddModal";
 import { COLOR_MAP_HEX } from "@/lib/constants";
+import { Price } from "./Price";
 
 interface ProductGridProps {
     products: Product[];
@@ -115,7 +116,7 @@ export function ProductGrid({ products }: ProductGridProps) {
                             <h3 className="text-sm font-serif group-hover:text-black dark:group-hover:text-white transition-all duration-300 group-hover:translate-x-1">
                                 {product.name}
                             </h3>
-                            <p className="text-sm font-medium tracking-tight whitespace-nowrap">{product.price.toLocaleString()} EGP</p>
+                            <p className="text-sm font-medium tracking-tight whitespace-nowrap"><Price amount={product.price} /></p>
                         </div>
                         <div className="flex justify-between items-center">
                             <div className="flex flex-col gap-1">

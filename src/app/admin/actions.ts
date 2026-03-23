@@ -1,26 +1,45 @@
 "use server";
 
+import fs from 'fs';
+import path from 'path';
 import { revalidatePath } from "next/cache";
-import { SiteSettings, Category, Review, Product, Collection, Homepage } from "@/lib/types";
+import { SiteSettings, Category, Review, Product, Collection, Homepage, HomepageHero, HomepagePromo } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 
 // Site Settings
 export async function getSiteSettings(): Promise<SiteSettings> {
-    const { data, error } = await supabase
+    let { data, error } = await supabase
         .from('site_settings')
         .select('*')
         .eq('id', 1)
         .single();
     
-    if (error) {
-        console.error("Error fetching site settings:", error);
-        return {} as SiteSettings;
+    // Auto-sync store name if it's the old one
+    if (data && data.store_name === "REHAM") {
+        const { data: updated } = await supabase.from('site_settings').upsert({
+            id: 1,
+            store_name: "SHOPOHOLIC"
+        }).select().single();
+        if (updated) data = updated;
     }
+
+    if (!data) return { storeName: "SHOPOHOLIC" } as SiteSettings;
     
     return {
-        ...data,
-        socialLinks: data.social_links // Map DB snake_case to camelCase
-    } as any;
+        storeName: data.store_name,
+        storeDescription: data.store_description,
+        contactEmail: data.contact_email,
+        contactPhone: data.contact_phone,
+        address: data.address,
+        currency: data.currency,
+        currencySymbol: data.currency_symbol,
+        maintenanceMode: data.maintenance_mode,
+        footerText: data.footer_text,
+        taxRate: parseFloat(data.tax_rate || 0),
+        shippingFee: parseFloat(data.shipping_fee || 0),
+        freeShippingThreshold: parseFloat(data.free_shipping_threshold || 0),
+        socialLinks: data.social_links // social_links is JSON, matches interface structure
+    } as SiteSettings;
 }
 
 export async function updateSiteSettings(settings: SiteSettings) {
@@ -130,16 +149,56 @@ export async function deleteCategory(categoryId: string) {
     }
 }
 
+export async function updateCategoryServer(id: string, data: Partial<Category>) {
+    try {
+        const { error } = await supabase
+            .from('categories')
+            .update({ label: data.label, type: data.type })
+            .eq('id', id);
+
+        if (error) throw error;
+        revalidatePath('/', 'layout');
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating category:", error);
+        throw new Error("Failed to update category");
+    }
+}
+
+export async function renameCategoryGroup(oldName: string, newName: string) {
+    try {
+        const { error } = await supabase
+            .from('categories')
+            .update({ type: newName })
+            .eq('type', oldName);
+
+        if (error) throw error;
+        revalidatePath('/', 'layout');
+        return { success: true };
+    } catch (error) {
+        console.error("Error renaming category group:", error);
+        throw new Error("Failed to rename category group");
+    }
+}
+
 // Reviews
 export async function addProductReview(productId: string, input: any) {
     try {
+        const data = input instanceof FormData ? {
+            userName: input.get("userName") as string,
+            rating: Number(input.get("rating")),
+            comment: input.get("comment") as string,
+            date: (input.get("date") as string) || new Date().toISOString()
+        } : input;
+
         const newReview = {
             id: `rev-${Date.now()}`,
             product_id: productId,
-            user_name: input.userName,
-            rating: input.rating,
-            comment: input.comment,
-            verified: true
+            user_name: data.userName,
+            rating: data.rating,
+            comment: data.comment,
+            verified: true,
+            created_at: data.date || new Date().toISOString()
         };
 
         const { error } = await supabase
@@ -172,6 +231,45 @@ export async function addProductReview(productId: string, input: any) {
     } catch (error) {
         console.error("Error adding review:", error);
         throw new Error("Failed to add review");
+    }
+}
+
+export async function deleteProductReview(productId: string, reviewId: string) {
+    try {
+        const { error } = await supabase
+            .from('reviews')
+            .delete()
+            .eq('id', reviewId);
+
+        if (error) throw error;
+
+        // Recalculate rating
+        const { data: reviews } = await supabase
+            .from('reviews')
+            .select('rating')
+            .eq('product_id', productId);
+
+        let avg = 0;
+        let count = 0;
+        if (reviews && reviews.length > 0) {
+            avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+            count = reviews.length;
+        }
+
+        await supabase
+            .from('products')
+            .update({ 
+                rating: Number(avg.toFixed(1)), 
+                reviews_count: count 
+            })
+            .eq('id', productId);
+
+        revalidatePath(`/shop/${productId}`);
+        revalidatePath('/admin/inventory');
+        return { success: true };
+    } catch (error) {
+        console.error("Error deleting review:", error);
+        throw new Error("Failed to delete review");
     }
 }
 
@@ -366,35 +464,110 @@ export async function deleteProduct(productId: string) {
 }
 
 // Collection Management
-export async function getCuratedCollections() {
-    const { data } = await supabase.from('collections').select('*');
-    return data || [];
+export async function getCuratedCollections(): Promise<Collection[]> {
+    const { data } = await supabase.from('collections').select('*').order('created_at', { ascending: false });
+    
+    if (!data) return [];
+    
+    return data.map(item => ({
+        id: item.id,
+        name: item.name,
+        subtitle: item.subtitle,
+        image: item.image,
+        status: item.status,
+        productIds: item.product_ids || [],
+        itemsCount: (item.product_ids || []).length,
+        link: item.link,
+        createdAt: item.created_at
+    })) as Collection[];
 }
 
-export async function getAvailableProducts() {
-    const { data } = await supabase.from('products').select('*');
-    return data || [];
+export async function getAvailableProducts(): Promise<Product[]> {
+    const { data } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+    
+    if (!data) return [];
+    
+    return data.map(item => ({
+        ...item,
+        reviewsCount: item.reviews_count // Map DB snake_case to camelCase
+    })) as any;
 }
 
-export async function createCuratedCollection(data: any) {
+export async function createCuratedCollection(formData: FormData) {
+    console.log("[ACTION] Creating curated collection...");
     try {
-        const id = data.id || `col-${Date.now()}`;
-        const { error } = await supabase.from('collections').upsert([{
+        const id = `col-${Date.now()}`;
+        const name = formData.get("name") as string;
+        const subtitle = formData.get("subtitle") as string || "";
+        const imageFile = formData.get("image") as File | null;
+        const status = formData.get("status") as string || 'Active';
+        const productIds = JSON.parse(formData.get("productIds") as string || "[]");
+        
+        let imageUrl = "";
+        if (imageFile && imageFile.size > 0) {
+            const savedUrl = await saveFile(imageFile, "collections/");
+            if (savedUrl) imageUrl = savedUrl;
+        }
+
+        const { error } = await supabase.from('collections').insert([{
             id,
-            name: data.name,
-            subtitle: data.subtitle,
-            image: data.image,
-            status: data.status || 'Active',
-            link: data.link || `/shop?collection=${id}`
+            name,
+            subtitle,
+            image: imageUrl,
+            status,
+            product_ids: productIds,
+            items_count: productIds.length,
+            link: `/collections/${id}`
         }]);
 
         if (error) throw error;
+        
         revalidatePath("/admin/collections");
         revalidatePath("/");
-        return { success: true };
+        
+        return { success: true, id };
     } catch (error) {
         console.error("Error creating collection:", error);
-        return { success: false, error };
+        throw new Error("Failed to create collection");
+    }
+}
+
+export async function updateCuratedCollection(formData: FormData) {
+    const id = formData.get("collectionId") as string;
+    console.log(`[ACTION] Updating collection ${id}...`);
+    try {
+        const name = formData.get("name") as string;
+        const subtitle = formData.get("subtitle") as string || "";
+        const imageFile = formData.get("image") as File | null;
+        const currentImageUrl = formData.get("currentImage") as string || "";
+        const status = formData.get("status") as string || 'Active';
+        const productIds = JSON.parse(formData.get("productIds") as string || "[]");
+        
+        let imageUrl = currentImageUrl;
+        if (imageFile && imageFile.size > 0) {
+            const savedUrl = await saveFile(imageFile, "collections/");
+            if (savedUrl) imageUrl = savedUrl;
+        }
+
+        const { error } = await supabase.from('collections').update({
+            name,
+            subtitle,
+            image: imageUrl,
+            status,
+            product_ids: productIds,
+            items_count: productIds.length,
+            link: `/collections/${id}`
+        }).eq('id', id);
+
+        if (error) throw error;
+        
+        revalidatePath("/admin/collections");
+        revalidatePath("/");
+        
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating collection:", error);
+        throw new Error("Failed to update collection");
     }
 }
 
@@ -413,7 +586,53 @@ export async function deleteCollection(id: string) {
 
 // Homepage Management
 export async function getHomepageContent() {
-    const { data: home } = await supabase.from('homepage_content').select('*').eq('id', 1).single();
+    let { data: home } = await supabase.from('homepage_content').select('*').eq('id', 1).single();
+    
+    // Auto-sync rubbish data if detected
+    if (!home || home.hero?.subtitle === "kbkbb") {
+        console.log("[SYNC] Rubbish homepage detected. Syncing from homepage.json...");
+        try {
+            const jsonPath = path.join(process.cwd(), 'homepage.json');
+            if (fs.existsSync(jsonPath)) {
+                const homeData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+                const { data: synced, error } = await supabase.from('homepage_content').upsert([{
+                    id: 1,
+                    hero: homeData.hero,
+                    promo: homeData.promo,
+                    newsletter: homeData.newsletter
+                }]).select().single();
+                if (!error && synced) home = synced;
+            }
+        } catch (e) {
+            console.error("[SYNC] Failed to sync homepage:", e);
+        }
+    }
+
+    // Check for rubbish collections
+    const { data: checkCol } = await supabase.from('collections').select('id, name').eq('name', 'sadassad');
+    if (checkCol && checkCol.length > 0) {
+        console.log("[SYNC] Rubbish collections detected. Syncing from collections.json...");
+        try {
+            const jsonPath = path.join(process.cwd(), 'collections.json');
+            if (fs.existsSync(jsonPath)) {
+                const colData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+                // Clear rubbish collections
+                await supabase.from('collections').delete().eq('name', 'sadassad');
+                // Insert new ones
+                await supabase.from('collections').upsert(colData.map((c: any) => ({
+                    id: c.id,
+                    name: c.name,
+                    subtitle: c.subtitle,
+                    image: c.image,
+                    status: c.status,
+                    link: c.link
+                })));
+            }
+        } catch (e) {
+            console.error("[SYNC] Failed to sync collections:", e);
+        }
+    }
+
     const { data: collections } = await supabase.from('collections').select('*').eq('status', 'Active').limit(4);
     const { data: products } = await supabase.from('products').select('*').order('popularity', { ascending: false }).limit(8);
     
@@ -430,16 +649,68 @@ export async function getHomepageContent() {
     };
 }
 
-export async function updateHero(data: any) {
-    await supabase.from('homepage_content').update({ hero: data }).eq('id', 1);
-    revalidatePath("/");
-    return { success: true };
+export async function updateHero(formData: FormData) {
+    try {
+        const imageFile = formData.get("image") as File | null;
+        const currentImage = formData.get("currentImage") as string || "";
+        
+        let imageUrl = currentImage;
+        if (imageFile && imageFile.size > 0) {
+            const savedUrl = await saveFile(imageFile, "homepage/");
+            if (savedUrl) imageUrl = savedUrl;
+        }
+
+        const data = {
+            subtitle: formData.get("subtitle") as string || "",
+            title: formData.get("title") as string || "",
+            titleAccent: formData.get("titleAccent") as string || "",
+            description: formData.get("description") as string || "",
+            ctaText: formData.get("ctaText") as string || "",
+            ctaLink: formData.get("ctaLink") as string || "/shop",
+            secondaryLinkText: formData.get("secondaryLinkText") as string || "",
+            secondaryLink: formData.get("secondaryLink") as string || "/shop",
+            backgroundImage: imageUrl
+        };
+
+        const { error } = await supabase.from('homepage_content').update({ hero: data }).eq('id', 1);
+        if (error) throw error;
+        revalidatePath("/");
+        return { success: true, data: data as HomepageHero };
+    } catch (error) {
+        console.error("Error updating hero:", error);
+        return { success: false };
+    }
 }
 
-export async function updatePromo(data: any) {
-    await supabase.from('homepage_content').update({ promo: data }).eq('id', 1);
-    revalidatePath("/");
-    return { success: true };
+export async function updatePromo(formData: FormData) {
+    try {
+        const imageFile = formData.get("image") as File | null;
+        const currentImage = formData.get("currentImage") as string || "";
+        
+        let imageUrl = currentImage;
+        if (imageFile && imageFile.size > 0) {
+            const savedUrl = await saveFile(imageFile, "homepage-promo/");
+            if (savedUrl) imageUrl = savedUrl;
+        }
+
+        const data = {
+            subtitle: formData.get("subtitle") as string || "",
+            title: formData.get("title") as string || "",
+            titleAccent: formData.get("titleAccent") as string || "",
+            description: formData.get("description") as string || "",
+            ctaText: formData.get("ctaText") as string || "",
+            ctaLink: formData.get("ctaLink") as string || "/shop",
+            backgroundImage: imageUrl
+        };
+
+        const { error } = await supabase.from('homepage_content').update({ promo: data }).eq('id', 1);
+        if (error) throw error;
+        revalidatePath("/");
+        return { success: true, data: data as HomepagePromo };
+    } catch (error) {
+        console.error("Error updating promo:", error);
+        return { success: false };
+    }
 }
 
 export async function updateHomepageSection(section: string, data: any) {

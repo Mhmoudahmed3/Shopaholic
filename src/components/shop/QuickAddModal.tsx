@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import clsx from "clsx";
 import { COLOR_MAP_HEX } from "@/lib/constants";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { Price } from "@/components/shop/Price";
 
 interface QuickAddModalProps {
     product: Product | null;
@@ -124,7 +125,7 @@ export function QuickAddModal({ product, onClose }: QuickAddModalProps) {
                                 </p>
                                 <h2 className="text-xl font-serif mb-2">{product.name}</h2>
                                 <p className="text-lg font-medium mb-4">
-                                    {product.price.toLocaleString()} EGP
+                                    <Price amount={product.price} />
                                 </p>
 
                                 {/* Size */}

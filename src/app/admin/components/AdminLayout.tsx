@@ -70,7 +70,7 @@ export function AdminSideNav() {
             <div className="p-8 border-b border-gray-900">
                 <Link href="/" className="group block">
                     <h1 className="text-xl font-light tracking-[0.3em] uppercase text-white group-hover:text-gray-400 transition-colors">
-                        Reham
+                        Shopaholic
                     </h1>
                     <span className="text-[10px] uppercase tracking-widest text-gray-500 mt-1 block">
                         Admin Portal
@@ -111,7 +111,7 @@ export function AdminSideNav() {
                     </div>
                     <div className="flex-1 overflow-hidden">
                         <p className="text-sm font-medium text-white truncate">{user?.name || "Admin"}</p>
-                        <p className="text-[10px] text-gray-500 truncate">{user?.email || "admin@reham.com"}</p>
+                        <p className="text-[10px] text-gray-500 truncate">{user?.email || "admin@shopaholic.com"}</p>
                     </div>
                 </div>
 

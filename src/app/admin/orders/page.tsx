@@ -5,7 +5,7 @@ import OrdersList from "./OrdersList";
 export const dynamic = 'force-dynamic';
 
 export default async function OrdersPage() {
-    const orders = getOrdersDB();
+    const orders = await getOrdersDB();
 
     return (
         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">

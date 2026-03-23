@@ -9,6 +9,7 @@ import type { Product } from "@/lib/data";
 import { WishlistToggle } from "./WishlistToggle";
 import { QuickAddModal } from "./QuickAddModal";
 import { COLOR_MAP_HEX } from "@/lib/constants";
+import { Price } from "./Price";
 
 interface HorizontalProductScrollProps {
     title?: string;
@@ -107,7 +108,7 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
                                 {product.name}
                             </h3>
                             <span className="text-sm font-medium whitespace-nowrap">
-                                {product.price.toLocaleString()} EGP
+                                <Price amount={product.price} />
                             </span>
                         </div>
                         <p className="text-[10px] text-neutral-400 uppercase tracking-widest font-bold">

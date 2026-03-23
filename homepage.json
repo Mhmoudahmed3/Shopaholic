@@ -1,27 +1,27 @@
 {
   "hero": {
-    "subtitle": "kbkbb",
-    "title": "kjbqhq",
-    "titleAccent": "vkb",
-    "description": "",
-    "ctaText": "kbkb",
+    "subtitle": "SHOPOHOLIC GLOBAL 2024",
+    "title": "The Essence of",
+    "titleAccent": "Timeless Minimalist Fashion",
+    "description": "Discover our debut collection of handcrafted essentials. Pieces defined by their silence, power, and absolute quality.",
+    "ctaText": "Discover More",
     "ctaLink": "/shop",
-    "secondaryLinkText": "bkjbjbkj",
+    "secondaryLinkText": "View Lookbook",
     "secondaryLink": "/shop",
-    "backgroundImage": "/uploads/hero-1773675376052-a3ae8bd9_ec09_4a97_ac3f_75fe6686a6e1.jpg"
+    "backgroundImage": "/uploads/reham_hero.png"
   },
   "promo": {
-    "subtitle": "adsfjbasdf",
-    "title": "jsdbkjsd",
-    "titleAccent": "kjbedkjvb",
-    "description": "kjbkjbdkjvbkjwdsbvjksdb",
-    "ctaText": "kjbedkjwfcbk",
+    "subtitle": "EXCLUSIVELY CRAFTED",
+    "title": "The Pure Silk",
+    "titleAccent": "Series",
+    "description": "Ethically sourced, sustainably made. Experience the softest touch of luxury in our limited edition summer series.",
+    "ctaText": "Explore Design",
     "ctaLink": "/shop",
-    "backgroundImage": "/uploads/promo-1774023123566-Gemini_Generated_Image_a86r7na86r7na86r.jpg"
+    "backgroundImage": "/uploads/reham_promo.png"
   },
   "newsletter": {
-    "title": "fdlkjnvjlnfdlnv jd",
-    "description": "lnljknl",
-    "ctaText": "nljnljnljnljnljnfjldnvljsd"
+    "title": "Join the Inner Circle",
+    "description": "Unlock access to private collections, bespoke fitting events, and our editorial lookbooks.",
+    "ctaText": "Become a Member"
   }
 }

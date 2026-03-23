@@ -8,31 +8,31 @@ import type { HomepageHero, HomepagePromo, HomepageNewsletter, Product } from "@
 export const revalidate = 60; // Revalidate homepage every 60 seconds (ISR)
 
 const defaultHero = {
-  subtitle: "PREMIUM COLLECTION 2024",
-  title: "Elegance Redefined",
-  titleAccent: "for the Modern Woman",
-  description: "Discover our curated collection of high-end fashion pieces designed to empower and inspire.",
-  ctaText: "Shop Collection",
+  subtitle: "SHOPOHOLIC GLOBAL 2024",
+  title: "The Essence of",
+  titleAccent: "Timeless Minimalist Fashion",
+  description: "Discover our debut collection of handcrafted essentials. Pieces defined by their silence, power, and absolute quality.",
+  ctaText: "Discover More",
   ctaLink: "/shop",
   secondaryLinkText: "View Lookbook",
   secondaryLink: "/shop",
-  backgroundImage: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80"
+  backgroundImage: "/uploads/reham_hero.png"
 };
 
 const defaultPromo = {
-  subtitle: "LIMITED EDITION",
-  title: "The Summer Collection",
-  titleAccent: "Is Here",
-  description: "Handcrafted pieces using the finest silks and sustainable materials. Every detail is a statement of luxury.",
-  ctaText: "Explore Now",
+  subtitle: "EXCLUSIVELY CRAFTED",
+  title: "The Pure Silk",
+  titleAccent: "Series",
+  description: "Ethically sourced, sustainably made. Experience the softest touch of luxury in our limited edition summer series.",
+  ctaText: "Explore Design",
   ctaLink: "/shop",
-  backgroundImage: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80"
+  backgroundImage: "/uploads/reham_promo.png"
 };
 
 const defaultNewsletter = {
   title: "Join the Inner Circle",
-  description: "Be the first to know about new arrivals, private sales, and exclusive events.",
-  ctaText: "Create Account"
+  description: "Unlock access to private collections, bespoke fitting events, and our editorial lookbooks.",
+  ctaText: "Become a Member"
 };
 
 export default async function Home() {

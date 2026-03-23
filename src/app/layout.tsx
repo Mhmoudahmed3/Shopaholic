@@ -13,9 +13,11 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "SHOPAHOLIC | Minimalist Luxury Fashion",
-  description: "Experience the pinnacle of minimalist luxury. Discover our curated collection of timeless fashion essentials.",
+  title: "SHOPOHOLIC | Premium Global Fashion",
+  description: "Experience the ultimate collection of curated fashion. Shop SHOPOHOLIC for timeless styles and modern aesthetics.",
 };
+
+import { SettingsSync } from "@/components/SettingsSync";
 
 export default function RootLayout({
   children,
@@ -25,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning className={`${inter.variable} ${playfair.variable} antialiased selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black flex flex-col min-h-screen overflow-x-hidden`}>
+        <SettingsSync />
         {children}
       </body>
     </html>

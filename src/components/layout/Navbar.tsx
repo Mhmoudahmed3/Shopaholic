@@ -8,7 +8,7 @@ import { SearchModal } from "./SearchModal";
 import { useSearchStore } from "@/lib/useSearchStore";
 import { SettingsDropdown } from "./SettingsDropdown";
 
-export function Navbar({ storeName = "REHAM" }: { storeName?: string }) {
+export function Navbar({ storeName = "SHOPOHOLIC" }: { storeName?: string }) {
     const { open: openSearch } = useSearchStore();
 
     return (

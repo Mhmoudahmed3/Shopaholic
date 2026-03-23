@@ -8,6 +8,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { useSettingsStore, type Theme, type Currency, type Language } from "@/lib/useSettingsStore";
+import { useTranslation } from "@/hooks/useTranslation";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -17,6 +18,7 @@ export function SettingsDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme, currency, setCurrency, language, setLanguage } = useSettingsStore();
+  const { t } = useTranslation();
 
   // Handle client-side Hydration
   const [mounted, setMounted] = useState(false);
@@ -33,36 +35,7 @@ export function SettingsDropdown() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Sync theme
-  useEffect(() => {
-    if (!mounted) return;
-    const root = window.document.documentElement;
-    
-    const applyTheme = (t: Theme) => {
-        if (t === "dark") {
-            root.classList.add("dark");
-        } else if (t === "light") {
-            root.classList.remove("dark");
-        } else {
-            const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            if (isDark) root.classList.add("dark");
-            else root.classList.remove("dark");
-        }
-    };
-
-    applyTheme(theme);
-    
-    // Watch system theme if in 'system' mode
-    if (theme === 'system') {
-        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-        const handleChange = (e: MediaQueryListEvent) => {
-            if (e.matches) root.classList.add("dark");
-            else root.classList.remove("dark");
-        };
-        mediaQuery.addEventListener("change", handleChange);
-        return () => mediaQuery.removeEventListener("change", handleChange);
-    }
-  }, [theme, mounted]);
+  // Handled by SettingsSync globally
 
   const currencies = [
     { code: "EGP" },
@@ -105,7 +78,7 @@ export function SettingsDropdown() {
               {/* Currency */}
               <div>
                 <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 mb-4">
-                  <CreditCard className="h-3 w-3" /> Currency
+                  <CreditCard className="h-3 w-3" /> {t('currency')}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {currencies.map((c) => (
@@ -128,7 +101,7 @@ export function SettingsDropdown() {
               {/* Language */}
               <div>
                 <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 mb-4">
-                  <Globe className="h-3 w-3" /> Language
+                  <Globe className="h-3 w-3" /> {t('language')}
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {languages.map((l) => (
@@ -151,33 +124,36 @@ export function SettingsDropdown() {
               {/* Theme */}
               <div>
                 <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 mb-4">
-                  <Monitor className="h-3 w-3" /> Appearance
+                  <Monitor className="h-3 w-3" /> {t('appearance')}
                 </label>
                 <div className="flex bg-neutral-100 dark:bg-zinc-900 p-1.5 rounded-xl gap-1">
                   <button 
                     onClick={() => setTheme("light")}
-                    className={cn(
+                     className={cn(
                       "flex-1 flex items-center justify-center py-2 rounded-lg transition-all duration-500",
                       theme === "light" ? "bg-white dark:bg-zinc-700 shadow-md scale-100" : "opacity-40 hover:opacity-100 scale-95"
                     )}
+                    title={t('light')}
                   >
                     <Sun className="h-4 w-4" />
                   </button>
                   <button 
                     onClick={() => setTheme("dark")}
-                    className={cn(
+                     className={cn(
                       "flex-1 flex items-center justify-center py-2 rounded-lg transition-all duration-500",
                       theme === "dark" ? "bg-white dark:bg-zinc-700 shadow-md scale-100" : "opacity-40 hover:opacity-100 scale-95"
                     )}
+                    title={t('dark')}
                   >
                     <Moon className="h-4 w-4" />
                   </button>
                   <button 
                     onClick={() => setTheme("system")}
-                    className={cn(
+                     className={cn(
                       "flex-1 flex items-center justify-center py-2 rounded-lg transition-all duration-500",
                       theme === "system" ? "bg-white dark:bg-zinc-700 shadow-md scale-100" : "opacity-40 hover:opacity-100 scale-95"
                     )}
+                    title={t('system')}
                   >
                     <Monitor className="h-4 w-4" />
                   </button>
@@ -188,17 +164,17 @@ export function SettingsDropdown() {
               <div className="pt-4 border-t border-black/5 dark:border-white/5 space-y-3">
                 <Link 
                   href="/track-order" 
-                  onClick={() => setIsOpen(false)}
+                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity"
                 >
-                  Track Order
+                  {t('trackOrder')}
                 </Link>
                 <Link 
                   href="/contact" 
-                  onClick={() => setIsOpen(false)}
+                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity"
                 >
-                  Help & Support
+                  {t('helpSupport')}
                 </Link>
               </div>
 

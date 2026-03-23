@@ -25,7 +25,7 @@ export const useSettingsStore = create<SettingsStore>()(
             setLanguage: (language) => set({ language }),
         }),
         {
-            name: 'reham-settings-storage',
+            name: 'shopaholic-settings-storage',
         }
     )
 );

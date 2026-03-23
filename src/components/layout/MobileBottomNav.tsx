@@ -9,6 +9,8 @@ import { useCartStore } from "@/store/useCartStore";
 import { useEffect, useState } from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { useTranslation } from "@/hooks/useTranslation";
+import { TranslationKey } from "@/lib/translations";
 
 
 function cn(...inputs: ClassValue[]) {
@@ -18,6 +20,7 @@ function cn(...inputs: ClassValue[]) {
 export function MobileBottomNav() {
     const pathname = usePathname();
     const [mounted, setMounted] = useState(false);
+    const { t } = useTranslation();
     
     // Store values
     const wishlistCount = useWishlistStore((state) => state.items.length);
@@ -27,11 +30,11 @@ export function MobileBottomNav() {
         setMounted(true);
     }, []);
 
-    const navItems = [
-        { label: "Home", icon: Home, href: "/" },
-        { label: "Shop", icon: ShoppingBag, href: "/shop" },
-        { label: "Wishlist", icon: Heart, href: "/favorites", count: wishlistCount },
-        { label: "Cart", icon: ShoppingBag, href: "/cart", count: cartCount },
+    const navItems: { label: TranslationKey, icon: any, href: string, count?: number }[] = [
+        { label: "home", icon: Home, href: "/" },
+        { label: "shop", icon: ShoppingBag, href: "/shop" },
+        { label: "wishlist", icon: Heart, href: "/favorites", count: wishlistCount },
+        { label: "cart", icon: ShoppingBag, href: "/cart", count: cartCount },
     ];
 
     return (
@@ -65,7 +68,7 @@ export function MobileBottomNav() {
                                 "text-[9px] font-medium uppercase tracking-[0.05em] leading-none mt-1 transition-all duration-300",
                                 isActive ? "opacity-100" : "opacity-0 h-0 -mt-2 overflow-hidden"
                             )}>
-                                {item.label}
+                                {t(item.label)}
                             </span>
                         </div>
                     );

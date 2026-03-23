@@ -112,39 +112,43 @@ export default function AdminDashboard({ products, orders, categories }: { produ
                             variants={containerVariants}
                             initial="hidden"
                             animate="visible"
-                            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
+                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
                         >
                             <StatCard 
                                 label="Total Revenue" 
                                 value={`${totalRevenue.toLocaleString()} EGP`} 
-                                trend="Live" 
+                                trend="+12.5%" 
                                 trendUp={true} 
                                 icon={TrendingUp} 
-                                description="Real-time total"
+                                description="vs last month"
+                                color="emerald"
                             />
                             <StatCard 
                                 label="Total Orders" 
                                 value={totalOrders.toString()} 
-                                trend="Live" 
+                                trend="+8.2%" 
                                 trendUp={true} 
                                 icon={ShoppingBag}
-                                description="Order count"
+                                description="New orders today"
+                                color="blue"
                             />
                             <StatCard 
                                 label="Active Customers" 
                                 value={activeCustomers.toString()} 
-                                trend="Live" 
+                                trend="+5.4%" 
                                 trendUp={true} 
                                 icon={Users}
-                                description="Unique buyers"
+                                description="Growth this week"
+                                color="purple"
                             />
                             <StatCard 
                                 label="Total Inventory" 
                                 value={totalStock.toString()} 
-                                trend="Live" 
+                                trend="Stable" 
                                 trendUp={true} 
                                 icon={TrendingUp}
-                                description="Items in stock"
+                                description="Active SKU count"
+                                color="orange"
                             />
                         </motion.div>
                     );
@@ -168,8 +172,9 @@ export default function AdminDashboard({ products, orders, categories }: { produ
                             </div>
                         </div>
 
-                        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
-                            <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between gap-4 bg-gray-50/50 dark:bg-zinc-800/30 relative">
+                        <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl shadow-black/5 relative group/table">
+                            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/[0.02] dark:to-white/[0.02] pointer-events-none" />
+                            <div className="p-5 border-b border-gray-100 dark:border-white/5 flex items-center justify-between gap-4 bg-white/50 dark:bg-zinc-800/20 relative z-10">
                                 <div className="flex items-center gap-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 px-3 py-1.5 rounded-lg flex-1 sm:w-64 sm:flex-none">
                                     <Search className="w-4 h-4 text-gray-400" />
                                     <input 
@@ -498,27 +503,60 @@ interface StatCardProps {
     description: string;
 }
 
-function StatCard({ label, value, trend, trendUp, icon: Icon, description }: StatCardProps) {
+function StatCard({ label, value, trend, trendUp, icon: Icon, description, color = "neutral" }: StatCardProps & { color?: "emerald" | "blue" | "purple" | "orange" | "neutral" }) {
+    const colorMap = {
+        emerald: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
+        blue: "text-blue-500 bg-blue-500/10 border-blue-500/20",
+        purple: "text-purple-500 bg-purple-500/10 border-purple-500/20",
+        orange: "text-orange-500 bg-orange-500/10 border-orange-500/20",
+        neutral: "text-gray-500 bg-gray-500/10 border-gray-500/20"
+    };
+    
+    const colorClasses = colorMap[color] || colorMap.neutral;
+
     return (
         <motion.div 
             variants={itemVariants}
-            className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 p-4 sm:p-6 rounded-xl shadow-sm hover:shadow-md transition-all group flex flex-col justify-between"
+            whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            className="relative overflow-hidden bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/5 p-6 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-white/5 transition-all group"
         >
-            <div className="flex justify-between items-start mb-3 sm:mb-4">
-                <div className="p-2 sm:p-2.5 bg-gray-50 dark:bg-zinc-800 rounded-lg group-hover:scale-110 transition-transform">
-                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 dark:text-gray-100" />
+            {/* Subtle Gradient Background */}
+            <div className={`absolute -right-4 -top-4 w-24 h-24 blur-3xl opacity-10 rounded-full transition-opacity group-hover:opacity-20 ${colorClasses.split(' ')[0]}`} />
+            
+            <div className="flex justify-between items-start mb-6">
+                <div className={`p-3 rounded-xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm ${colorClasses}`}>
+                    <Icon className="w-5 h-5" />
                 </div>
-                <div className={`flex items-center gap-1 text-[10px] sm:text-xs font-bold ${trendUp ? 'text-emerald-600' : 'text-rose-600'}`}>
-                    {trendUp ? <ArrowUpRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> : <ArrowDownRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />}
-                    <span className="hidden sm:inline">{trend}</span>
+                <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase transition-colors ${
+                    trendUp ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'
+                }`}>
+                    {trendUp ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+                    {trend}
                 </div>
             </div>
-            <div>
-                <p className="text-[9px] sm:text-[10px] uppercase tracking-wider sm:tracking-widest text-gray-400 font-bold mb-1 truncate">{label}</p>
-                <div className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-2">
-                    <h4 className="text-lg sm:text-2xl font-light tracking-tight text-gray-900 dark:text-gray-100 truncate">{value}</h4>
-                    <span className="text-[9px] sm:text-[10px] text-gray-400 font-medium truncate">{description}</span>
+            
+            <div className="space-y-1">
+                <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-gray-500/70 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                    {label}
+                </p>
+                <div className="flex items-baseline gap-2">
+                    <h4 className="text-2xl font-light tracking-tight text-gray-950 dark:text-white">
+                        {value}
+                    </h4>
                 </div>
+                <p className="text-[10px] text-gray-400 font-medium tracking-tight">
+                    {description}
+                </p>
+            </div>
+
+            {/* Bottom Progress Bar Decoration */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-50 dark:bg-zinc-800/50">
+                <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 1.5, delay: 0.5 }}
+                    className={`h-full opacity-30 ${colorClasses.split(' ')[0].replace('text-', 'bg-')}`} 
+                />
             </div>
         </motion.div>
     );
@@ -532,13 +570,20 @@ interface CategoryBoxProps {
 
 function CategoryBox({ label, count, highlighted = false }: CategoryBoxProps) {
     return (
-        <div className={`p-4 rounded-xl border transition-all cursor-pointer ${
-            highlighted 
-                ? 'bg-white text-black border-white' 
-                : 'bg-zinc-900 border-zinc-800 hover:border-zinc-600 text-gray-300'
-        }`}>
-            <p className="text-[10px] uppercase font-bold tracking-widest mb-1 opacity-60">{count} Items</p>
-            <p className="text-sm font-medium tracking-tight">{label}</p>
-        </div>
+        <motion.div 
+            whileHover={{ scale: 1.02, y: -2 }}
+            className={`p-5 rounded-2xl border transition-all cursor-pointer relative overflow-hidden group/box ${
+                highlighted 
+                    ? 'bg-white text-black border-white shadow-xl shadow-white/10' 
+                    : 'bg-zinc-900/50 backdrop-blur-md border-zinc-800 hover:border-zinc-700 text-gray-300'
+            }`}
+        >
+            <div className={`absolute -right-2 -top-2 w-12 h-12 rounded-full blur-2xl opacity-0 group-hover/box:opacity-20 transition-opacity ${highlighted ? 'bg-black' : 'bg-white'}`} />
+            <p className="text-[10px] uppercase font-bold tracking-[0.2em] mb-1 opacity-60 group-hover/box:opacity-100 transition-opacity">{count} Items</p>
+            <div className="flex items-center justify-between">
+                <p className="text-sm font-medium tracking-tight">{label}</p>
+                <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover/box:opacity-100 -translate-x-2 group-hover/box:translate-x-0 transition-all" />
+            </div>
+        </motion.div>
     );
 }

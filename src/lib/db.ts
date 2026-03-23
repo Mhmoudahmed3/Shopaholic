@@ -3,8 +3,19 @@ import { SiteSettings, Category, Product, Collection, Homepage } from './types';
 
 // Site Settings
 export async function getSettingsDB(): Promise<SiteSettings> {
-  const { data, error } = await supabase.from('site_settings').select('*').eq('id', 1).single();
-  if (error) return {} as SiteSettings;
+  let { data, error } = await supabase.from('site_settings').select('*').eq('id', 1).single();
+  
+  // Auto-sync store name if it's the old one
+  if (data && data.store_name === "REHAM") {
+    const { data: updated } = await supabase.from('site_settings').upsert({
+      id: 1,
+      store_name: "SHOPOHOLIC"
+    }).select().single();
+    if (updated) data = updated;
+  }
+
+  if (error || !data) return { storeName: "SHOPOHOLIC" } as SiteSettings;
+  
   return {
     ...data,
     storeName: data.store_name,
@@ -47,14 +58,19 @@ export async function getProductsDB(): Promise<Product[]> {
 }
 
 export async function getProduct(id: string): Promise<Product | undefined> {
-  const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
+  const { data, error } = await supabase.from('products').select('*, reviews(*)').eq('id', id).single();
   if (error || !data) return undefined;
   return {
     ...data,
     discountPrice: data.discount_price,
     imageVariants: data.image_variants,
     reviewsCount: data.reviews_count,
-    createdAt: data.created_at
+    createdAt: data.created_at,
+    reviews: data.reviews?.map((r: any) => ({
+      ...r,
+      userName: r.user_name,
+      date: r.created_at
+    }))
   } as any;
 }
 
@@ -96,6 +112,56 @@ export async function getCollectionsDB(): Promise<Collection[]> {
 
 export async function saveCollectionsDB(collections: Collection[]) {
   // Not used
+}
+
+export async function getCollection(id: string): Promise<Collection | undefined> {
+  const { data, error } = await supabase.from('collections').select('*').eq('id', id).single();
+  if (error || !data) return undefined;
+  return {
+    ...data,
+    productIds: data.product_ids,
+    itemsCount: data.items_count,
+    createdAt: data.created_at
+  } as any;
+}
+
+export async function getCollectionProducts(productIds: string[]): Promise<Product[]> {
+  if (!productIds || productIds.length === 0) return [];
+  
+  const { data, error } = await supabase.from('products').select('*').in('id', productIds);
+  if (error) return [];
+  
+  return (data || []).map(p => ({
+    ...p,
+    discountPrice: p.discount_price,
+    imageVariants: p.image_variants,
+    createdAt: p.created_at
+  })) as any;
+}
+
+export async function getRelatedProducts(productId: string, category?: string): Promise<Product[]> {
+  let targetCategory = category;
+  
+  if (!targetCategory) {
+    const { data: current } = await supabase.from('products').select('category').eq('id', productId).single();
+    if (!current) return [];
+    targetCategory = current.category;
+  }
+
+  const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('category', targetCategory)
+      .neq('id', productId)
+      .limit(4);
+
+  if (error) return [];
+  return (data || []).map(p => ({
+    ...p,
+    discountPrice: p.discount_price,
+    imageVariants: p.image_variants,
+    createdAt: p.created_at
+  })) as any;
 }
 
 // Homepage

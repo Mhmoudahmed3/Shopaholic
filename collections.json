@@ -1,18 +1,24 @@
 [
   {
-    "id": "coll-1774287079613",
-    "name": "sadassad",
-    "subtitle": "sdada",
-    "image": "/uploads/collection-1774287654605-gemini_generated_image_2b8rsw2b8rsw2b8r.png",
+    "id": "noir-elegance",
+    "name": "Noir Elegance",
+    "subtitle": "The 2024 Evening Series",
+    "image": "/uploads/noir_elegance.png",
     "status": "Active",
-    "productIds": [
-      "generated-product-1",
-      "generated-product-2",
-      "generated-product-3",
-      "generated-product-4"
-    ],
-    "itemsCount": 4,
-    "link": "/shop?collection=coll-1774287079613",
-    "createdAt": "2026-03-23T17:31:19.613Z"
+    "productIds": ["prod-1", "prod-2"],
+    "itemsCount": 2,
+    "link": "/shop?collection=noir-elegance",
+    "createdAt": "2026-03-23T22:30:00.000Z"
+  },
+  {
+    "id": "desert-bloom",
+    "name": "Desert Bloom",
+    "subtitle": "Natural Linen Collection",
+    "image": "/uploads/desert_bloom.png",
+    "status": "Active",
+    "productIds": ["prod-3"],
+    "itemsCount": 1,
+    "link": "/shop?collection=desert-bloom",
+    "createdAt": "2026-03-23T22:31:00.000Z"
   }
 ]

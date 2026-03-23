@@ -33,7 +33,7 @@ const MOCK_REVIEWS: Review[] = [
         id: "r3",
         userName: "Laila S.",
         rating: 5,
-        comment: "Reham never disappoints. This is my third purchase and the craftsmanship is consistently top-tier. Elegant, minimalist, and exactly what I was looking for.",
+        comment: "Shopaholic never disappoints. This is my third purchase and the craftsmanship is consistently top-tier. Elegant, minimalist, and exactly what I was looking for.",
         date: "2024-01-28",
         verified: true
     }

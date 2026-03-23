@@ -4,8 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSearchStore } from "@/lib/useSearchStore";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function SearchModal() {
+    const { t } = useTranslation();
     const { isOpen, close } = useSearchStore();
     const [query, setQuery] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
@@ -59,7 +61,7 @@ export function SearchModal() {
                                 type="text"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                placeholder="Search for products, brands, or categories..."
+                                placeholder={t('searchPlaceholder')}
                                 className="w-full h-full bg-transparent border-none outline-none text-lg sm:text-2xl font-light placeholder-gray-400 dark:placeholder-gray-600 text-black dark:text-white focus:ring-0"
                             />
                         </form>
@@ -67,7 +69,7 @@ export function SearchModal() {
                             onClick={close}
                             className="p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors ml-auto group flex items-center gap-2"
                         >
-                            <span className="hidden sm:inline text-xs font-bold uppercase tracking-widest group-hover:text-black dark:group-hover:text-white">Close</span>
+                            <span className="hidden sm:inline text-xs font-bold uppercase tracking-widest group-hover:text-black dark:group-hover:text-white">{t('close')}</span>
                             <X className="h-6 w-6" />
                         </button>
                     </div>
@@ -75,7 +77,7 @@ export function SearchModal() {
                     {/* Popular Searches */}
                     {query.length === 0 && (
                         <div className="py-12">
-                            <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">Popular Searches</h3>
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">{t('popularSearches')}</h3>
                             <div className="flex flex-wrap gap-2">
                                 {['Dresses', 'Summer Collection', 'Jackets', 'Accessories'].map(term => (
                                     <button 

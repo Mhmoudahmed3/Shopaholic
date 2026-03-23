@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Lock, CreditCard, Apple, Banknote, QrCode, Zap, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { Price } from "@/components/shop/Price";
 import { createOrder } from "../actions";
 
 export default function CheckoutPage() {
@@ -246,7 +247,7 @@ export default function CheckoutPage() {
                                                             <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-black max-w-sm">
                                                                 <p className="text-xs text-zinc-500 mb-2 font-medium">Transfer to Address (IPA):</p>
                                                                 <div className="flex items-center justify-between p-2.5 bg-zinc-100 dark:bg-zinc-900 rounded border border-zinc-200 dark:border-zinc-800">
-                                                                    <span className="text-sm font-bold tracking-tight">reham@instapay</span>
+                                                                    <span className="text-sm font-bold tracking-tight">shopaholic@instapay</span>
                                                                     <div className="text-[10px] bg-pink-500 text-white px-2 py-0.5 rounded-full font-bold">LIVE</div>
                                                                 </div>
                                                                 <p className="text-[10px] text-zinc-400 mt-3 leading-relaxed">
@@ -361,7 +362,7 @@ export default function CheckoutPage() {
                                     <div className="flex-1">
                                         <h3 className="text-sm font-medium mb-1">{item.name}</h3>
                                         <p className="text-xs text-gray-500 mb-1">{item.color} / {item.size}</p>
-                                        <p className="text-sm font-medium">{(item.price * item.quantity).toLocaleString()} EGP</p>
+                                        <p className="text-sm font-medium"><Price amount={item.price * item.quantity} /></p>
                                     </div>
                                 </div>
                             ))}
@@ -370,17 +371,17 @@ export default function CheckoutPage() {
                         <div className="space-y-3 mb-6 pb-6 border-b border-gray-200 dark:border-gray-800">
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
-                                <span className="font-medium">{subtotal.toLocaleString()} EGP</span>
+                                <span className="font-medium"><Price amount={subtotal} /></span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-600 dark:text-gray-400">Shipping</span>
-                                <span className="font-medium">{shipping === 0 ? 'Free' : `${shipping.toLocaleString()} EGP`}</span>
+                                <span className="font-medium">{shipping === 0 ? 'Free' : <Price amount={shipping} />}</span>
                             </div>
                         </div>
 
                         <div className="flex justify-between items-center mb-8">
                             <span className="text-base font-medium uppercase tracking-wider">Total</span>
-                            <span className="text-2xl font-medium">{total.toLocaleString()} EGP</span>
+                            <span className="text-2xl font-medium"><Price amount={total} /></span>
                         </div>
 
                         <button
@@ -393,7 +394,7 @@ export default function CheckoutPage() {
                                 "Processing..."
                             ) : (
                                 <>
-                                    {paymentMethod === "cod" ? "Complete Purchase" : `Pay ${total.toLocaleString()} EGP`} <Lock className="w-4 h-4" />
+                                    {paymentMethod === "cod" ? "Complete Purchase" : <span className="flex items-center gap-1">Pay <Price amount={total} /></span>} <Lock className="w-4 h-4" />
                                 </>
                             )}
                         </button>
