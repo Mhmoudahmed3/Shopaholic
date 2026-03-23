@@ -90,3 +90,24 @@ export interface Homepage {
     promo: HomepagePromo;
     newsletter: HomepageNewsletter;
 }
+
+export interface SiteSettings {
+    storeName: string;
+    storeDescription: string;
+    contactEmail: string;
+    contactPhone?: string;
+    address?: string;
+    currency: string;
+    currencySymbol: string;
+    maintenanceMode: boolean;
+    socialLinks: {
+        instagram?: string;
+        facebook?: string;
+        twitter?: string;
+        tiktok?: string;
+    };
+    footerText: string;
+    taxRate: number;
+    shippingFee: number;
+    freeShippingThreshold: number;
+}

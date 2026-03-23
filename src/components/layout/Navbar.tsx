@@ -7,7 +7,7 @@ import { WishlistIcon } from "./WishlistIcon";
 import { SearchModal } from "./SearchModal";
 import { useSearchStore } from "@/lib/useSearchStore";
 
-export function Navbar() {
+export function Navbar({ storeName = "REHAM" }: { storeName?: string }) {
     const { open: openSearch } = useSearchStore();
 
     return (
@@ -18,7 +18,7 @@ export function Navbar() {
                     {/* Left: Logo (Now primary position) */}
                     <div className="flex flex-1 items-center justify-start h-full">
                         <Link href="/" className="text-xl sm:text-2xl font-bold tracking-widest uppercase whitespace-nowrap">
-                            SHOPAHOLIC
+                            {storeName}
                         </Link>
                     </div>
 

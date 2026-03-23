@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Facebook, Instagram, Twitter } from "lucide-react";
-import { getCategoriesDB } from "@/lib/db";
+import { getCategoriesDB, getSettingsDB } from "@/lib/db";
 
 // Computed once at module load — stable across all renders
 const CURRENT_YEAR = new Date().getFullYear();
 
 export async function Footer() {
     const categories = getCategoriesDB();
+    const settings = getSettingsDB();
 
     return (
         <footer className="bg-white dark:bg-black border-t border-gray-100 dark:border-gray-800">
@@ -16,24 +17,30 @@ export async function Footer() {
                     {/* Brand */}
                     <div className="md:col-span-1">
                         <Link href="/" className="text-xl font-bold tracking-[0.2em] uppercase inline-block mb-4">
-                            SHOPAHOLIC
+                            {settings.storeName}
                         </Link>
                         <p className="text-sm text-black/60 dark:text-white/60 max-w-xs font-light leading-relaxed">
-                            Defining modern elegance. Discover the latest collections of timeless minimalism.
+                            {settings.storeDescription}
                         </p>
                         <div className="flex space-x-4 mt-6">
-                            <a href="#" className="opacity-60 hover:opacity-100 transition-opacity">
-                                <span className="sr-only">Instagram</span>
-                                <Instagram className="h-4 w-4" />
-                            </a>
-                            <a href="#" className="opacity-60 hover:opacity-100 transition-opacity">
-                                <span className="sr-only">Twitter</span>
-                                <Twitter className="h-4 w-4" />
-                            </a>
-                            <a href="#" className="opacity-60 hover:opacity-100 transition-opacity">
-                                <span className="sr-only">Facebook</span>
-                                <Facebook className="h-4 w-4" />
-                            </a>
+                            {settings.socialLinks.instagram && (
+                                <a href={`https://instagram.com/${settings.socialLinks.instagram}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
+                                    <span className="sr-only">Instagram</span>
+                                    <Instagram className="h-4 w-4" />
+                                </a>
+                            )}
+                            {settings.socialLinks.twitter && (
+                                <a href={`https://twitter.com/${settings.socialLinks.twitter}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
+                                    <span className="sr-only">Twitter</span>
+                                    <Twitter className="h-4 w-4" />
+                                </a>
+                            )}
+                            {settings.socialLinks.facebook && (
+                                <a href={`https://facebook.com/${settings.socialLinks.facebook}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
+                                    <span className="sr-only">Facebook</span>
+                                    <Facebook className="h-4 w-4" />
+                                </a>
+                            )}
                         </div>
                     </div>
 
@@ -83,7 +90,7 @@ export async function Footer() {
 
                 <div className="mt-20 pt-8 border-t border-black/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
                     <p className="text-[10px] uppercase tracking-widest opacity-40 font-bold">
-                        &copy; {CURRENT_YEAR} Shopaholic Fashion. All rights reserved.
+                        &copy; {CURRENT_YEAR} {settings.storeName}. All rights reserved.
                     </p>
 
                     {/* Trust Signals - Payment Methods */}

@@ -1,9 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getProductsDB, saveProductsDB, getHomepageDB, saveHomepageDB } from "@/lib/db";
+import { getProductsDB, saveProductsDB, getHomepageDB, saveHomepageDB, getSettingsDB, saveSettingsDB } from "@/lib/db";
 import { Product } from "@/lib/data";
-import { Homepage } from "@/lib/types";
+import { Homepage, SiteSettings } from "@/lib/types";
 import fs from "fs";
 import path from "path";
 
@@ -485,5 +485,20 @@ export async function deleteProductReview(productId: string, reviewId: string) {
     } catch (error) {
         console.error("Error deleting review:", error);
         throw new Error("Failed to delete review");
+    }
+}
+
+export async function getSiteSettings() {
+    return getSettingsDB();
+}
+
+export async function updateSiteSettings(settings: SiteSettings) {
+    try {
+        saveSettingsDB(settings);
+        revalidatePath('/', 'layout');
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating site settings:", error);
+        throw new Error("Failed to update site settings");
     }
 }

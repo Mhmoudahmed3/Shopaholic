@@ -1,9 +1,52 @@
 import fs from 'fs';
 import path from 'path';
-import { Product, Category, Order, Homepage, Collection } from './types';
+import { Product, Category, Order, Homepage, Collection, SiteSettings } from './types';
 
 const isVercel = !!process.env.VERCEL;
 const getDbPath = (filename: string) => isVercel ? path.join('/tmp', filename) : path.join(process.cwd(), filename);
+
+const settingsDbPath = getDbPath('settings.json');
+
+const DEFAULT_SETTINGS: SiteSettings = {
+    storeName: "Reham Website",
+    storeDescription: "Luxury fashion for the modern woman.",
+    contactEmail: "support@reham.com",
+    contactPhone: "+20 123 456 7890",
+    address: "Cairo, Egypt",
+    currency: "EGP",
+    currencySymbol: "EGP",
+    maintenanceMode: false,
+    socialLinks: {
+        instagram: "reham_fashion",
+        facebook: "rehamfashion",
+        twitter: "reham_fashion",
+        tiktok: "reham_fashion"
+    },
+    footerText: "© 2024 Reham Website. All rights reserved.",
+    taxRate: 14,
+    shippingFee: 250,
+    freeShippingThreshold: 5000
+};
+
+export function initSettingsDB() {
+    if (!fs.existsSync(settingsDbPath)) {
+        fs.writeFileSync(settingsDbPath, JSON.stringify(DEFAULT_SETTINGS, null, 2));
+    }
+}
+
+export function getSettingsDB(): SiteSettings {
+    if (!fs.existsSync(settingsDbPath)) return DEFAULT_SETTINGS;
+    const data = fs.readFileSync(settingsDbPath, 'utf8');
+    try {
+        return JSON.parse(data);
+    } catch {
+        return DEFAULT_SETTINGS;
+    }
+}
+
+export function saveSettingsDB(settings: SiteSettings) {
+    fs.writeFileSync(settingsDbPath, JSON.stringify(settings, null, 2));
+}
 
 import { mockProducts } from './mock-data';
 
