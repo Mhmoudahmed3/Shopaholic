@@ -35,8 +35,8 @@ export function MobileBottomNav() {
     ];
 
     return (
-        <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-[60] bg-white/80 dark:bg-black/80 backdrop-blur-xl border-t border-neutral-100 dark:border-neutral-900 pb-safe-area-inset-bottom shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)]">
-            <div className="flex items-center justify-around h-16 max-w-md mx-auto px-2">
+        <nav className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] w-[calc(100%-3rem)] max-w-[320px] bg-white/80 dark:bg-black/80 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-full shadow-[0_8px_32px_-4px_rgba(0,0,0,0.15)] pb-safe-area-inset-bottom">
+            <div className="flex items-center justify-around h-16 w-full px-2">
                 {navItems.map((item) => {
                     const isActive = item.href ? pathname === item.href : false;
                     
@@ -45,35 +45,33 @@ export function MobileBottomNav() {
                             "flex flex-col items-center justify-center gap-1 min-w-[64px] transition-all duration-300",
                             isActive 
                                 ? "text-black dark:text-white" 
-                                : "text-neutral-400 dark:text-neutral-600 hover:text-black dark:hover:text-white"
+                                : "text-neutral-400 dark:text-neutral-500 hover:text-black dark:hover:text-white"
                         )}>
-                            <div className="relative">
+                            <div className="relative flex items-center justify-center">
                                 <item.icon 
                                     className={cn(
-                                        "h-5 w-5 transition-transform duration-300",
+                                        "h-5 w-5 transition-transform duration-500",
                                         isActive && "scale-110"
                                     )} 
                                     strokeWidth={isActive ? 2.5 : 2}
                                 />
                                 {mounted && item.count !== undefined && item.count > 0 && (
-                                    <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[10px] font-bold text-white dark:bg-white dark:text-black transition-all animate-in zoom-in duration-300">
+                                    <span className="absolute -top-1.5 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[9px] font-bold text-white dark:bg-white dark:text-black transition-all animate-in zoom-in duration-300">
                                         {item.count}
                                     </span>
                                 )}
-                                {isActive && (
-                                    <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-black dark:bg-white rounded-full animate-in fade-in zoom-in duration-300" />
-                                )}
                             </div>
-                            <span className="text-[10px] font-medium uppercase tracking-[0.05em] leading-none mt-0.5">
+                            <span className={cn(
+                                "text-[9px] font-medium uppercase tracking-[0.05em] leading-none mt-1 transition-all duration-300",
+                                isActive ? "opacity-100" : "opacity-0 h-0 -mt-2 overflow-hidden"
+                            )}>
                                 {item.label}
                             </span>
                         </div>
                     );
 
-
-
                     return (
-                        <Link key={item.label} href={item.href || "#"}>
+                        <Link key={item.label} href={item.href || "#"} className="flex flex-col items-center justify-center h-full pt-1">
                             {Content}
                         </Link>
                     );

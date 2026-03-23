@@ -12,8 +12,8 @@ export function Navbar() {
 
     return (
         <>
-            <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 transition-colors duration-300">
-                <div className="mx-auto flex lg:grid lg:grid-cols-3 h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 relative">
+            <header className="sticky top-0 z-50 w-full bg-white/80 dark:bg-black/80 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 transition-all duration-300">
+                <div className="mx-auto flex lg:grid lg:grid-cols-3 h-16 sm:h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 relative">
 
                     {/* Left: Logo (Now primary position) */}
                     <div className="flex flex-1 items-center justify-start h-full">

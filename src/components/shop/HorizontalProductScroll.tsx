@@ -7,8 +7,8 @@ import { Star, Plus } from "lucide-react";
 import clsx from "clsx";
 import type { Product } from "@/lib/data";
 import { WishlistToggle } from "./WishlistToggle";
-
 import { QuickAddModal } from "./QuickAddModal";
+import { COLOR_MAP_HEX } from "@/lib/constants";
 
 interface HorizontalProductScrollProps {
     title?: string;
@@ -102,7 +102,7 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
 
                     <div className="mt-5 flex flex-col gap-1.5 relative pointer-events-none">
                         <div className="flex justify-between items-start">
-                            <h3 className="text-sm font-serif group-hover/item:text-neutral-600 dark:group-hover/item:text-neutral-400 transition-colors">
+                            <h3 className="text-sm font-serif group-hover/item:text-black dark:group-hover/item:text-white transition-all duration-300 group-hover/item:translate-x-1">
                                 {product.name}
                             </h3>
                             <span className="text-sm font-medium whitespace-nowrap">
@@ -113,23 +113,45 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
                             {product.category}
                         </p>
                         
-                        {/* Star Rating Display */}
-                        {product.rating && (
-                            <div className="flex items-center gap-1 mt-1">
-                                <div className="flex">
-                                    {[...Array(5)].map((_, i) => (
-                                        <Star 
-                                            key={i} 
-                                            className={clsx(
-                                                "w-2.5 h-2.5",
-                                                i < Math.floor(product.rating!) ? "fill-yellow-400 text-yellow-400" : "text-neutral-300 dark:text-neutral-700"
-                                            )} 
-                                        />
-                                    ))}
+                        <div className="flex items-center justify-between w-full mt-1">
+                            {/* Star Rating Display */}
+                            {product.rating && (
+                                <div className="flex items-center gap-1">
+                                    <div className="flex">
+                                        {[...Array(5)].map((_, i) => (
+                                            <Star 
+                                                key={i} 
+                                                className={clsx(
+                                                    "w-2.5 h-2.5",
+                                                    i < Math.floor(product.rating!) 
+                                                        ? "fill-amber-400 text-amber-400" 
+                                                        : "text-neutral-200 dark:text-neutral-800"
+                                                )} 
+                                            />
+                                        ))}
+                                    </div>
+                                    <span className="text-[9px] text-neutral-400 font-medium tracking-tight">({product.reviewsCount || 0})</span>
                                 </div>
-                                <span className="text-[9px] text-neutral-400">({product.reviewsCount || 0})</span>
-                            </div>
-                        )}
+                            )}
+
+                            {/* Small color dots if available */}
+                            {product.colors && product.colors.length > 0 && (
+                                <div className="flex gap-1.5 items-center">
+                                    {product.colors.slice(0, 3).map((color, i) => {
+                                        const hex = COLOR_MAP_HEX[color] || "#808080";
+                                        return (
+                                            <div 
+                                                key={i} 
+                                                title={color}
+                                                className="w-2 h-2 rounded-full border border-black/10 dark:border-white/20 shadow-sm" 
+                                                style={{ backgroundColor: hex }}
+                                            />
+                                        );
+                                    })}
+                                    {product.colors.length > 3 && <span className="text-[9px] text-neutral-400 font-medium">+{product.colors.length - 3}</span>}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             ))}

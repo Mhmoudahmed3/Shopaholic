@@ -10,6 +10,7 @@ import type { Product } from "@/lib/data";
 import { WishlistToggle } from "./WishlistToggle";
 import { useState } from "react";
 import { QuickAddModal } from "./QuickAddModal";
+import { COLOR_MAP_HEX } from "@/lib/constants";
 
 interface ProductGridProps {
     products: Product[];
@@ -108,7 +109,7 @@ export function ProductGrid({ products }: ProductGridProps) {
                     
                     <div className="mt-5 flex flex-col gap-1.5 relative pointer-events-none">
                         <div className="flex justify-between items-start">
-                            <h3 className="text-sm font-serif group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
+                            <h3 className="text-sm font-serif group-hover:text-black dark:group-hover:text-white transition-all duration-300 group-hover:translate-x-1">
                                 {product.name}
                             </h3>
                             <p className="text-sm font-medium tracking-tight whitespace-nowrap">{product.price.toLocaleString()} EGP</p>
@@ -135,11 +136,19 @@ export function ProductGrid({ products }: ProductGridProps) {
                             </div>
                             {/* Small color dots if available */}
                             {product.colors && product.colors.length > 0 && (
-                                <div className="flex gap-1">
-                                    {product.colors.slice(0, 3).map((_, i) => (
-                                        <div key={i} className="w-1.5 h-1.5 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                                    ))}
-                                    {product.colors.length > 3 && <span className="text-[8px] text-neutral-400">+{product.colors.length - 3}</span>}
+                                <div className="flex gap-1.5 items-center mt-2 lg:mt-0">
+                                    {product.colors.slice(0, 3).map((color, i) => {
+                                        const hex = COLOR_MAP_HEX[color] || "#808080";
+                                        return (
+                                            <div 
+                                                key={i} 
+                                                title={color}
+                                                className="w-2 h-2 rounded-full border border-black/10 dark:border-white/20 shadow-sm" 
+                                                style={{ backgroundColor: hex }}
+                                            />
+                                        );
+                                    })}
+                                    {product.colors.length > 3 && <span className="text-[9px] text-neutral-400 font-medium">+{product.colors.length - 3}</span>}
                                 </div>
                             )}
                         </div>
