@@ -73,8 +73,11 @@ async function processFormData(formData: FormData, productId: string, existingPr
     // Keep existing images if no new ones are uploaded for those slots
     // This is a bit simplified. In a real app we'd handle file uploads specifically.
     // For now, if no file is provided, we might want to keep the old URL if this is an edit.
+    // This is a bit simplified. In a real app we'd handle file uploads specifically.
+    // For now, if no file is provided, we might want to keep the old URL if this is an edit.
     
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+    const isVercel = !!process.env.VERCEL;
+    const uploadsDir = isVercel ? path.join('/tmp', 'uploads') : path.join(process.cwd(), 'public', 'uploads');
     if (!fs.existsSync(uploadsDir)) {
         fs.mkdirSync(uploadsDir, { recursive: true });
     }
@@ -181,7 +184,8 @@ export async function createCuratedCollection(formData: FormData) {
     if (file && file.size > 0) {
         const buffer = Buffer.from(await file.arrayBuffer());
         const filename = `collection-${Date.now()}-${file.name.replace(/[^a-z0-9.]/gi, '_')}`;
-        const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+        const isVercel = !!process.env.VERCEL;
+        const uploadsDir = isVercel ? path.join('/tmp', 'uploads') : path.join(process.cwd(), 'public', 'uploads');
         if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
         
         const filepath = path.join(uploadsDir, filename);
@@ -229,7 +233,8 @@ export async function updateCuratedCollection(formData: FormData) {
     if (file && file.size > 0) {
         const buffer = Buffer.from(await file.arrayBuffer());
         const filename = `collection-${Date.now()}-${file.name.replace(/[^a-z0-9.]/gi, '_')}`;
-        const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+        const isVercel = !!process.env.VERCEL;
+        const uploadsDir = isVercel ? path.join('/tmp', 'uploads') : path.join(process.cwd(), 'public', 'uploads');
         if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
         
         const filepath = path.join(uploadsDir, filename);
@@ -286,7 +291,8 @@ export async function updateHero(formData: FormData) {
         if (file && file.size > 0) {
             const buffer = Buffer.from(await file.arrayBuffer());
             const filename = `hero-${Date.now()}-${file.name.replace(/[^a-z0-9.]/gi, '_')}`;
-            const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+            const isVercel = !!process.env.VERCEL;
+            const uploadsDir = isVercel ? path.join('/tmp', 'uploads') : path.join(process.cwd(), 'public', 'uploads');
             if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
             
             const filepath = path.join(uploadsDir, filename);
@@ -326,7 +332,8 @@ export async function updatePromo(formData: FormData) {
         if (file && file.size > 0) {
             const buffer = Buffer.from(await file.arrayBuffer());
             const filename = `promo-${Date.now()}-${file.name.replace(/[^a-z0-9.]/gi, '_')}`;
-            const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+            const isVercel = !!process.env.VERCEL;
+            const uploadsDir = isVercel ? path.join('/tmp', 'uploads') : path.join(process.cwd(), 'public', 'uploads');
             if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
             
             const filepath = path.join(uploadsDir, filename);

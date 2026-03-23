@@ -2,7 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import { Product, Category, Order, Homepage, Collection } from './types';
 
-const dbPath = path.join(process.cwd(), 'products.json');
+const isVercel = !!process.env.VERCEL;
+const getDbPath = (filename: string) => isVercel ? path.join('/tmp', filename) : path.join(process.cwd(), filename);
+
+const dbPath = getDbPath('products.json');
 
 // Initialize DB if it doesn't exist
 export function initDB() {
@@ -25,7 +28,7 @@ export function saveProductsDB(products: Product[]) {
     fs.writeFileSync(dbPath, JSON.stringify(products, null, 2));
 }
 
-const homepageDbPath = path.join(process.cwd(), 'homepage.json');
+const homepageDbPath = getDbPath('homepage.json');
 
 export function initHomepageDB() {
     if (!fs.existsSync(homepageDbPath)) {
@@ -73,7 +76,7 @@ export function saveHomepageDB(content: Homepage) {
     fs.writeFileSync(homepageDbPath, JSON.stringify(content, null, 2));
 }
 
-const categoriesDbPath = path.join(process.cwd(), 'categories.json');
+const categoriesDbPath = getDbPath('categories.json');
 
 export function initCategoriesDB() {
     if (!fs.existsSync(categoriesDbPath) || fs.readFileSync(categoriesDbPath, 'utf8').trim() === '') {
@@ -95,7 +98,7 @@ export function saveCategoriesDB(categories: Category[]) {
     fs.writeFileSync(categoriesDbPath, JSON.stringify(categories, null, 2));
 }
 
-const ordersDbPath = path.join(process.cwd(), 'orders.json');
+const ordersDbPath = getDbPath('orders.json');
 
 export function initOrdersDB() {
     if (!fs.existsSync(ordersDbPath)) {
@@ -117,7 +120,7 @@ export function saveOrdersDB(orders: Order[]) {
     fs.writeFileSync(ordersDbPath, JSON.stringify(orders, null, 2));
 }
 
-const collectionsDbPath = path.join(process.cwd(), 'collections.json');
+const collectionsDbPath = getDbPath('collections.json');
 
 export function initCollectionsDB() {
     if (!fs.existsSync(collectionsDbPath)) {
