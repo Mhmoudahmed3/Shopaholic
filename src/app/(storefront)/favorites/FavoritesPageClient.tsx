@@ -10,7 +10,7 @@ import { Heart, ArrowRight, ShoppingBag, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function FavoritesPageClient() {
-    const { items } = useWishlistStore();
+    const { items, removeItem } = useWishlistStore();
     const [mounted, setMounted] = useState(false);
     const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
@@ -22,6 +22,16 @@ export default function FavoritesPageClient() {
             if (items.length > 0) {
                 setLoading(true);
                 const products = await getProductsByIds(items);
+                
+                // Sync: remove any stale IDs from the wishlist store that
+                // no longer exist in the database, so the badge count stays correct
+                const foundIds = new Set(products.map(p => p.id));
+                items.forEach(id => {
+                    if (!foundIds.has(id)) {
+                        removeItem(id);
+                    }
+                });
+
                 setFavoriteProducts(products);
                 setLoading(false);
             } else {
@@ -33,7 +43,7 @@ export default function FavoritesPageClient() {
         if (mounted) {
             fetchFavorites();
         }
-    }, [items, mounted]);
+    }, [items, mounted, removeItem]);
 
     if (!mounted) return null;
 
