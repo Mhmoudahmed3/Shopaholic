@@ -78,19 +78,29 @@ export function saveHomepageDB(content: Homepage) {
 
 const categoriesDbPath = getDbPath('categories.json');
 
+const DEFAULT_CATEGORIES: Category[] = [
+    { id: "new-arrivals", label: "New Arrivals" },
+    { id: "clothing", label: "Clothing" },
+    { id: "dresses", label: "Dresses" },
+    { id: "tops", label: "Tops" },
+    { id: "bottoms", label: "Bottoms" },
+    { id: "accessories", label: "Accessories" }
+];
+
 export function initCategoriesDB() {
     if (!fs.existsSync(categoriesDbPath) || fs.readFileSync(categoriesDbPath, 'utf8').trim() === '') {
-        fs.writeFileSync(categoriesDbPath, JSON.stringify([], null, 2));
+        fs.writeFileSync(categoriesDbPath, JSON.stringify(DEFAULT_CATEGORIES, null, 2));
     }
 }
 
 export function getCategoriesDB(): Category[] {
-    if (!fs.existsSync(categoriesDbPath)) return [];
+    if (!fs.existsSync(categoriesDbPath)) return DEFAULT_CATEGORIES;
     const data = fs.readFileSync(categoriesDbPath, 'utf8');
     try {
-        return JSON.parse(data);
+        const parsed = JSON.parse(data);
+        return parsed && parsed.length > 0 ? parsed : DEFAULT_CATEGORIES;
     } catch {
-        return [];
+        return DEFAULT_CATEGORIES;
     }
 }
 

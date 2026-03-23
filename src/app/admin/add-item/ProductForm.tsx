@@ -320,7 +320,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                             key={img.id} 
                             className={`flex flex-col sm:flex-row gap-4 items-start sm:items-center p-4 border border-gray-100 dark:border-gray-800 rounded-lg transition-all relative ${openColorDropdownId === img.id ? 'z-[60] ring-1 ring-black/5 dark:ring-white/5 shadow-md bg-white/50 dark:bg-black/50' : 'z-0'}`}
                         >
-                            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center overflow-hidden shrink-0">
+                            <div className="w-16 h-16 relative bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center overflow-hidden shrink-0">
                                 {img.preview ? (
                                     <Image src={img.preview} alt="Preview" fill className="object-cover" unoptimized />
                                 ) : (
