@@ -20,7 +20,8 @@ const DEFAULT_SETTINGS: SiteSettings = {
         instagram: "reham_fashion",
         facebook: "rehamfashion",
         twitter: "reham_fashion",
-        tiktok: "reham_fashion"
+        tiktok: "reham_fashion",
+        whatsapp: ""
     },
     footerText: "© 2024 Reham Website. All rights reserved.",
     taxRate: 14,
@@ -150,6 +151,17 @@ export function getCategoriesDB(): Category[] {
 
 export function saveCategoriesDB(categories: Category[]) {
     fs.writeFileSync(categoriesDbPath, JSON.stringify(categories, null, 2));
+}
+
+export function deleteCategoryDB(categoryId: string) {
+    const categories = getCategoriesDB();
+    const updatedCategories = categories.filter(c => c.id !== categoryId);
+    saveCategoriesDB(updatedCategories);
+
+    // Cascade delete products
+    const products = getProductsDB();
+    const updatedProducts = products.filter(p => p.category !== categoryId);
+    saveProductsDB(updatedProducts);
 }
 
 const ordersDbPath = getDbPath('orders.json');

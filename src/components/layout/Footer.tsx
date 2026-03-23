@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Facebook, Instagram, Twitter } from "lucide-react";
+import { Facebook, Instagram, Twitter, MessageCircle } from "lucide-react";
 import { getCategoriesDB, getSettingsDB } from "@/lib/db";
 
 // Computed once at module load — stable across all renders
@@ -22,23 +22,29 @@ export async function Footer() {
                         <p className="text-sm text-black/60 dark:text-white/60 max-w-xs font-light leading-relaxed">
                             {settings.storeDescription}
                         </p>
-                        <div className="flex space-x-4 mt-6">
+                        <div className="flex items-center space-x-4 mt-6">
                             {settings.socialLinks.instagram && (
                                 <a href={`https://instagram.com/${settings.socialLinks.instagram}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
                                     <span className="sr-only">Instagram</span>
                                     <Instagram className="h-4 w-4" />
                                 </a>
                             )}
-                            {settings.socialLinks.twitter && (
-                                <a href={`https://twitter.com/${settings.socialLinks.twitter}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
-                                    <span className="sr-only">Twitter</span>
-                                    <Twitter className="h-4 w-4" />
-                                </a>
-                            )}
                             {settings.socialLinks.facebook && (
                                 <a href={`https://facebook.com/${settings.socialLinks.facebook}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
                                     <span className="sr-only">Facebook</span>
                                     <Facebook className="h-4 w-4" />
+                                </a>
+                            )}
+                            {settings.socialLinks.whatsapp && (
+                                <a href={`https://wa.me/${settings.socialLinks.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
+                                    <span className="sr-only">WhatsApp</span>
+                                    <MessageCircle className="h-4 w-4" />
+                                </a>
+                            )}
+                            {settings.socialLinks.twitter && (
+                                <a href={`https://twitter.com/${settings.socialLinks.twitter}`} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
+                                    <span className="sr-only">Twitter</span>
+                                    <Twitter className="h-4 w-4" />
                                 </a>
                             )}
                         </div>

@@ -32,6 +32,7 @@ export interface Product {
 export interface Category {
     id: string;
     label: string;
+    type?: string;
 }
 
 export type OrderStatus = 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
@@ -105,6 +106,7 @@ export interface SiteSettings {
         facebook?: string;
         twitter?: string;
         tiktok?: string;
+        whatsapp?: string;
     };
     footerText: string;
     taxRate: number;

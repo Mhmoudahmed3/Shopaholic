@@ -502,3 +502,61 @@ export async function updateSiteSettings(settings: SiteSettings) {
         throw new Error("Failed to update site settings");
     }
 }
+
+export async function getCategories() {
+    const { getCategoriesDB } = await import("@/lib/db");
+    return getCategoriesDB();
+}
+
+export async function addCategory(category: { label: string, type?: string }) {
+    try {
+        const { getCategoriesDB, saveCategoriesDB } = await import("@/lib/db");
+        const categories = getCategoriesDB();
+        const id = category.label.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
+        
+        if (categories.some(c => c.id === id)) {
+            throw new Error("Category already exists");
+        }
+
+        categories.push({ id, label: category.label, type: category.type });
+        saveCategoriesDB(categories);
+        revalidatePath('/', 'layout');
+        revalidatePath('/shop');
+        return { success: true };
+    } catch (error) {
+        console.error("Error adding category:", error);
+        throw new Error(error instanceof Error ? error.message : "Failed to add category");
+    }
+}
+
+export async function updateCategoryServer(categoryId: string, data: { label: string, type?: string }) {
+    try {
+        const { getCategoriesDB, saveCategoriesDB } = await import("@/lib/db");
+        const categories = getCategoriesDB();
+        const index = categories.findIndex(c => c.id === categoryId);
+        if (index === -1) throw new Error("Category not found");
+
+        categories[index] = { ...categories[index], ...data };
+        saveCategoriesDB(categories);
+        revalidatePath('/', 'layout');
+        revalidatePath('/shop');
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating category:", error);
+        throw new Error(error instanceof Error ? error.message : "Failed to update category");
+    }
+}
+
+export async function deleteCategory(categoryId: string) {
+    try {
+        const { deleteCategoryDB } = await import("@/lib/db");
+        deleteCategoryDB(categoryId);
+        revalidatePath('/', 'layout');
+        revalidatePath('/shop');
+        revalidatePath('/admin/inventory');
+        return { success: true };
+    } catch (error) {
+        console.error("Error deleting category:", error);
+        throw new Error(error instanceof Error ? error.message : "Failed to delete category");
+    }
+}
