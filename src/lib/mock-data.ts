@@ -2,36 +2,32 @@ import { Product } from './types';
 
 const womenImages = [
   "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1434389677869-e08b4cac3105?auto=format&fit=crop&q=80",
   "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&q=80",
   "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1502716115624-b80eb14e06ac?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1550614000-4b95d466f1e2?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80"
+  "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80"
 ];
 
 const menImages = [
   "https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1507680436569-faecbfc316b2?auto=format&fit=crop&q=80",
   "https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&q=80",
   "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1488161628813-04466f872fb2?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80"
+  "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1490578474895-699bc4e3f49f?auto=format&fit=crop&q=80"
 ];
 
 const childrenImages = [
   "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?auto=format&fit=crop&q=80",
   "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80",
   "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1519238398001-f2f6bfce3d05?auto=format&fit=crop&q=80",
   "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&q=80"
 ];
 
 const accessoriesImages = [
   "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1583292650898-7c22dc4c4b9e?auto=format&fit=crop&q=80",
   "https://images.unsplash.com/photo-1509941943102-10c232535736?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80"
+  "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80"
 ];
 
 const categories = ["women", "men", "children", "accessories"];
