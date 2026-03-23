@@ -205,7 +205,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                         className="group relative flex items-center gap-3 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl hover:shadow-2xl overflow-hidden"
                     >
                         <Plus className="w-4 h-4" />
-                        <span>New Main Category</span>
+                        <span>Add Main Category</span>
                         <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" />
                     </button>
                 </div>
@@ -255,7 +255,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                 {/* Left: Main Category Header */}
                                 <div className="w-full lg:w-1/4">
                                     <div className="sticky top-24">
-                                        <span className="block text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400 mb-6 px-1">Main Label</span>
+                                        <span className="block text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400 mb-6 px-1">Main Category</span>
                                         <div className="space-y-4">
                                             <div className="relative group/input">
                                                 <input
@@ -268,7 +268,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                             </div>
                                             <div className="flex flex-wrap gap-2">
                                                 <span className="px-4 py-1.5 bg-black dark:bg-white text-white dark:text-black rounded-full text-[9px] font-bold uppercase tracking-widest">
-                                                    {cats.length} Nodes
+                                                    {cats.length} Sub-categories
                                                 </span>
                                                 <span className="px-4 py-1.5 bg-gray-100 dark:bg-zinc-800 text-gray-400 rounded-full text-[9px] font-bold uppercase tracking-widest">
                                                     ID: {typeName.toLowerCase().replace(/\s+/g, '-')}
@@ -281,7 +281,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                 {/* Right: Sub-categories Nodes */}
                                 <div className="flex-1 bg-white dark:bg-black/20 p-8 md:p-12 rounded-[3.5rem] border border-gray-100 dark:border-zinc-800/40 shadow-inner">
                                     <div className="flex items-center justify-between mb-10">
-                                        <h3 className="text-sm font-semibold tracking-tight text-gray-500 uppercase tracking-[0.2em]">Sub-collections</h3>
+                                        <h3 className="text-sm font-semibold tracking-tight text-gray-500 uppercase tracking-[0.2em]">Sub-categories (Product Types)</h3>
                                         <button
                                             type="button"
                                             onClick={() => handleAddSubCategory(typeName)}

@@ -237,17 +237,38 @@ export default function ProductForm({ categories, initialProduct }: { categories
                     <input type="hidden" name="stock" value={totalStock} />
 
                     <div>
-                        <label htmlFor="category" className="block text-xs font-medium uppercase tracking-wider mb-2">Collection Category <span className="text-red-500">*</span></label>
+                        <label htmlFor="category" className="block text-xs font-medium uppercase tracking-wider mb-2 text-gray-400">Product Type <span className="text-red-500">*</span></label>
                         <select
                             id="category"
                             name="category"
                             required
                             defaultValue={initialProduct?.category || ""}
-                            className="w-full p-3 text-sm bg-transparent border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
+                            className="w-full p-4 text-sm bg-transparent border border-gray-100 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all rounded-xl focus:ring-4 ring-black/5"
                         >
-                            <option value="" disabled className="text-black dark:text-white bg-white dark:bg-black">Select a category...</option>
-                            {categories.map((c) => (
-                                <option key={c.id} value={c.id} className="text-black dark:text-white bg-white dark:bg-black">{c.label}</option>
+                            <option value="" disabled className="text-black dark:text-white bg-white dark:bg-black font-medium">None (Generic Product)</option>
+                            {Object.entries(
+                                categories.reduce((acc, cat) => {
+                                    const type = cat.type || 'General';
+                                    if (!acc[type]) acc[type] = [];
+                                    acc[type].push(cat);
+                                    return acc;
+                                }, {} as Record<string, typeof categories>)
+                            ).map(([type, cats]) => (
+                                <optgroup 
+                                    key={type} 
+                                    label={type.toUpperCase()} 
+                                    className="bg-white dark:bg-zinc-950 text-[10px] font-bold tracking-[0.2em] text-gray-400 py-4"
+                                >
+                                    {cats.map((c) => (
+                                        <option 
+                                            key={c.id} 
+                                            value={c.id} 
+                                            className="text-black dark:text-white bg-white dark:bg-black font-medium text-sm py-2"
+                                        >
+                                            {c.label}
+                                        </option>
+                                    ))}
+                                </optgroup>
                             ))}
                         </select>
                     </div>

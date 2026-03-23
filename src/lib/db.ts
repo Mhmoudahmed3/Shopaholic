@@ -37,10 +37,21 @@ const DEFAULT_SETTINGS: SiteSettings = {
 };
 
 const DEFAULT_CATEGORIES: Category[] = [
-    { id: "women", label: "Women" },
-    { id: "men", label: "Men" },
-    { id: "children", label: "Children" },
-    { id: "accessories", label: "Accessories" }
+    // Women
+    { id: "women-tshirts", label: "T-Shirts", type: "Women" },
+    { id: "women-pants", label: "Pants", type: "Women" },
+    { id: "women-dresses", label: "Dresses", type: "Women" },
+    
+    // Men
+    { id: "men-tshirts", label: "T-Shirts", type: "Men" },
+    { id: "men-jeans", label: "Jeans", type: "Men" },
+    
+    // Children
+    { id: "children-wear", label: "Casual Wear", type: "Children" },
+    
+    // Accessories
+    { id: "acc-bags", label: "Bags & Wallets", type: "Accessories" },
+    { id: "acc-belts", label: "Belts", type: "Accessories" }
 ];
 
 // Utility to safely write JSON
