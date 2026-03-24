@@ -9,7 +9,7 @@ const eslintConfig = defineConfig([
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
       "react-hooks/exhaustive-deps": "warn",
-      "no-console": "off",
+      "no-console": ["warn", { allow: ["warn", "error"] }],
       "@typescript-eslint/no-explicit-any": "off",
       "react-hooks/set-state-in-effect": "off"
     }

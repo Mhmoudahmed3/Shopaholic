@@ -736,6 +736,7 @@ export async function updateOrderStatus(orderId: string, status: string) {
     console.log(`[ACTION] Updating order ${orderId} to status: ${status}`);
     let normalizedStatus = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
     if (normalizedStatus === 'Canceled') normalizedStatus = 'Cancelled';
+    try {
         const { data: updatedOrder, error } = await supabase
             .from('orders')
             .update({ status: normalizedStatus })
@@ -761,7 +762,7 @@ export async function updateOrderStatus(orderId: string, status: string) {
                         .single()) as { data: Product | null };
                     
                     if (product) {
-                        let updatedVariants = (product.imageVariants || []).map(v => {
+                        const updatedVariants = (product.imageVariants || []).map(v => {
                             const matchColor = (v.color || '').toLowerCase() === (item.variant_color || '').toLowerCase();
                             const matchSize = (v.size || '').toLowerCase() === (item.variant_size || '').toLowerCase();
                             

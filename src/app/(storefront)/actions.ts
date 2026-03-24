@@ -69,7 +69,7 @@ export async function createOrder(orderData: {
                     .single()) as { data: Product | null };
                 
                 if (product) {
-                    let updatedVariants = (product.imageVariants || []).map(v => {
+                    const updatedVariants = (product.imageVariants || []).map(v => {
                         // Check for color/size match
                         const matchColor = (v.color || '').toLowerCase() === (item.color || '').toLowerCase();
                         const matchSize = (v.size || '').toLowerCase() === (item.size || '').toLowerCase();

@@ -1,19 +1,42 @@
 
 > temp-app@0.1.0 lint
-> eslint --fix
+> eslint
 
+
+A:\Unfinished work\reham website\seed_home.js
+  22:5  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  35:7  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  45:7  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+
+A:\Unfinished work\reham website\seed_supabase.js
+  12:5  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  39:9  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  43:5  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
 
 A:\Unfinished work\reham website\src\app\admin\actions.ts
-  11:17  error  'error' is never reassigned. Use 'const' instead  prefer-const
+   48:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+   83:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  112:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  136:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  306:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  378:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  449:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  499:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  539:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  595:9   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  616:9   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  736:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  765:29  error    'updatedVariants' is never reassigned. Use 'const' instead                         prefer-const
+  795:9   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  810:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
 
-A:\Unfinished work\reham website\src\app\admin\collections\page.tsx
-  102:51  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+A:\Unfinished work\reham website\src\app\admin\components\AdminDashboard.tsx
+  81:13  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
 
-A:\Unfinished work\reham website\src\app\admin\orders\[id]\OrderDetailsClient.tsx
-  146:53  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+A:\Unfinished work\reham website\src\app\admin\settings\SettingsForm.tsx
+  61:9   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  67:13  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
 
-A:\Unfinished work\reham website\src\lib\db.ts
-  6:15  error  'error' is never reassigned. Use 'const' instead  prefer-const
-
-Γ£û 4 problems (3 errors, 1 warning)
+Γ£û 24 problems (1 error, 23 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
 
