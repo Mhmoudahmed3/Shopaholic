@@ -35,14 +35,18 @@ export interface Category {
     type?: string;
 }
 
-export type OrderStatus = 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+export type OrderStatus = 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
 
 export interface Order {
     id: string;
     date: string;
+    created_at?: string;
     customer: string;
     email: string;
-    items: number;
+    phone?: string;
+    items: any[];
+    items_count?: number;
+    itemsCount?: number;
     total: number;
     status: OrderStatus;
 }
@@ -135,4 +139,4 @@ export interface CreateOrderResponse {
     order: Order;
 }
 
-export interface ApiOrder extends Order {}
+export type ApiOrder = Order;

@@ -10,7 +10,7 @@ export function WishlistIcon() {
     const count = useWishlistStore((state) => state.items.length);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+         
         setMounted(true);
     }, []);
 

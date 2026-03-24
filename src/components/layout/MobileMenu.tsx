@@ -15,7 +15,7 @@ export function MobileMenu() {
 
     // Close on path change
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+         
         setIsOpen(false);
     }, [pathname]);
 

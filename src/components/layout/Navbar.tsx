@@ -1,15 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { User, Search } from "lucide-react";
+import { User, Search, Heart } from "lucide-react";
 import { CartIcon } from "./CartIcon";
 import { WishlistIcon } from "./WishlistIcon";
 import { SearchModal } from "./SearchModal";
 import { useSearchStore } from "@/lib/useSearchStore";
 import { SettingsDropdown } from "./SettingsDropdown";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export function Navbar({ storeName = "SHOPOHOLIC" }: { storeName?: string }) {
     const { open: openSearch } = useSearchStore();
+    const { user, isAuthenticated } = useAuthStore();
+
+    // Logic: 
+    // - Guest: /account (Login)
+    // - Admin: /admin
+    // - Customer: /account (Dashboard)
+    const profileHref = isAuthenticated 
+        ? (user?.email === "admin@shopaholic.com" ? "/admin" : "/account")
+        : "/account";
 
     return (
         <>
@@ -38,13 +48,19 @@ export function Navbar({ storeName = "SHOPOHOLIC" }: { storeName?: string }) {
                         
                         <div className="flex items-center gap-1">
                             <SettingsDropdown />
-                            <Link href="/admin" className="p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors">
+                            <Link href={profileHref} className="p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors">
                                 <User className="h-5 w-5" />
                             </Link>
                         </div>
 
                         <div className="hidden lg:flex items-center gap-1 sm:gap-2">
-                            <WishlistIcon />
+                            {isAuthenticated ? (
+                                <WishlistIcon />
+                            ) : (
+                                <div className="p-2 text-gray-300 dark:text-zinc-700 cursor-not-allowed opacity-40 hover:opacity-100 transition-opacity" title="Login to view wishlist">
+                                    <Heart className="h-5 w-5" />
+                                </div>
+                            )}
                             <CartIcon />
                         </div>
                     </div>

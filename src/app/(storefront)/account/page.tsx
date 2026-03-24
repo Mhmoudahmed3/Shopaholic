@@ -2,23 +2,54 @@
 
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
-import { Package, User, LogOut, Settings, Plus, List } from "lucide-react";
+import { Package, User, LogOut, Settings, Plus, List, Edit2, Camera, Check, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function AccountPage() {
+    const router = useRouter();
     const [mounted, setMounted] = useState(false);
-    const { user, isAuthenticated, login, signup, logout, signInWithGoogle, signInWithFacebook } = useAuthStore();
+    const { user, isAuthenticated, login, signup, logout, updateProfile, signInWithGoogle, signInWithFacebook } = useAuthStore();
     const [isLogin, setIsLogin] = useState(true);
+    const [regStep, setRegStep] = useState(1);
+
+    // Auto-redirect Admin to Admin Portal (if they land here authenticated)
+    useEffect(() => {
+        if (mounted && isAuthenticated && user?.role === 'admin') {
+            router.push('/admin');
+        }
+    }, [mounted, isAuthenticated, user, router]);
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
+    
+    // Step 2 Fields
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
+    const [age, setAge] = useState("");
+    const [city, setCity] = useState("");
+
     const [isLoading, setIsLoading] = useState(false);
     const [activeTab, setActiveTab] = useState<'orders' | 'profile'>('orders');
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    // Load user data into form when tab changes to profile or user updates
+    useEffect(() => {
+        if (isAuthenticated && user && activeTab === 'profile') {
+            setName(user.name || "");
+            setEmail(user.email || "");
+            setPhone(user.phone || "");
+            setAddress(user.address || "");
+            setAge(user.age || "");
+            setCity(user.city || "");
+        }
+    }, [user, isAuthenticated, activeTab]);
 
     if (!mounted) return null;
 
@@ -34,16 +65,56 @@ export default function AccountPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        if (!isLogin && regStep === 1) {
+            setRegStep(2);
+            return;
+        }
+
         setIsLoading(true);
         try {
             if (isLogin) {
                 await login(email);
             } else {
-                await signup(name, email);
+                await signup(name, email, phone, address, age, city);
             }
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleUpdateProfile = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        try {
+            await updateProfile({
+                name,
+                email,
+                phone,
+                address,
+                age,
+                city
+            });
+            setIsEditing(false); // Success, exit edit mode
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                updateProfile({ profileImage: reader.result as string });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleLogout = () => {
+        logout();
+        router.push("/");
     };
 
     if (isAuthenticated && user) {
@@ -57,7 +128,7 @@ export default function AccountPage() {
                         </p>
                     </div>
                     <button
-                        onClick={logout}
+                        onClick={handleLogout}
                         className="group flex items-center gap-2 text-xs font-medium tracking-widest uppercase text-zinc-400 hover:text-black dark:hover:text-white transition-all"
                     >
                         <LogOut className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -71,8 +142,23 @@ export default function AccountPage() {
                     <div className="lg:col-span-4 xl:col-span-3 space-y-8">
                         <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-100 dark:border-zinc-800/50 p-8">
                             <div className="flex flex-col items-center text-center">
-                                <div className="w-20 h-20 rounded-full bg-black text-white dark:bg-white dark:text-black flex items-center justify-center text-2xl font-light mb-4 ring-4 ring-zinc-100 dark:ring-zinc-800/50 ring-offset-4 ring-offset-white dark:ring-offset-black">
-                                    {user.name.charAt(0)}
+                                <div className="relative group">
+                                    <div className="w-20 h-20 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-2xl font-light mb-4 ring-2 ring-zinc-100 dark:ring-zinc-800 ring-offset-4 ring-offset-white dark:ring-offset-black overflow-hidden relative">
+                                        {user.profileImage ? (
+                                            <Image src={user.profileImage} alt={user.name} fill className="object-cover" />
+                                        ) : (
+                                            <span className="text-zinc-400">{user.name.charAt(0)}</span>
+                                        )}
+                                        <label className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                                            <Camera className="w-5 h-5 text-white" />
+                                            <input type="file" className="hidden" onChange={handleImageUpload} accept="image/*" />
+                                        </label>
+                                    </div>
+                                    {user.profileImage && (
+                                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-white dark:bg-black rounded-full border border-zinc-200 dark:border-zinc-800 flex items-center justify-center pointer-events-none">
+                                            <Check className="w-3 h-3 text-zinc-400" />
+                                        </div>
+                                    )}
                                 </div>
                                 <h2 className="text-lg font-medium text-black dark:text-white">{user.name}</h2>
                                 <p className="text-sm text-zinc-500 mb-8">{user.email}</p>
@@ -89,6 +175,13 @@ export default function AccountPage() {
                                         className={`flex items-center gap-3 w-full px-4 py-3 text-xs tracking-widest uppercase transition-all border ${activeTab === 'orders' ? 'bg-black text-white border-black dark:bg-white dark:text-black dark:border-white' : 'hover:bg-zinc-100 dark:hover:bg-zinc-800 border-transparent text-zinc-600 dark:text-zinc-400'}`}
                                     >
                                         <Package className="w-4 h-4" /> Order History
+                                    </button>
+
+                                    <button
+                                        onClick={handleLogout}
+                                        className="flex items-center gap-3 w-full px-4 py-3 text-xs tracking-widest uppercase transition-all border border-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-black dark:hover:text-white"
+                                    >
+                                        <LogOut className="w-4 h-4" /> Sign Out
                                     </button>
 
                                     {user.role === 'admin' && (
@@ -111,125 +204,252 @@ export default function AccountPage() {
                     <div className="lg:col-span-8 xl:col-span-9">
 
                         {activeTab === 'orders' ? (
-                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                <h2 className="text-2xl font-light tracking-tight mb-8">Recent Orders</h2>
+                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl">
+                                <div className="flex items-center justify-between mb-12">
+                                    <h2 className="text-2xl font-light tracking-tight">Recent Orders</h2>
+                                    <p className="text-[10px] text-zinc-400 uppercase tracking-widest">Showing 2 results</p>
+                                </div>
 
-                                {/* Order Entry */}
-                                <div className="group border border-zinc-100 dark:border-zinc-800 hover:border-black dark:hover:border-white transition-all p-8 bg-white dark:bg-transparent">
-                                    <div className="flex flex-col md:flex-row justify-between md:items-center gap-6 mb-8 pb-8 border-b border-zinc-50 dark:border-zinc-900">
-                                        <div className="space-y-1">
-                                            <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">Reference</p>
-                                            <p className="text-sm font-medium">#SHO-2024-88A2</p>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">Date</p>
-                                            <p className="text-sm">October 24, 2024</p>
-                                        </div>
-                                        <div className="space-y-1 md:text-right">
-                                            <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-400">Amount</p>
-                                            <p className="text-lg font-medium">18,500 EGP</p>
-                                        </div>
-                                        <div className="flex flex-col items-start md:items-end gap-2">
-                                            <span className="px-3 py-1 text-[9px] uppercase tracking-widest font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200">
-                                                In Transit
-                                            </span>
-                                        </div>
-                                    </div>
+                                <div className="space-y-8">
+                                    {/* Order Entry 01 */}
+                                    <motion.div 
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        className="group bg-white dark:bg-zinc-900/10 border border-zinc-100 dark:border-zinc-800/50 hover:border-black dark:hover:border-white transition-all duration-500 p-8 md:p-10"
+                                    >
+                                        <div className="flex flex-col lg:flex-row justify-between items-start gap-12 mb-10">
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 flex-1">
+                                                <div className="space-y-1">
+                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Reference</p>
+                                                    <p className="text-sm font-bold tracking-wider">#SHO-2024-88A2</p>
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Date</p>
+                                                    <p className="text-sm font-light text-zinc-600 dark:text-zinc-400">October 24, 2024</p>
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Amount</p>
+                                                    <p className="text-lg font-medium tracking-tight">18,500 EGP</p>
+                                                </div>
+                                                <div className="space-y-1 text-right md:text-left">
+                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Value</p>
+                                                    <p className="text-sm font-bold opacity-60">$1,250.00</p>
+                                                </div>
+                                            </div>
 
-                                    <div className="flex flex-wrap items-center justify-between gap-6">
-                                        <div className="flex -space-x-4">
-                                            <div className="w-16 h-20 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 relative z-10 p-1">
-                                                <Image
-                                                    src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=800&auto=format&fit=crop"
-                                                    alt="Product"
-                                                    fill
-                                                    className="object-cover"
-                                                />
-                                            </div>
-                                            <div className="w-16 h-20 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 relative z-0 p-1 grayscale group-hover:grayscale-0 transition-all">
-                                                <Image
-                                                    src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=800&auto=format&fit=crop"
-                                                    alt="Product"
-                                                    fill
-                                                    className="object-cover"
-                                                />
+                                            <div className="flex flex-col items-start lg:items-end gap-6 w-full lg:w-auto">
+                                                <div className="flex flex-col items-start lg:items-end gap-2">
+                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-1">Status</p>
+                                                    <div className="flex items-center gap-2 px-3 py-1 bg-black text-white dark:bg-white dark:text-black">
+                                                        <div className="w-1 h-1 rounded-full bg-white dark:bg-black animate-pulse" />
+                                                        <span className="text-[8px] font-bold tracking-[0.2em] uppercase">In Transit</span>
+                                                    </div>
+                                                </div>
+                                                <Link 
+                                                    href="/account/orders/SHO-2024-88A2"
+                                                    className="w-full lg:w-auto px-8 py-3 border border-black dark:border-white text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all flex items-center justify-center gap-2"
+                                                >
+                                                    Explore Details
+                                                </Link>
                                             </div>
                                         </div>
-                                        <Link href="#" className="text-[10px] font-bold uppercase tracking-widest underline underline-offset-8 hover:opacity-60 transition-opacity">
-                                            Order Details
-                                        </Link>
-                                    </div>
+
+                                        <div className="flex items-center justify-between pt-10 border-t border-zinc-100 dark:border-zinc-900">
+                                            <div className="flex -space-x-6">
+                                                <div className="w-20 h-24 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 relative z-20 p-1 group-hover:-translate-y-2 transition-transform duration-500">
+                                                    <Image
+                                                        src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=800&auto=format&fit=crop"
+                                                        alt="Product"
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                                <div className="w-20 h-24 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 relative z-10 p-1 group-hover:-translate-x-4 transition-transform duration-500 delay-75">
+                                                    <Image
+                                                        src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=800&auto=format&fit=crop"
+                                                        alt="Product"
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <Link href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] border-b border-black dark:border-white pb-1 hover:opacity-50 transition-opacity">
+                                                Order Details
+                                            </Link>
+                                        </div>
+                                    </motion.div>
+
+                                    {/* Order Entry 02 */}
+                                    <motion.div 
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        className="group bg-zinc-50/50 dark:bg-zinc-900/5 border border-zinc-100 dark:border-zinc-800/50 hover:border-black dark:hover:border-white transition-all duration-500 p-8 md:p-10"
+                                    >
+                                        <div className="flex flex-col lg:flex-row justify-between items-start gap-12 mb-10">
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 flex-1 opacity-60 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700">
+                                                <div className="space-y-1">
+                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Reference</p>
+                                                    <p className="text-sm font-bold tracking-wider">#SHO-2024-55B1</p>
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Date</p>
+                                                    <p className="text-sm font-light text-zinc-600 dark:text-zinc-400">September 12, 2024</p>
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Amount</p>
+                                                    <p className="text-lg font-medium tracking-tight">4,200 EGP</p>
+                                                </div>
+                                                <div className="space-y-1 text-right md:text-left">
+                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Value</p>
+                                                    <p className="text-sm font-bold opacity-60">$280.00</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex flex-col items-start lg:items-end gap-6 w-full lg:w-auto">
+                                                <div className="flex flex-col items-start lg:items-end gap-2 text-zinc-400">
+                                                    <p className="text-[9px] uppercase tracking-[0.3em] mb-1">Status</p>
+                                                    <div className="flex items-center gap-2 px-3 py-1 border border-zinc-200 dark:border-zinc-800">
+                                                        <span className="text-[8px] font-bold tracking-[0.2em] uppercase">Delivered</span>
+                                                    </div>
+                                                </div>
+                                                <Link 
+                                                    href="#"
+                                                    className="w-full lg:w-auto px-8 py-3 border border-zinc-200 dark:border-zinc-800 text-[10px] font-bold uppercase tracking-[0.4em] hover:border-black dark:hover:border-white transition-all flex items-center justify-center gap-2"
+                                                >
+                                                    Archived View
+                                                </Link>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center justify-between pt-10 border-t border-zinc-100 dark:border-zinc-900">
+                                            <div className="flex -space-x-6 opacity-40 group-hover:opacity-100 transition-opacity">
+                                                <div className="w-20 h-24 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 relative z-20 p-1 group-hover:-translate-y-2 transition-transform duration-500">
+                                                    <Image
+                                                        src="https://images.unsplash.com/photo-1591047139829-d91aec36adea?q=80&w=800&auto=format&fit=crop"
+                                                        alt="Product"
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <Link href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] border-b border-zinc-200 dark:border-zinc-800 pb-1 hover:border-black dark:hover:border-white transition-colors">
+                                                Review History
+                                            </Link>
+                                        </div>
+                                    </motion.div>
                                 </div>
                             </div>
-                        ) : (
-                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                <h2 className="text-2xl font-light tracking-tight mb-8">Personal Information</h2>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 bg-zinc-50/50 dark:bg-zinc-900/10 p-8 md:p-12 border border-zinc-100 dark:border-zinc-800/50">
-                                    <div className="space-y-8">
-                                        <div>
-                                            <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-3">Full Identity</label>
-                                            <input
-                                                type="text"
-                                                defaultValue={user.name}
-                                                className="w-full bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 p-4 font-light focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm tracking-wide"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-3">Email Address</label>
-                                            <input
-                                                type="email"
-                                                defaultValue={user.email}
-                                                className="w-full bg-zinc-100/50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800 p-4 font-light text-zinc-500 text-sm cursor-not-allowed tracking-wide"
-                                                disabled
-                                            />
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-6">
-                                            <div>
-                                                <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-3">Phone</label>
-                                                <input
-                                                    type="tel"
-                                                    placeholder="+20 --- --- ----"
-                                                    className="w-full bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 p-4 font-light focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm tracking-wide"
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-3">Age</label>
-                                                <input
-                                                    type="number"
-                                                    placeholder="25"
-                                                    className="w-full bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 p-4 font-light focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm tracking-wide"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-8">
-                                        <div>
-                                            <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-3">Current City</label>
-                                            <input
-                                                type="text"
-                                                placeholder="e.g. Cairo, Paris, New York"
-                                                className="w-full bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 p-4 font-light focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm tracking-wide"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-3">Primary Residency</label>
-                                            <textarea
-                                                placeholder="Enter your full shipping address"
-                                                rows={5}
-                                                className="w-full bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 p-4 font-light focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm resize-none tracking-wide"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="md:col-span-2 pt-12 flex justify-end">
-                                        <button className="group relative bg-black text-white dark:bg-white dark:text-black px-16 py-5 text-[11px] font-bold uppercase tracking-[0.4em] hover:opacity-80 transition-all shadow-2xl shadow-black/10 dark:shadow-white/5">
-                                            Save Changes
-                                            <span className="absolute -bottom-2 -right-2 w-12 h-12 bg-zinc-100 dark:bg-zinc-800 -z-10 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform"></span>
-                                        </button>
-                                    </div>
+                        ) : activeTab === 'profile' && (
+                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl">
+                                <div className="flex items-center justify-between mb-12 border-b border-zinc-100 dark:border-zinc-900 pb-6">
+                                    <h2 className="text-2xl font-light tracking-tight">Personal Information</h2>
+                                    <button 
+                                        onClick={() => setIsEditing(!isEditing)}
+                                        className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-black dark:hover:text-white transition-all group"
+                                    >
+                                        {isEditing ? (
+                                            <>
+                                                <X className="w-3 h-3" /> Cancel
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Edit2 className="w-3 h-3" /> Edit Profile
+                                            </>
+                                        )}
+                                    </button>
                                 </div>
+
+                                <form onSubmit={handleUpdateProfile} className="space-y-12">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Full Identity</label>
+                                                <input
+                                                    type="text"
+                                                    value={name}
+                                                    disabled={!isEditing}
+                                                    onChange={(e) => setName(e.target.value)}
+                                                    className={`w-full bg-transparent border-b border-zinc-100 dark:border-zinc-900 py-3 font-light focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm tracking-wide ${!isEditing ? 'opacity-50 cursor-default' : 'opacity-100'}`}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Email Address</label>
+                                                <input
+                                                    type="email"
+                                                    value={email}
+                                                    disabled
+                                                    className="w-full bg-transparent border-b border-zinc-100 dark:border-zinc-900 py-3 font-light text-zinc-500 text-sm cursor-not-allowed tracking-wide opacity-50"
+                                                />
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-6">
+                                                <div>
+                                                    <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Phone</label>
+                                                    <input
+                                                        type="tel"
+                                                        value={phone}
+                                                        disabled={!isEditing}
+                                                        onChange={(e) => setPhone(e.target.value)}
+                                                        placeholder="+20"
+                                                        className={`w-full bg-transparent border-b border-zinc-100 dark:border-zinc-900 py-3 font-light focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm tracking-wide ${!isEditing ? 'opacity-50 cursor-default' : 'opacity-100'}`}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Age</label>
+                                                    <input
+                                                        type="number"
+                                                        value={age}
+                                                        disabled={!isEditing}
+                                                        onChange={(e) => setAge(e.target.value)}
+                                                        placeholder="25"
+                                                        className={`w-full bg-transparent border-b border-zinc-100 dark:border-zinc-900 py-3 font-light focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm tracking-wide ${!isEditing ? 'opacity-50 cursor-default' : 'opacity-100'}`}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-8">
+                                            <div>
+                                                <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Current City</label>
+                                                <input
+                                                    type="text"
+                                                    value={city}
+                                                    disabled={!isEditing}
+                                                    onChange={(e) => setCity(e.target.value)}
+                                                    placeholder="City"
+                                                    className={`w-full bg-transparent border-b border-zinc-100 dark:border-zinc-900 py-3 font-light focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm tracking-wide ${!isEditing ? 'opacity-50 cursor-default' : 'opacity-100'}`}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Primary Residency</label>
+                                                <textarea
+                                                    rows={4}
+                                                    value={address}
+                                                    disabled={!isEditing}
+                                                    onChange={(e) => setAddress(e.target.value)}
+                                                    placeholder="Shipping Address"
+                                                    className={`w-full bg-transparent border border-zinc-100 dark:border-zinc-800 p-4 font-light focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm tracking-wide resize-none ${!isEditing ? 'opacity-50 cursor-default' : 'opacity-100'}`}
+                                                />
+                                            </div>
+
+                                            {isEditing && (
+                                                <button 
+                                                    type="submit"
+                                                    disabled={isLoading}
+                                                    className="w-full py-4 bg-black text-white dark:bg-white dark:text-black text-[10px] font-bold tracking-[0.5em] uppercase hover:opacity-80 transition-all shadow-xl shadow-black/5 dark:shadow-white/5 disabled:opacity-30 flex items-center justify-center gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                                                >
+                                                    {isLoading ? "Saving..." : (
+                                                        <>
+                                                            Confirm Changes
+                                                            <Check className="w-3 h-3" />
+                                                        </>
+                                                    )}
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         )}
 
@@ -268,61 +488,118 @@ export default function AccountPage() {
                             <h1 className="text-4xl font-light tracking-[0.4em] uppercase text-black dark:text-white">SHOPOHOLIC</h1>
                         </Link>
                         <div className="space-y-1">
-                            <h2 className="text-sm font-medium tracking-widest uppercase text-zinc-900 dark:text-zinc-100">
+                            <h2 className="text-sm font-medium tracking-widest uppercase text-zinc-900 dark:text-zinc-100 flex items-center justify-center gap-3">
                                 {isLogin ? "Sign In" : "Register"}
+                                {!isLogin && <span className="text-[10px] text-zinc-400 font-normal">({regStep === 1 ? "01" : "02"} / 02)</span>}
                             </h2>
                             <p className="text-[10px] text-zinc-400 uppercase tracking-widest">
-                                {isLogin ? "Access your curated wardrobe" : "Join the global fashion elite"}
+                                {isLogin ? "Access your curated wardrobe" : regStep === 1 ? "Join the global fashion elite" : "Complete your luxury profile"}
                             </p>
                         </div>
                     </div>
 
                     <div className="space-y-8">
                         <form className="space-y-6" onSubmit={handleSubmit}>
-                            {!isLogin && (
-                                <div className="space-y-1 animate-in fade-in slide-in-from-top-2 duration-300">
-                                    <label className="block text-[10px] uppercase tracking-widest text-zinc-400">Full Name</label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        className="w-full py-3 bg-transparent border-b border-zinc-200 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm font-light"
-                                    />
+                            {isLogin || regStep === 1 ? (
+                                <div className="space-y-6 animate-in fade-in slide-in-from-left-4 duration-500">
+                                    {!isLogin && (
+                                        <div className="space-y-1">
+                                            <label className="block text-[10px] uppercase tracking-widest text-zinc-400">Full Name</label>
+                                            <input
+                                                type="text"
+                                                required
+                                                value={name}
+                                                onChange={(e) => setName(e.target.value)}
+                                                className="w-full py-3 bg-transparent border-b border-zinc-200 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm font-light"
+                                            />
+                                        </div>
+                                    )}
+
+                                    <div className="space-y-1">
+                                        <label className="block text-[10px] uppercase tracking-widest text-zinc-400">Email Address</label>
+                                        <input
+                                            type="email"
+                                            required
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className="w-full py-3 bg-transparent border-b border-zinc-200 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm font-light"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <div className="flex justify-between items-center">
+                                            <label className="block text-[10px] uppercase tracking-widest text-zinc-400">Password</label>
+                                        </div>
+                                        <input
+                                            type="password"
+                                            required
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            className="w-full py-3 bg-transparent border-b border-zinc-200 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm font-light"
+                                        />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div className="space-y-1">
+                                            <label className="block text-[10px] uppercase tracking-widest text-zinc-400">Phone</label>
+                                            <input
+                                                type="tel"
+                                                placeholder="+20"
+                                                value={phone}
+                                                onChange={(e) => setPhone(e.target.value)}
+                                                className="w-full py-3 bg-transparent border-b border-zinc-200 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm font-light"
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="block text-[10px] uppercase tracking-widest text-zinc-400">Age</label>
+                                            <input
+                                                type="number"
+                                                placeholder="25"
+                                                value={age}
+                                                onChange={(e) => setAge(e.target.value)}
+                                                className="w-full py-3 bg-transparent border-b border-zinc-200 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm font-light"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className="block text-[10px] uppercase tracking-widest text-zinc-400">Living City</label>
+                                        <input
+                                            type="text"
+                                            value={city}
+                                            onChange={(e) => setCity(e.target.value)}
+                                            className="w-full py-3 bg-transparent border-b border-zinc-200 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm font-light"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className="block text-[10px] uppercase tracking-widest text-zinc-400">Detailed Address</label>
+                                        <input
+                                            type="text"
+                                            value={address}
+                                            onChange={(e) => setAddress(e.target.value)}
+                                            className="w-full py-3 bg-transparent border-b border-zinc-200 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm font-light"
+                                        />
+                                    </div>
+                                    
+                                    <button
+                                        type="button"
+                                        onClick={() => setRegStep(1)}
+                                        className="text-[9px] uppercase tracking-widest text-zinc-400 hover:text-black dark:hover:text-white transition-all"
+                                    >
+                                        ← Return to Credentials
+                                    </button>
                                 </div>
                             )}
-
-                            <div className="space-y-1">
-                                <label className="block text-[10px] uppercase tracking-widest text-zinc-400">Email Address</label>
-                                <input
-                                    type="email"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full py-3 bg-transparent border-b border-zinc-200 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm font-light"
-                                />
-                            </div>
-
-                            <div className="space-y-1">
-                                <div className="flex justify-between items-center">
-                                    <label className="block text-[10px] uppercase tracking-widest text-zinc-400">Password</label>
-                                    {isLogin && <button type="button" className="text-[9px] uppercase tracking-widest text-zinc-400 hover:text-black dark:hover:text-white transition-all underline underline-offset-4 opacity-0 group-hover:opacity-100">Reset</button>}
-                                </div>
-                                <input
-                                    type="password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full py-3 bg-transparent border-b border-zinc-200 dark:border-zinc-800 focus:outline-none focus:border-black dark:focus:border-white transition-all text-sm font-light"
-                                />
-                            </div>
 
                             <button
                                 type="submit"
                                 disabled={isLoading}
                                 className="w-full py-4 mt-8 bg-black text-white dark:bg-white dark:text-black text-[10px] font-bold tracking-[0.3em] uppercase hover:opacity-80 transition-all disabled:opacity-30"
                             >
-                                {isLoading ? "Processing..." : isLogin ? "Authenticate" : "Create Account"}
+                                {isLoading ? "Processing..." : isLogin ? "Authenticate" : regStep === 1 ? "Next Step" : "Join Shopaholic"}
                             </button>
                         </form>
 
@@ -351,7 +628,10 @@ export default function AccountPage() {
 
                         <div className="text-center pt-8">
                             <button
-                                onClick={() => setIsLogin(!isLogin)}
+                                onClick={() => {
+                                    setIsLogin(!isLogin);
+                                    setRegStep(1);
+                                }}
                                 className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-black dark:hover:text-white transition-all underline underline-offset-8 decoration-zinc-200 dark:decoration-zinc-800 hover:decoration-black dark:hover:decoration-white"
                             >
                                 {isLogin ? "Become a Member" : "Return to Login"}

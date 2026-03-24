@@ -16,7 +16,7 @@ export default function FavoritesPageClient() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+         
         setMounted(true);
         const fetchFavorites = async () => {
             if (items.length > 0) {

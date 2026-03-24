@@ -83,9 +83,9 @@ export function QuickAddModal({ product, onClose }: QuickAddModalProps) {
     const increment = useCallback(() => setQuantity((q) => q + 1), []);
 
     return (
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
             {product && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                <div key={`quick-add-${product.id}`} className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                     {/* Backdrop */}
                     <motion.div
                         {...MODAL_VARIANTS.backdrop}
@@ -136,9 +136,9 @@ export function QuickAddModal({ product, onClose }: QuickAddModalProps) {
                                             <span className="text-[10px] text-neutral-400">{selectedSize}</span>
                                         </div>
                                         <div className="flex flex-wrap gap-2">
-                                            {product.sizes.map((size) => (
+                                            {product.sizes.map((size, idx) => (
                                                 <button
-                                                    key={size}
+                                                    key={`${product.id}-size-${size || idx}`}
                                                     onClick={() => setSelectedSize(size)}
                                                     className={clsx(
                                                         "px-3 py-2 text-[10px] font-bold border transition-all duration-300 min-w-10 h-10 flex items-center justify-center",
@@ -162,12 +162,12 @@ export function QuickAddModal({ product, onClose }: QuickAddModalProps) {
                                             <span className="text-[10px] text-neutral-400 capitalize">{selectedColor}</span>
                                         </div>
                                         <div className="flex flex-wrap gap-4 items-center">
-                                            {product.colors.map((color) => {
+                                            {product.colors.map((color, idx) => {
                                                 const hex = COLOR_MAP_HEX[color] ?? "#808080";
                                                 const isActive = selectedColor === color;
                                                 return (
                                                     <button
-                                                        key={color}
+                                                        key={`${product.id}-color-${color || idx}`}
                                                         onClick={() => setSelectedColor(color)}
                                                         className="group relative flex items-center justify-center"
                                                         title={color}
@@ -241,6 +241,7 @@ export function QuickAddModal({ product, onClose }: QuickAddModalProps) {
                 </div>
             )}
             <ConfirmModal
+                key="quick-add-alert-modal"
                 isOpen={alertModal.open}
                 onClose={() => setAlertModal(p => ({ ...p, open: false }))}
                 title={alertModal.title}

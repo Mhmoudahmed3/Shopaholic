@@ -163,10 +163,10 @@ export default async function CustomersPage({
                                                 {customer.orders} Orders
                                             </span>
                                         </td>
-                                        <td className="px-6 py-5 font-bold italic whitespace-nowrap">{customer.spent.toLocaleString()} EGP</td>
+                                         <td className="px-6 py-5 font-bold italic whitespace-nowrap">{(customer.spent || 0).toLocaleString()} EGP</td>
                                         <td className="px-6 py-5 text-gray-500 whitespace-nowrap">{customer.joined}</td>
                                         <td className="px-6 py-5 text-right">
-                                            <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="flex items-center justify-end gap-1 transition-opacity">
                                                 <button className="p-2 text-gray-400 hover:text-black dark:hover:text-white transition-colors" title="Message">
                                                     <MessageSquare className="w-4 h-4" />
                                                 </button>

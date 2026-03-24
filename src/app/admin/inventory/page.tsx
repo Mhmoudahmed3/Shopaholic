@@ -1,5 +1,5 @@
 import { getProducts } from "@/lib/db";
-import { getCategoriesDB } from "@/lib/db";
+import { getCategoriesDB, getProductSales } from "@/lib/db";
 import { AdminHeader } from "../components/AdminLayout";
 import { Edit, Plus, Star, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import Image from "next/image";
@@ -24,12 +24,22 @@ export default async function InventoryPage({
     const sortBy = resolvedParams.sortBy || "createdAt";
     const order = (resolvedParams.order as 'asc' | 'desc') || "desc";
 
-    let products = await getProducts({ 
-        category,
-        type: type === 'all' ? undefined : type,
-        minRating,
-        isPopular
-    });
+    // Fetch products and sales data in parallel
+    const [rawProducts, salesMap] = await Promise.all([
+        getProducts({ 
+            category,
+            type: type === 'all' ? undefined : type,
+            minRating,
+            isPopular
+        }),
+        getProductSales()
+    ]);
+
+    // Enrich products with dynamic sales data
+    let products = rawProducts.map(p => ({
+        ...p,
+        salesLastMonth: salesMap[p.id] || 0
+    }));
 
     if (q) {
         products = products.filter(p => 
@@ -40,9 +50,9 @@ export default async function InventoryPage({
     }
 
     // Server-side sorting
-    products = [...products].sort((a: import("@/lib/types").Product, b: import("@/lib/types").Product) => {
-        const aValue = a[sortBy as keyof import("@/lib/types").Product] ?? '';
-        const bValue = b[sortBy as keyof import("@/lib/types").Product] ?? '';
+    products = [...products].sort((a: any, b: any) => {
+        const aValue = a[sortBy as string] ?? '';
+        const bValue = b[sortBy as string] ?? '';
         
         if (aValue < bValue) return order === 'asc' ? -1 : 1;
         if (aValue > bValue) return order === 'asc' ? 1 : -1;
@@ -214,9 +224,9 @@ export default async function InventoryPage({
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <p className="font-medium text-gray-900 dark:text-gray-100">{product.price.toLocaleString()} EGP</p>
+                                             <p className="font-medium text-gray-900 dark:text-gray-100">{(product.price || 0).toLocaleString()} EGP</p>
                                             {product.discountPrice && (
-                                                <p className="text-[10px] text-red-500 line-through">{(product.price * 1.2).toLocaleString()} EGP</p>
+                                                 <p className="text-[10px] text-red-500 line-through">{((product.price || 0) * 1.2).toLocaleString()} EGP</p>
                                             )}
                                         </td>
                                         <td className="px-6 py-4">

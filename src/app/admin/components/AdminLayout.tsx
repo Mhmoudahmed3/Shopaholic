@@ -10,7 +10,6 @@ import {
     PlusCircle, 
     Settings, 
     LogOut,
-    Search,
     Bell,
     ExternalLink,
     AlertTriangle,
@@ -22,12 +21,13 @@ import {
     Menu
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function AdminSideNav() {
     const { user, logout } = useAuthStore();
     const pathname = usePathname();
+    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
 
     const menuItems = [
@@ -124,8 +124,11 @@ export function AdminSideNav() {
                         <ExternalLink className="w-4 h-4" /> View Storefront
                     </Link>
                     <button 
-                        onClick={logout}
-                        className="flex items-center gap-3 px-4 py-2.5 text-xs text-red-500 hover:text-red-400 transition-colors"
+                        onClick={() => {
+                            logout();
+                            router.replace("/");
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 text-xs text-red-500 hover:text-red-400 transition-colors w-full text-left rounded-lg hover:bg-red-500/5 focus:outline-none focus:ring-1 focus:ring-red-500/20 cursor-pointer active:scale-95 duration-200"
                     >
                         <LogOut className="w-4 h-4" /> Log Out
                     </button>
@@ -153,14 +156,7 @@ export function AdminHeader({ title }: { title: string }) {
             </div>
 
             <div className="flex items-center gap-6">
-                <div className="hidden md:flex items-center bg-gray-100 dark:bg-zinc-900 px-4 py-2 rounded-full border border-gray-200 dark:border-gray-800 transition-all focus-within:ring-1 ring-gray-400">
-                    <Search className="w-4 h-4 text-gray-500" />
-                    <input 
-                        type="text" 
-                        placeholder="Search dashboard..." 
-                        className="bg-transparent border-none outline-none text-xs ml-3 w-48 placeholder:text-gray-500"
-                    />
-                </div>
+
 
                 <div className="relative">
                     <button 

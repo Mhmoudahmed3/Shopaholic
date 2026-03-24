@@ -6,6 +6,11 @@ interface User {
     name: string;
     email: string;
     role: 'user' | 'admin';
+    phone?: string;
+    address?: string;
+    age?: string;
+    city?: string;
+    profileImage?: string;
 }
 
 interface AuthState {
@@ -13,7 +18,8 @@ interface AuthState {
     isAuthenticated: boolean;
     login: (email: string) => Promise<void>;
     logout: () => void;
-    signup: (name: string, email: string) => Promise<void>;
+    signup: (name: string, email: string, phone?: string, address?: string, age?: string, city?: string) => Promise<void>;
+    updateProfile: (data: Partial<Omit<User, 'id' | 'role'>>) => Promise<void>;
     signInWithGoogle: () => Promise<void>;
     signInWithFacebook: () => Promise<void>;
 }
@@ -35,13 +41,29 @@ export const useAuthStore = create<AuthState>()(
                     isAuthenticated: true,
                 });
             },
-            signup: async (name, email) => {
+            signup: async (name, email, phone, address, age, city) => {
                 // Mock API call
                 await new Promise(resolve => setTimeout(resolve, 800));
                 set({
-                    user: { id: '1', name, email, role: 'user' },
+                    user: { 
+                        id: Math.random().toString(36).substr(2, 9), 
+                        name, 
+                        email, 
+                        role: 'user',
+                        phone,
+                        address,
+                        age,
+                        city
+                    },
                     isAuthenticated: true,
                 });
+            },
+            updateProfile: async (data) => {
+                // Mock API call
+                await new Promise(resolve => setTimeout(resolve, 500));
+                set((state) => ({
+                    user: state.user ? { ...state.user, ...data } : null
+                }));
             },
             signInWithGoogle: async () => {
                 // Simulate redirect/popup

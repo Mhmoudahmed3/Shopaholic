@@ -99,7 +99,7 @@ export default function AdminCollectionsPage() {
                             Curated <span className="italic font-serif">Groups</span>
                         </h1>
                         <p className="text-xs text-gray-500 max-w-md uppercase tracking-[0.15em] font-medium leading-relaxed opacity-60">
-                            Organize your boutique's essence into seasonal narratives and stylistic collections.
+                            Organize your boutique&apos;s essence into seasonal narratives and stylistic collections.
                         </p>
                     </motion.div>
 

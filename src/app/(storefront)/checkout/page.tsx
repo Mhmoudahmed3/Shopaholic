@@ -19,16 +19,13 @@ export default function CheckoutPage() {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMounted(true);
-    }, []);
+        if (items.length === 0) {
+            router.push("/cart");
+        }
+    }, [items.length, router]);
 
-    if (!mounted) return null;
-
-    if (items.length === 0) {
-        router.push("/cart");
-        return null;
-    }
+    if (!mounted || items.length === 0) return null;
 
     const subtotal = getCartTotal();
     const shipping = subtotal > 5000 ? 0 : 250;
@@ -40,15 +37,18 @@ export default function CheckoutPage() {
 
         const formData = new FormData(e.currentTarget as HTMLFormElement);
         const email = formData.get("email") as string;
+        const phone = formData.get("phone") as string;
         const firstName = formData.get("firstName") as string;
         const lastName = formData.get("lastName") as string;
 
         const orderData = {
             customer_name: `${firstName} ${lastName}`,
             email,
+            phone,
             items_count: items.reduce((sum, item) => sum + item.quantity, 0),
             total_amount: total,
-            status: 'Processing'
+            status: 'Processing',
+            items: items // Pass the full items array
         };
 
         const result = await createOrder(orderData);
@@ -88,16 +88,29 @@ export default function CheckoutPage() {
                         <section>
                             <h2 className="text-lg font-medium tracking-wide uppercase mb-6">Contact Information</h2>
                             <div className="space-y-4">
-                                <div>
-                                    <label htmlFor="email" className="sr-only">Email address</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        placeholder="Email address"
-                                        required
-                                        className="w-full p-3 bg-transparent border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
-                                    />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label htmlFor="email" className="sr-only">Email address</label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            placeholder="Email address"
+                                            required
+                                            className="w-full p-3 bg-transparent border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="phone" className="sr-only">Phone number</label>
+                                        <input
+                                            type="tel"
+                                            id="phone"
+                                            name="phone"
+                                            placeholder="Phone number"
+                                            required
+                                            className="w-full p-3 bg-transparent border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </section>

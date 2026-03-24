@@ -3,7 +3,9 @@ import { SiteSettings, Category, Product, Collection, Homepage } from './types';
 
 // Site Settings
 export async function getSettingsDB(): Promise<SiteSettings> {
-  let { data, error } = await supabase.from('site_settings').select('*').eq('id', 1).single();
+  const result = await supabase.from('site_settings').select('*').eq('id', 1).single();
+  let data = result.data;
+  const error = result.error;
   
   // Auto-sync store name if it's the old one
   if (data && data.store_name === "REHAM") {
@@ -94,8 +96,76 @@ export async function deleteCategoryDB(id: string) {
 
 // Orders
 export async function getOrdersDB(): Promise<any[]> {
-  const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
-  return data || [];
+  // First, try with order_items join
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*, order_items(*)')
+    .order('created_at', { ascending: false });
+  
+  // If the join fails (e.g. table doesn't exist or RLS), fall back to orders only
+  if (error) {
+    console.error('[getOrdersDB] Join query failed, falling back:', error.message);
+    const { data: ordersOnly, error: fallbackError } = await supabase
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (fallbackError || !ordersOnly) return [];
+    
+    return ordersOnly.map(o => ({
+      ...o,
+      customer: o.customer_name,
+      total: o.total_amount,
+      items: [],
+      itemsCount: o.items_count,
+      date: new Date(o.created_at).toLocaleDateString()
+    }));
+  }
+  
+  return data.map(o => ({
+    ...o,
+    customer: o.customer_name,
+    phone: o.phone,
+    total: o.total_amount,
+    items: o.order_items || [],
+    itemsCount: o.items_count,
+    date: new Date(o.created_at).toLocaleDateString()
+  }));
+}
+
+// Get dynamic sales count per product from order_items (excluding cancelled orders)
+export async function getProductSales(): Promise<Record<string, number>> {
+  const { data, error } = await supabase
+    .from('order_items')
+    .select('product_id, quantity, orders!inner(status)')
+    .neq('orders.status', 'Cancelled');
+
+  if (error || !data) {
+    console.error('[getProductSales] Error:', error?.message);
+    return {};
+  }
+
+  const salesMap: Record<string, number> = {};
+  for (const item of data) {
+    const pid = item.product_id;
+    if (pid) {
+      salesMap[pid] = (salesMap[pid] || 0) + (item.quantity || 0);
+    }
+  }
+  return salesMap;
+}
+
+export async function getOrderById(id: string): Promise<any | undefined> {
+  const { data, error } = await supabase.from('orders').select('*').eq('id', id).single();
+  if (error || !data) return undefined;
+  
+  return {
+    ...data,
+    customer: data.customer_name,
+    total: data.total_amount,
+    items: data.items_count,
+    date: new Date(data.created_at).toLocaleDateString()
+  };
 }
 
 // Collections

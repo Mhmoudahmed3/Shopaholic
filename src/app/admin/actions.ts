@@ -3,16 +3,18 @@
 import fs from 'fs';
 import path from 'path';
 import { revalidatePath } from "next/cache";
-import { SiteSettings, Category, Review, Product, Collection, Homepage, HomepageHero, HomepagePromo } from "@/lib/types";
+import { SiteSettings, Category, Review, Product, Collection, Homepage, HomepageHero, HomepagePromo, OrderStatus } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 
 // Site Settings
 export async function getSiteSettings(): Promise<SiteSettings> {
-    let { data, error } = await supabase
+    const result = await supabase
         .from('site_settings')
         .select('*')
         .eq('id', 1)
         .single();
+    let data = result.data;
+    const error = result.error;
     
     // Auto-sync store name if it's the old one
     if (data && data.store_name === "REHAM") {
@@ -727,5 +729,97 @@ export async function updateHomepageSection(section: string, data: any) {
     } catch (error) {
         console.error("Error updating homepage section:", error);
         return { success: false };
+    }
+}
+
+export async function updateOrderStatus(orderId: string, status: string) {
+    console.log(`[ACTION] Updating order ${orderId} to status: ${status}`);
+    let normalizedStatus = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+    if (normalizedStatus === 'Canceled') normalizedStatus = 'Cancelled';
+        const { data: updatedOrder, error } = await supabase
+            .from('orders')
+            .update({ status: normalizedStatus })
+            .eq('id', orderId)
+            .select()
+            .single();
+        
+        if (error) throw error;
+
+        // If cancelled, increment stock back
+        if (normalizedStatus === 'Cancelled') {
+            const { data: items } = await supabase
+                .from('order_items')
+                .select('product_id, quantity, variant_color, variant_size')
+                .eq('order_id', orderId);
+            
+            if (items) {
+                for (const item of items) {
+                    const { data: product } = (await supabase
+                        .from('products')
+                        .select('stock, image_variants')
+                        .eq('id', item.product_id)
+                        .single()) as { data: Product | null };
+                    
+                    if (product) {
+                        let updatedVariants = (product.imageVariants || []).map(v => {
+                            const matchColor = (v.color || '').toLowerCase() === (item.variant_color || '').toLowerCase();
+                            const matchSize = (v.size || '').toLowerCase() === (item.variant_size || '').toLowerCase();
+                            
+                            if (matchColor && matchSize) {
+                                return { ...v, quantity: (v.quantity || 0) + item.quantity };
+                            }
+                            return v;
+                        });
+
+                        // Recalculate total stock from variants
+                        let newTotalStock: number;
+                        if (updatedVariants.length > 0) {
+                            newTotalStock = updatedVariants.reduce((sum, v) => sum + (v.quantity || 0), 0);
+                        } else {
+                            newTotalStock = (product.stock || 0) + item.quantity;
+                        }
+
+                        await supabase
+                            .from('products')
+                            .update({ 
+                                stock: newTotalStock,
+                                image_variants: updatedVariants 
+                            })
+                            .eq('id', item.product_id);
+                    }
+                }
+            }
+        }
+
+        console.log(`[ACTION] Order ${orderId} successfully updated to ${status}.`);
+        
+        revalidatePath('/admin');
+        revalidatePath('/admin/orders');
+        revalidatePath('/admin/inventory');
+        revalidatePath(`/admin/orders/${orderId}`);
+        
+        return { success: true, newStatus: status };
+    } catch (error: any) {
+        console.error("[ACTION ERROR] updateOrderStatus:", error);
+        throw new Error(error.message || "Failed to update order status");
+    }
+}
+
+export async function deleteOrder(orderId: string) {
+    console.log(`[ACTION] Deleting order ${orderId}...`);
+    try {
+        const { error } = await supabase
+            .from('orders')
+            .delete()
+            .eq('id', orderId);
+
+        if (error) throw error;
+        
+        revalidatePath('/admin/orders');
+        revalidatePath('/admin');
+        return { success: true };
+    } catch (error) {
+        console.error("Error deleting order:", error);
+        throw new Error("Failed to delete order");
     }
 }

@@ -16,18 +16,39 @@ import {
     Star,
     ArrowUpDown,
     ArrowUp,
-    ArrowDown
+    ArrowDown,
+    CheckCircle, 
+    Truck, 
+    XCircle,
+    Calendar,
+    Clock
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AdminHeader } from "@/app/admin/components/AdminLayout";
-import { deleteProduct } from "@/app/admin/actions";
-import { Product, Order, Category } from "@/lib/types";
+import { deleteProduct, updateOrderStatus } from "@/app/admin/actions";
+import { Product, Order, Category, OrderStatus } from "@/lib/types";
+import { useState, useMemo } from "react";
+import { ConfirmModal } from "@/app/admin/components/ConfirmModal";
 
 // Sort Icon Component
 const SortIcon = ({ active, direction }: { active: boolean, direction: 'asc' | 'desc' | null }) => {
     if (!active) return <ArrowUpDown className="w-3 h-3 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity" />;
     return direction === 'asc' ? <ArrowUp className="w-3 h-3 text-black dark:text-white" /> : <ArrowDown className="w-3 h-3 text-black dark:text-white" />;
+};
+
+const getRelativeTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    
+    if (diffInSeconds < 60) return 'just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
 // Animation Variants
@@ -44,13 +65,142 @@ const itemVariants = {
     visible: { opacity: 1, y: 0 }
 };
 
-import { useState, useMemo } from "react";
+/**
+ * Fulfillment Card Sub-component for individual order management
+ */
+function OrderFulfillmentCard({ order }: { order: Order }) {
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+    const [actionType, setActionType] = useState<'cancel' | 'ship' | 'deliver' | null>(null);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-export default function AdminDashboard({ products, orders, categories }: { products: Product[], orders: Order[], categories: Category[] }) {
+    const executeAction = async (status: OrderStatus, type: 'cancel' | 'ship' | 'deliver') => {
+        setIsLoading(true);
+        setActionType(type);
+        try {
+            console.log(`[DASHBOARD] Changing order ${order.id} to ${status}`);
+            await updateOrderStatus(order.id, status);
+            router.refresh();
+        } catch (err) {
+            console.error("[DASHBOARD ERROR]", err);
+        } finally {
+            setIsLoading(false);
+            setActionType(null);
+            setIsConfirmOpen(false);
+        }
+    };
+
+    const handleAction = async (e: React.MouseEvent, status: OrderStatus, type: 'cancel' | 'ship' | 'deliver') => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (type === 'cancel') {
+            setIsConfirmOpen(true);
+            return;
+        }
+
+        await executeAction(status, type);
+    };
+
+    return (
+        <motion.div 
+            whileHover={{ y: -4 }}
+            className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:shadow-black/5 transition-all group overflow-hidden relative"
+        >
+            <Link 
+                href={`/admin/orders/${order.id}`}
+                className="absolute inset-0 z-0"
+                aria-label={`View details for order ${order.id}`}
+            />
+            
+            {/* Background glow */}
+            <div className={`absolute top-0 right-0 w-24 h-24 blur-3xl opacity-5 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none ${
+                order.status === 'Processing' ? 'bg-amber-500' : 'bg-blue-500'
+            }`} />
+            
+            <div className="relative z-10 flex justify-between items-start mb-6 pointer-events-none">
+                <div className={`px-2.5 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase border ${
+                    order.status === 'Processing' 
+                        ? 'bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-950/20 dark:border-amber-900/50' 
+                        : 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-950/20 dark:border-blue-900/50'
+                }`}>
+                    {order.status}
+                </div>
+                <span className="text-[10px] text-gray-400 font-mono">#{order.id.slice(-6)}</span>
+            </div>
+
+            <div className="relative z-10 space-y-4 pointer-events-none">
+                <div>
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{order.customer || 'Guest Customer'}</p>
+                    <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">{order.email}</p>
+                </div>
+                
+                <div className="flex items-end justify-between pt-2 border-t border-gray-50 dark:border-gray-800">
+                    <div className="space-y-1">
+                        <p className="text-[10px] uppercase font-bold tracking-widest text-gray-400">Total Amount</p>
+                        <p className="text-lg font-light tracking-tight italic">{(order.total || 0).toLocaleString()} EGP</p>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-black dark:group-hover:text-white transition-colors" />
+                </div>
+
+                {/* Action Buttons Container */}
+                <div className="relative z-20 grid grid-cols-2 gap-3 pt-4 border-t border-gray-50 dark:border-gray-800 pointer-events-auto">
+                    <button 
+                        disabled={isLoading}
+                        onClick={(e) => handleAction(e, 'Cancelled', 'cancel')}
+                        className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-rose-100 dark:border-rose-900/30 text-[10px] font-bold uppercase tracking-widest text-rose-500 hover:bg-rose-500 hover:text-white transition-all duration-300 cursor-pointer active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {isLoading && actionType === 'cancel' ? (
+                            <span className="animate-spin h-3 w-3 border-2 border-current border-t-transparent rounded-full" />
+                        ) : (
+                            <XCircle className="w-3 h-3" />
+                        )}
+                        {isLoading && actionType === 'cancel' ? 'Wait...' : 'Cancel'}
+                    </button>
+                    
+                    <button 
+                        disabled={isLoading}
+                        onClick={(e) => {
+                            const nextStatus: OrderStatus = order.status === 'Processing' ? 'Shipped' : 'Delivered';
+                            handleAction(e, nextStatus, order.status === 'Processing' ? 'ship' : 'deliver');
+                        }}
+                        className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${
+                            order.status === 'Processing'
+                                ? 'bg-blue-600 text-white hover:bg-black shadow-lg shadow-blue-500/10'
+                                : 'bg-emerald-600 text-white hover:bg-black shadow-lg shadow-emerald-500/10'
+                        }`}
+                    >
+                        {isLoading && actionType !== 'cancel' ? (
+                            <span className="animate-spin h-3 w-3 border-2 border-white border-t-transparent rounded-full" />
+                        ) : (
+                            order.status === 'Processing' ? <Truck className="w-3 h-3" /> : <CheckCircle className="w-3 h-3" />
+                        )}
+                        {isLoading && actionType !== 'cancel' ? 'Processing...' : (order.status === 'Processing' ? 'Ship Order' : 'Mark Delivered')}
+                    </button>
+                </div>
+            </div>
+
+            <ConfirmModal
+                isOpen={isConfirmOpen}
+                title="Cancel Order"
+                message={`Are you sure you want to cancel order #${order.id.slice(-6)}? This action cannot be undone.`}
+                type="danger"
+                confirmText="Cancel Order"
+                isLoading={isLoading && actionType === 'cancel'}
+                onConfirm={() => executeAction('Cancelled', 'cancel')}
+                onCancel={() => setIsConfirmOpen(false)}
+            />
+        </motion.div>
+    );
+}
+
+export default function AdminDashboard({ products, orders, categories, salesMap = {} }: { products: Product[], orders: Order[], categories: Category[], salesMap?: Record<string, number> }) {
+    const router = useRouter();
     const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [popularOnly, setPopularOnly] = useState(false);
     const [minRating, setMinRating] = useState(0);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [sortConfig, setSortConfig] = useState<{ key: string, direction: 'asc' | 'desc' | null }>({ key: 'createdAt', direction: 'desc' });
 
     const handleSort = (key: string) => {
@@ -61,51 +211,59 @@ export default function AdminDashboard({ products, orders, categories }: { produ
         setSortConfig({ key, direction });
     };
 
+    // Enrich products with dynamic sales data from the server-provided salesMap
+    const enrichedProducts = useMemo(() => {
+        return products.map(product => ({
+            ...product,
+            salesLastMonth: salesMap[product.id] || 0
+        }));
+    }, [products, salesMap]);
+
     const sortedProducts = useMemo(() => {
-        const sortableProducts = [...products];
+        const sortableProducts = [...enrichedProducts];
         if (sortConfig.key && sortConfig.direction) {
             sortableProducts.sort((a, b) => {
-                const aValue = a[sortConfig.key as keyof Product] ?? '';
-                const bValue = b[sortConfig.key as keyof Product] ?? '';
+                const aValue = (a as any)[sortConfig.key] ?? '';
+                const bValue = (b as any)[sortConfig.key] ?? '';
                 
-                if (aValue < bValue) {
-                    return sortConfig.direction === 'asc' ? -1 : 1;
-                }
-                if (aValue > bValue) {
-                    return sortConfig.direction === 'asc' ? 1 : -1;
-                }
+                if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+                if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
                 return 0;
             });
         }
         return sortableProducts;
-    }, [products, sortConfig]);
+    }, [enrichedProducts, sortConfig]);
 
     const filteredProducts = useMemo(() => {
         return sortedProducts.filter(p => {
             const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                p.id.toLowerCase().includes(searchQuery.toLowerCase());
+                                 p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                 p.id.toLowerCase().includes(searchQuery.toLowerCase());
             
-            const matchesPopular = !popularOnly || (p.popularity || 0) >= 85;
+            const matchesPopular = !popularOnly || (p.popularity || 0) >= 85 || (p.salesLastMonth || 0) >= 10;
             const matchesRating = (p.rating || 0) >= minRating;
+            const matchesCategory = !selectedCategory || p.category.toLowerCase() === selectedCategory.toLowerCase();
 
-            return matchesSearch && matchesPopular && matchesRating;
+            return matchesSearch && matchesPopular && matchesRating && matchesCategory;
         });
-    }, [sortedProducts, searchQuery, popularOnly, minRating]);
+    }, [sortedProducts, searchQuery, popularOnly, minRating, selectedCategory]);
 
     const toggleFilterMenu = () => setIsFilterMenuOpen(!isFilterMenuOpen);
+
     return (
         <div className="flex-1 flex flex-col min-h-screen bg-gray-50/50 dark:bg-zinc-950/50">
             <AdminHeader title="Dashboard Overview" />
 
             <main className="flex-1 p-8 space-y-12">
                 
-                {/* 1. Stats Grid */}
+                {/* Stats Grid */}
                 {(() => {
-                    const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+                    const totalRevenue = orders
+                        .filter(order => order.status === 'Delivered')
+                        .reduce((sum, order) => sum + (order.total || 0), 0);
                     const totalOrders = orders.length;
                     const activeCustomers = new Set(orders.map(o => o.email)).size;
-                    const totalStock = products.reduce((sum, p) => sum + (p.stock || 0), 0);
+                    const totalStock = enrichedProducts.reduce((sum, p) => sum + (p.stock || 0), 0);
 
                     return (
                         <motion.div 
@@ -114,66 +272,28 @@ export default function AdminDashboard({ products, orders, categories }: { produ
                             animate="visible"
                             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
                         >
-                            <StatCard 
-                                label="Total Revenue" 
-                                value={`${totalRevenue.toLocaleString()} EGP`} 
-                                trend="+12.5%" 
-                                trendUp={true} 
-                                icon={TrendingUp} 
-                                description="vs last month"
-                                color="emerald"
-                            />
-                            <StatCard 
-                                label="Total Orders" 
-                                value={totalOrders.toString()} 
-                                trend="+8.2%" 
-                                trendUp={true} 
-                                icon={ShoppingBag}
-                                description="New orders today"
-                                color="blue"
-                            />
-                            <StatCard 
-                                label="Active Customers" 
-                                value={activeCustomers.toString()} 
-                                trend="+5.4%" 
-                                trendUp={true} 
-                                icon={Users}
-                                description="Growth this week"
-                                color="purple"
-                            />
-                            <StatCard 
-                                label="Total Inventory" 
-                                value={totalStock.toString()} 
-                                trend="Stable" 
-                                trendUp={true} 
-                                icon={TrendingUp}
-                                description="Active SKU count"
-                                color="orange"
-                            />
+                            <StatCard label="Total Revenue" value={`${(totalRevenue || 0).toLocaleString()} EGP`} trend="+12.5%" trendUp={true} icon={TrendingUp} description="vs last month" color="emerald" />
+                            <StatCard label="Total Orders" value={totalOrders.toString()} trend="+8.2%" trendUp={true} icon={ShoppingBag} description="New orders today" color="blue" />
+                            <StatCard label="Active Customers" value={activeCustomers.toString()} trend="+5.4%" trendUp={true} icon={Users} description="Growth this week" color="purple" />
+                            <StatCard label="Total Inventory" value={totalStock.toString()} trend="Stable" trendUp={true} icon={TrendingUp} description="Active SKU count" color="orange" />
                         </motion.div>
                     );
                 })()}
 
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-12">
-                    {/* 2. Inventory Table */}
+                    {/* Inventory Table */}
                     <div className="xl:col-span-2 space-y-6">
                         <div className="flex items-center justify-between">
                             <div>
                                 <h3 className="text-xl font-light tracking-tight">Recent Products</h3>
                                 <p className="text-xs text-gray-500 mt-1">Manage your storefront inventory</p>
                             </div>
-                            <div className="flex gap-3">
-                                <Link 
-                                    href="/admin/add-item"
-                                    className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-widest rounded hover:opacity-80 transition-all shadow-lg shadow-black/10"
-                                >
-                                    <Plus className="w-4 h-4" /> Add Product
-                                </Link>
-                            </div>
+                            <Link href="/admin/add-item" className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-widest rounded hover:opacity-80 transition-all shadow-lg shadow-black/10">
+                                <Plus className="w-4 h-4" /> Add Product
+                            </Link>
                         </div>
 
                         <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl shadow-black/5 relative group/table">
-                            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/[0.02] dark:to-white/[0.02] pointer-events-none" />
                             <div className="p-5 border-b border-gray-100 dark:border-white/5 flex items-center justify-between gap-4 bg-white/50 dark:bg-zinc-800/20 relative z-10">
                                 <div className="flex items-center gap-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 px-3 py-1.5 rounded-lg flex-1 sm:w-64 sm:flex-none">
                                     <Search className="w-4 h-4 text-gray-400" />
@@ -192,74 +312,19 @@ export default function AdminDashboard({ products, orders, categories }: { produ
                                     >
                                         <Filter className="w-4 h-4" />
                                     </button>
-
                                     <AnimatePresence>
                                         {isFilterMenuOpen && (
-                                            <motion.div 
-                                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                className="absolute right-0 mt-2 w-64 bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-2xl z-50 overflow-hidden backdrop-blur-xl bg-opacity-90 dark:bg-opacity-90"
-                                            >
+                                            <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} className="absolute right-0 mt-2 w-64 bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-2xl z-50 overflow-hidden backdrop-blur-xl bg-opacity-90 dark:bg-opacity-90">
                                                 <div className="p-4 space-y-4">
                                                     <div>
-                                                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-3">Status</h4>
+                                                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-3">Filter Options</h4>
                                                         <label className="flex items-center justify-between cursor-pointer group">
-                                                            <div className="flex flex-col">
-                                                                <span className={`text-[11px] font-medium transition-colors ${popularOnly ? 'text-black dark:text-white' : 'text-neutral-500'}`}>Best Sellers</span>
-                                                                <span className="text-[9px] text-neutral-400 font-normal">Popularity score 85+</span>
-                                                            </div>
-                                                            <div 
-                                                                onClick={() => setPopularOnly(!popularOnly)}
-                                                                className={`relative w-8 h-4 rounded-full transition-colors duration-300 ${popularOnly ? 'bg-black dark:bg-white' : 'bg-neutral-200 dark:bg-neutral-800'}`}
-                                                            >
-                                                                <motion.div 
-                                                                    animate={{ x: popularOnly ? 18 : 2 }}
-                                                                    className={`absolute top-0.5 w-3 h-3 rounded-full shadow-sm ${popularOnly ? 'bg-white dark:bg-black' : 'bg-white dark:bg-neutral-400'}`}
-                                                                />
+                                                            <span className={`text-[11px] font-medium transition-colors ${popularOnly ? 'text-black dark:text-white' : 'text-neutral-500'}`}>Best Sellers Only</span>
+                                                            <div onClick={() => setPopularOnly(!popularOnly)} className={`relative w-8 h-4 rounded-full transition-colors duration-300 ${popularOnly ? 'bg-black dark:bg-white' : 'bg-neutral-200 dark:border-neutral-800'}`}>
+                                                                <motion.div animate={{ x: popularOnly ? 18 : 2 }} className={`absolute top-0.5 w-3 h-3 rounded-full shadow-sm ${popularOnly ? 'bg-white dark:bg-black' : 'bg-white dark:bg-neutral-400'}`} />
                                                             </div>
                                                         </label>
                                                     </div>
-
-                                                    <div className="pt-2 border-t border-neutral-100 dark:border-neutral-800">
-                                                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-3">Minimum Rating</h4>
-                                                        <div className="space-y-2">
-                                                            {[4.5, 4, 3, 0].map((rating) => (
-                                                                <button
-                                                                    key={rating}
-                                                                    onClick={() => setMinRating(rating)}
-                                                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all ${
-                                                                        minRating === rating 
-                                                                            ? 'bg-neutral-100 dark:bg-zinc-800 text-black dark:text-white' 
-                                                                            : 'text-neutral-500 hover:bg-gray-50 dark:hover:bg-zinc-800/50'
-                                                                    }`}
-                                                                >
-                                                                    <div className="flex items-center gap-1.5">
-                                                                        <div className="flex">
-                                                                            {[...Array(Math.floor(rating || 5))].map((_, i) => (
-                                                                                <svg key={i} className={`w-2.5 h-2.5 ${rating === 0 ? 'fill-neutral-200' : 'fill-yellow-400'}`} viewBox="0 0 20 20">
-                                                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                                                </svg>
-                                                                            ))}
-                                                                        </div>
-                                                                        <span className="text-[10px] font-bold uppercase tracking-wider">{rating === 0 ? 'Any Rating' : `${rating}+ Stars`}</span>
-                                                                    </div>
-                                                                    {minRating === rating && <div className="w-1 h-1 rounded-full bg-black dark:bg-white" />}
-                                                                </button>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-
-                                                    <button 
-                                                        onClick={() => {
-                                                            setPopularOnly(false);
-                                                            setMinRating(0);
-                                                            setSearchQuery("");
-                                                        }}
-                                                        className="w-full pt-2 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 hover:text-rose-500 transition-colors"
-                                                    >
-                                                        Reset All
-                                                    </button>
                                                 </div>
                                             </motion.div>
                                         )}
@@ -271,43 +336,32 @@ export default function AdminDashboard({ products, orders, categories }: { produ
                                 <table className="w-full text-left text-sm">
                                     <thead className="bg-gray-50/30 dark:bg-zinc-900/50 uppercase tracking-wider text-[10px] text-gray-400 font-bold border-b border-gray-100 dark:border-gray-800">
                                         <tr>
-                                            <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white transition-colors group" onClick={() => handleSort('name')}>
-                                                <div className="flex items-center gap-1">
+                                            <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white group/sort" onClick={() => handleSort('name')}>
+                                                <div className="flex items-center gap-1.5">
                                                     Product
                                                     <SortIcon active={sortConfig.key === 'name'} direction={sortConfig.direction} />
                                                 </div>
                                             </th>
-                                             <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white transition-colors" onClick={() => handleSort('category')}>
-                                                 <div className="flex items-center gap-1">
-                                                     Category
-                                                     <SortIcon active={sortConfig.key === 'category'} direction={sortConfig.direction} />
-                                                 </div>
-                                             </th>
-                                             <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white transition-colors">
-                                                 <div className="flex items-center gap-1">
-                                                     Type
-                                                 </div>
-                                             </th>
-                                            <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white transition-colors" onClick={() => handleSort('rating')}>
-                                                <div className="flex items-center gap-1">
-                                                    Rating
-                                                    <SortIcon active={sortConfig.key === 'rating'} direction={sortConfig.direction} />
+                                            <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white group/sort" onClick={() => handleSort('category')}>
+                                                <div className="flex items-center gap-1.5">
+                                                    Category
+                                                    <SortIcon active={sortConfig.key === 'category'} direction={sortConfig.direction} />
                                                 </div>
                                             </th>
-                                            <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white transition-colors" onClick={() => handleSort('stock')}>
-                                                <div className="flex items-center gap-1">
+                                            <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white group/sort" onClick={() => handleSort('stock')}>
+                                                <div className="flex items-center gap-1.5">
                                                     Stock
                                                     <SortIcon active={sortConfig.key === 'stock'} direction={sortConfig.direction} />
                                                 </div>
                                             </th>
-                                            <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white transition-colors" onClick={() => handleSort('salesLastMonth')}>
-                                                <div className="flex items-center gap-1">
-                                                    Sales (Last Month)
+                                            <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white group/sort" onClick={() => handleSort('salesLastMonth')}>
+                                                <div className="flex items-center gap-1.5">
+                                                    Sales
                                                     <SortIcon active={sortConfig.key === 'salesLastMonth'} direction={sortConfig.direction} />
                                                 </div>
                                             </th>
-                                            <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white transition-colors" onClick={() => handleSort('price')}>
-                                                <div className="flex items-center gap-1">
+                                            <th className="px-6 py-4 cursor-pointer hover:text-black dark:hover:text-white group/sort" onClick={() => handleSort('price')}>
+                                                <div className="flex items-center gap-1.5">
                                                     Price
                                                     <SortIcon active={sortConfig.key === 'price'} direction={sortConfig.direction} />
                                                 </div>
@@ -320,74 +374,32 @@ export default function AdminDashboard({ products, orders, categories }: { produ
                                             <tr key={product.id} className="hover:bg-gray-50/50 dark:hover:bg-zinc-800/20 transition-colors group">
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-4">
-                                                        <div className="w-12 h-14 bg-gray-100 dark:bg-zinc-800 relative rounded-lg overflow-hidden border border-gray-100 dark:border-gray-800">
-                                                            <Image
-                                                                src={product.images[0]}
-                                                                alt={product.name}
-                                                                fill
-                                                                sizes="48px"
-                                                                className="object-cover group-hover:scale-110 transition-transform duration-500"
-                                                            />
+                                                        <div className="w-10 h-12 relative rounded-lg overflow-hidden border border-gray-100 dark:border-gray-800">
+                                                            <Image src={product.images[0]} alt={product.name} fill className="object-cover" />
                                                         </div>
                                                         <div>
                                                             <p className="font-medium text-gray-900 dark:text-gray-100 line-clamp-1">{product.name}</p>
-                                                            <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-0.5">ID: {product.id.slice(-6)}</p>
+                                                            <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-0.5">#{product.id.slice(-6)}</p>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                 {(() => {
-                                                    const categoryObj = categories?.find(c => c.id === product.category);
-                                                    return (
-                                                        <>
-                                                            <td className="px-6 py-4">
-                                                                <span className="px-2.5 py-1 bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400 rounded text-[10px] uppercase font-bold tracking-tighter">
-                                                                    {categoryObj?.type || "N/A"}
-                                                                </span>
-                                                            </td>
-                                                            <td className="px-6 py-4">
-                                                                <span className="px-2.5 py-1 bg-gray-50 dark:bg-zinc-800/50 text-gray-500 dark:text-gray-500 rounded text-[10px] uppercase font-medium tracking-tight border border-gray-100 dark:border-gray-800">
-                                                                    {categoryObj?.label || "N/A"}
-                                                                </span>
-                                                            </td>
-                                                        </>
-                                                    );
-                                                 })()}
                                                 <td className="px-6 py-4">
-                                                    <div className="flex items-center gap-1 text-yellow-500">
-                                                        <Star className="w-3 h-3 fill-current" />
-                                                        <span className="text-[11px] font-bold">{product.rating || 0}</span>
-                                                        <span className="text-[9px] text-gray-400 font-normal">({product.reviewsCount || 0})</span>
-                                                    </div>
+                                                    <span className="px-2.5 py-1 bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400 rounded text-[9px] uppercase font-bold tracking-widest">
+                                                        {product.category}
+                                                    </span>
                                                 </td>
-                                                <td className="px-6 py-4">
-                                                    <div className="flex flex-col gap-1">
-                                                        <div className="h-1 w-16 bg-gray-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                                                            <div className={`h-full bg-black dark:bg-white transition-all duration-1000`} style={{ width: `${Math.min(100, ((product.stock || 0) / 50) * 100)}%` }} />
-                                                        </div>
-                                                        <span className="text-[10px] text-gray-500 font-medium whitespace-nowrap">{product.stock || 0} in Stock</span>
-                                                    </div>
-                                                </td>
+                                                <td className="px-6 py-4 text-[11px] font-medium">{product.stock || 0} left</td>
                                                 <td className="px-6 py-4">
                                                     <div className="flex flex-col">
-                                                        <span className="text-[11px] font-bold text-gray-900 dark:text-gray-100">{product.salesLastMonth || 0}</span>
-                                                        <span className="text-[9px] text-gray-400 uppercase tracking-widest leading-none">Units</span>
+                                                        <span className="text-[11px] font-bold text-emerald-600">{product.salesLastMonth || 0}</span>
+                                                        <span className="text-[8px] text-gray-400 uppercase tracking-tighter">Units Sold</span>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 font-medium">{product.price.toLocaleString()} EGP</td>
+                                                <td className="px-6 py-4 font-medium italic">{(product.price || 0).toLocaleString()} EGP</td>
                                                 <td className="px-6 py-4 text-right">
-                                                    <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <Link 
-                                                            href={`/admin/add-item?productId=${product.id}`}
-                                                            className="p-2 text-gray-400 hover:text-black dark:hover:text-white transition-colors"
-                                                        >
-                                                            <Edit className="w-4 h-4" />
-                                                        </Link>
-                                                        <button 
-                                                            onClick={() => deleteProduct(product.id)}
-                                                            className="p-2 text-gray-400 hover:text-red-500 transition-colors"
-                                                        >
-                                                            <Trash2 className="w-4 h-4" />
-                                                        </button>
+                                                    <div className="flex items-center justify-end gap-1 transition-opacity">
+                                                        <Link href={`/admin/add-item?productId=${product.id}`} className="p-2 text-gray-400 hover:text-black dark:hover:text-white"><Edit className="w-4 h-4" /></Link>
+                                                        <button onClick={() => deleteProduct(product.id)} className="p-2 text-gray-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -395,97 +407,58 @@ export default function AdminDashboard({ products, orders, categories }: { produ
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-zinc-800/30">
-                                <Link href="/admin" className="text-[10px] uppercase font-bold tracking-widest text-gray-500 hover:text-black dark:hover:text-white flex items-center justify-center gap-1 transition-colors">
-                                    View Full Inventory <ChevronRight className="w-3 h-3" />
-                                </Link>
-                            </div>
                         </div>
                     </div>
 
-                    {/* 3. Recent Orders Activity */}
+                    {/* Recent Activity */}
                     <div className="space-y-6">
                          <div>
                             <h3 className="text-xl font-light tracking-tight">Activity</h3>
-                            <p className="text-xs text-gray-500 mt-1">Real-time store events</p>
+                            <p className="text-xs text-gray-500 mt-1">Recent events</p>
                         </div>
-
                         <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm">
                             <div className="space-y-6">
-                                {orders.slice(0, 5).map((order, idx) => (
-                                    <div key={order.id} className="flex gap-4 relative">
-                                        {idx !== Math.min(orders.length, 5) - 1 && (
-                                            <div className="absolute left-[19px] top-10 bottom-[-24px] w-[1px] bg-gray-100 dark:bg-zinc-800" />
-                                        )}
-                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 border border-gray-50 dark:border-zinc-800 shadow-sm ${
-                                            order.status === 'Processing' ? 'bg-amber-50 dark:bg-amber-950/20 text-amber-600' :
-                                            order.status === 'Shipped' ? 'bg-blue-50 dark:bg-blue-950/20 text-blue-600' :
-                                            'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600'
+                                {orders.slice(0, 5).map((order) => (
+                                    <div key={order.id} className="flex gap-4">
+                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border border-gray-50 dark:border-zinc-800 ${
+                                            order.status === 'Processing' ? 'bg-amber-50 text-amber-600' :
+                                            order.status === 'Cancelled' ? 'bg-rose-50 text-rose-600' : 'bg-emerald-50 text-emerald-600'
                                         }`}>
-                                            <ShoppingBag className="w-4 h-4" />
+                                            <ShoppingBag className="w-3.5 h-3.5" />
                                         </div>
-                                        <div className="flex-1 pt-1">
-                                            <div className="flex justify-between items-start mb-1">
-                                                <p className="text-xs font-bold uppercase tracking-tight text-gray-900 dark:text-gray-100">
-                                                    Order {order.id}
-                                                </p>
-                                                <span className="text-[10px] text-gray-400">{order.date}</span>
-                                            </div>
-                                            <p className="text-xs text-gray-500">
-                                                <span className="text-gray-900 dark:text-gray-200 font-medium">{order.customer}</span> placed an order for <span className="text-gray-900 dark:text-gray-200 font-medium">{order.total.toLocaleString()} EGP</span>
-                                            </p>
-                                            <div className="mt-2 text-[10px] font-bold uppercase tracking-widest inline-block px-2 py-0.5 rounded-full border border-gray-100 dark:border-gray-800 text-gray-400">
-                                                {order.status}
-                                            </div>
+                                        <div>
+                                            <p className="text-[11px] font-bold text-gray-900 dark:text-gray-100">Order #{order.id.slice(-6)} <span className="text-gray-400 font-normal">({order.status})</span></p>
+                                            <p className="text-[10px] text-gray-500 line-clamp-1">{order.customer || 'Guest'} · {(order.total || 0).toLocaleString()} EGP</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
-
-                            <button className="w-full mt-8 py-3 border border-gray-100 dark:border-gray-800 rounded text-[10px] uppercase font-bold tracking-widest text-gray-500 hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-all">
-                                Load More Activity
-                            </button>
                         </div>
                     </div>
                 </div>
 
-                {/* 4. Quick Actions / Categories */}
-                <div className="bg-black text-white rounded-2xl p-8 overflow-hidden relative group">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-white/10 transition-all duration-700" />
-                    <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                {/* Active Fulfillment Section */}
+                <div className="space-y-6">
+                    <div className="flex items-center justify-between">
                         <div>
-                            <h3 className="text-3xl font-light tracking-tight mb-4 italic">Expand your horizon.</h3>
-                            <p className="text-gray-400 text-sm max-w-md leading-relaxed mb-8">
-                                Manage your collections and navigation menu to reflect your latest seasons. Changes here will immediately propagate to the storefront.
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-4 mb-8 md:mb-0">
-                                <button className="px-6 py-3 w-full sm:w-auto bg-white text-black text-xs font-bold uppercase tracking-widest rounded-full hover:opacity-90 transition-opacity text-center">
-                                    Manage Collections
-                                </button>
-                                <button className="px-6 py-3 w-full sm:w-auto border border-gray-700 text-white text-xs font-bold uppercase tracking-widest rounded-full hover:bg-white/10 transition-colors text-center">
-                                    View Analytics
-                                </button>
+                            <h3 className="text-xl font-light tracking-tight italic">Active Fulfillment</h3>
+                            <p className="text-xs text-gray-500 mt-1">Pending shipping & delivery</p>
+                        </div>
+                        <Link href="/admin/orders" className="text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-black transition-colors">View All</Link>
+                    </div>
+
+                    <div className="flex gap-6 overflow-x-auto pb-8 no-scrollbar snap-x snap-mandatory scroll-smooth px-4 md:px-8">
+                        {orders.filter(o => o.status === 'Processing' || o.status === 'Shipped').slice(0, 10).map((order) => (
+                            <div key={order.id} className="flex-shrink-0 w-[300px] md:w-[380px] snap-start">
+                                <OrderFulfillmentCard order={order} />
                             </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <CategoryBox 
-                                label="Women" 
-                                count={products.filter(p => p.category?.toLowerCase() === 'women').length} 
-                            />
-                            <CategoryBox 
-                                label="Men" 
-                                count={products.filter(p => p.category?.toLowerCase() === 'men').length} 
-                            />
-                            <CategoryBox 
-                                label="Accessories" 
-                                count={products.filter(p => p.category?.toLowerCase() === 'accessories').length} 
-                            />
-                            <CategoryBox 
-                                label="New Items" 
-                                count={products.filter(p => p.isNew || (p as unknown as Record<string, boolean>).isNewCollection).length} 
-                                highlighted={true} 
-                            />
-                        </div>
+                        ))}
+                        {orders.filter(o => o.status === 'Processing' || o.status === 'Shipped').length === 0 && (
+                            <div className="w-full py-12 text-center bg-gray-50/50 dark:bg-zinc-900/50 border border-dashed border-gray-200 dark:border-gray-800 rounded-2xl">
+                                <ShoppingBag className="w-8 h-8 text-gray-300 mx-auto mb-3" />
+                                <p className="text-sm text-gray-400 italic">No pending fulfillment tasks</p>
+                            </div>
+                        )}
                     </div>
                 </div>
                 
@@ -494,95 +467,28 @@ export default function AdminDashboard({ products, orders, categories }: { produ
     );
 }
 
-interface StatCardProps {
-    label: string;
-    value: string;
-    trend: string;
-    trendUp: boolean;
-    icon: React.ElementType;
-    description: string;
-}
-
-function StatCard({ label, value, trend, trendUp, icon: Icon, description, color = "neutral" }: StatCardProps & { color?: "emerald" | "blue" | "purple" | "orange" | "neutral" }) {
-    const colorMap = {
+function StatCard({ label, value, trend, trendUp, icon: Icon, description, color = "neutral" }: any) {
+    const colorMap: any = {
         emerald: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
         blue: "text-blue-500 bg-blue-500/10 border-blue-500/20",
         purple: "text-purple-500 bg-purple-500/10 border-purple-500/20",
         orange: "text-orange-500 bg-orange-500/10 border-orange-500/20",
         neutral: "text-gray-500 bg-gray-500/10 border-gray-500/20"
     };
-    
     const colorClasses = colorMap[color] || colorMap.neutral;
-
     return (
-        <motion.div 
-            variants={itemVariants}
-            whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            className="relative overflow-hidden bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/5 p-6 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-white/5 transition-all group"
-        >
-            {/* Subtle Gradient Background */}
-            <div className={`absolute -right-4 -top-4 w-24 h-24 blur-3xl opacity-10 rounded-full transition-opacity group-hover:opacity-20 ${colorClasses.split(' ')[0]}`} />
-            
+        <motion.div variants={itemVariants} whileHover={{ y: -5 }} className="relative overflow-hidden bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/5 p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all group">
             <div className="flex justify-between items-start mb-6">
-                <div className={`p-3 rounded-xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm ${colorClasses}`}>
-                    <Icon className="w-5 h-5" />
-                </div>
-                <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase transition-colors ${
-                    trendUp ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'
-                }`}>
+                <div className={`p-3 rounded-xl shadow-sm ${colorClasses}`}><Icon className="w-5 h-5" /></div>
+                <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase ${trendUp ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'}`}>
                     {trendUp ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                     {trend}
                 </div>
             </div>
-            
             <div className="space-y-1">
-                <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-gray-500/70 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-                    {label}
-                </p>
-                <div className="flex items-baseline gap-2">
-                    <h4 className="text-2xl font-light tracking-tight text-gray-950 dark:text-white">
-                        {value}
-                    </h4>
-                </div>
-                <p className="text-[10px] text-gray-400 font-medium tracking-tight">
-                    {description}
-                </p>
-            </div>
-
-            {/* Bottom Progress Bar Decoration */}
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-50 dark:bg-zinc-800/50">
-                <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: "100%" }}
-                    transition={{ duration: 1.5, delay: 0.5 }}
-                    className={`h-full opacity-30 ${colorClasses.split(' ')[0].replace('text-', 'bg-')}`} 
-                />
-            </div>
-        </motion.div>
-    );
-}
-
-interface CategoryBoxProps {
-    label: string;
-    count: number;
-    highlighted?: boolean;
-}
-
-function CategoryBox({ label, count, highlighted = false }: CategoryBoxProps) {
-    return (
-        <motion.div 
-            whileHover={{ scale: 1.02, y: -2 }}
-            className={`p-5 rounded-2xl border transition-all cursor-pointer relative overflow-hidden group/box ${
-                highlighted 
-                    ? 'bg-white text-black border-white shadow-xl shadow-white/10' 
-                    : 'bg-zinc-900/50 backdrop-blur-md border-zinc-800 hover:border-zinc-700 text-gray-300'
-            }`}
-        >
-            <div className={`absolute -right-2 -top-2 w-12 h-12 rounded-full blur-2xl opacity-0 group-hover/box:opacity-20 transition-opacity ${highlighted ? 'bg-black' : 'bg-white'}`} />
-            <p className="text-[10px] uppercase font-bold tracking-[0.2em] mb-1 opacity-60 group-hover/box:opacity-100 transition-opacity">{count} Items</p>
-            <div className="flex items-center justify-between">
-                <p className="text-sm font-medium tracking-tight">{label}</p>
-                <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover/box:opacity-100 -translate-x-2 group-hover/box:translate-x-0 transition-all" />
+                <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-gray-500/70">{label}</p>
+                <h4 className="text-2xl font-light tracking-tight">{value}</h4>
+                <p className="text-[10px] text-gray-400 font-medium">{description}</p>
             </div>
         </motion.div>
     );
