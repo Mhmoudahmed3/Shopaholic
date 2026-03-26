@@ -142,12 +142,10 @@ export default function AccountPage() {
     };
 
     const handleCancelOrder = (id: string) => {
-        console.warn("Initiating direct cancellation for:", id);
-        setOrders(prev => {
-            const newOrders = prev.map(o => o.id === id ? { ...o, status: "Cancelled" } : o);
-            console.warn("New orders state:", newOrders);
-            return newOrders;
-        });
+        console.log("Requesting cancellation for order:", id);
+        if (typeof window !== 'undefined' && window.confirm("Are you sure you want to cancel this order?")) {
+            setOrders(prev => prev.map(o => o.id === id ? { ...o, status: "Cancelled" } : o));
+        }
     };
 
     if (isAuthenticated && user) {
@@ -270,12 +268,6 @@ export default function AccountPage() {
                                                         </div>
                                                     </div>
                                                     <div className="flex flex-row items-center gap-3 w-full lg:w-auto">
-                                                        <Link 
-                                                            href={order.status === 'Cancelled' ? '#' : `/account/orders/${order.id}`}
-                                                            className={`flex-1 lg:flex-none px-8 py-3 border text-[10px] font-bold uppercase tracking-[0.4em] transition-all flex items-center justify-center gap-2 ${order.status === 'Cancelled' ? 'border-zinc-100 text-zinc-300 cursor-not-allowed' : 'border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black'}`}
-                                                        >
-                                                            {order.status === 'Delivered' ? 'Archived View' : 'Explore Details'}
-                                                        </Link>
                                                         {order.status !== 'Cancelled' && (
                                                             <button 
                                                                 onClick={() => handleCancelOrder(order.id)}
