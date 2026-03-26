@@ -142,11 +142,12 @@ export default function AccountPage() {
     };
 
     const handleCancelOrder = (id: string) => {
-        console.log("Cancelling order:", id);
-        // Using alert for immediate visual feedback
-        if (confirm(`Cancel order ${id}?`)) {
-            setOrders(prev => prev.map(o => o.id === id ? { ...o, status: "Cancelled" } : o));
-        }
+        console.warn("Initiating direct cancellation for:", id);
+        setOrders(prev => {
+            const newOrders = prev.map(o => o.id === id ? { ...o, status: "Cancelled" } : o);
+            console.warn("New orders state:", newOrders);
+            return newOrders;
+        });
     };
 
     if (isAuthenticated && user) {
