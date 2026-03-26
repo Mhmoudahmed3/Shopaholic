@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, ShoppingBag, Check } from "lucide-react";
-import type { Product } from "@/lib/data";
+import type { Product } from "@/lib/types";
 import { useCartStore } from "@/store/useCartStore";
 import { useEffect } from "react";
 import clsx from "clsx";

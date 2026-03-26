@@ -1,39 +1,53 @@
 import { supabase } from './supabase';
 import { SiteSettings, Category, Product, Collection, Homepage } from './types';
+import path from 'path';
+import fs from 'fs';
 
 // Site Settings
 export async function getSettingsDB(): Promise<SiteSettings> {
-  const result = await supabase.from('site_settings').select('*').eq('id', 1).single();
-  let data = result.data;
-  const error = result.error;
-  
-  // Auto-sync store name if it's the old one
-  if (data && data.store_name === "REHAM") {
-    const { data: updated } = await supabase.from('site_settings').upsert({
-      id: 1,
-      store_name: "SHOPOHOLIC"
-    }).select().single();
-    if (updated) data = updated;
-  }
+  const defaultSettings: SiteSettings = {
+    storeName: "SHOPOHOLIC",
+    storeDescription: "Premium Fashion Store",
+    contactEmail: "support@shopaholic.com",
+    contactPhone: "+20 123 456 789",
+    address: "Alexandria, Egypt",
+    currency: "EGP",
+    currencySymbol: "£",
+    maintenanceMode: false,
+    socialLinks: {
+        instagram: "shopaholic_official",
+        facebook: "shopaholic",
+        whatsapp: "+20123456789"
+    },
+    footerText: "© 2026 Shopaholic. All rights reserved.",
+    taxRate: 14,
+    shippingFee: 50,
+    freeShippingThreshold: 1000
+  };
 
-  if (error || !data) return { storeName: "SHOPOHOLIC" } as SiteSettings;
-  
-  return {
-    ...data,
-    storeName: data.store_name,
-    storeDescription: data.store_description,
-    contactEmail: data.contact_email,
-    contactPhone: data.contact_phone,
-    address: data.address,
-    currency: data.currency,
-    currencySymbol: data.currency_symbol,
-    maintenanceMode: data.maintenance_mode,
-    socialLinks: data.social_links,
-    footerText: data.footer_text,
-    taxRate: data.tax_rate,
-    shippingFee: data.shipping_fee,
-    freeShippingThreshold: data.free_shipping_threshold
-  } as any;
+  try {
+    const { data, error } = await supabase.from('site_settings').select('*').eq('id', 1).single();
+    if (error || !data) return defaultSettings;
+    
+    return {
+      ...data,
+      storeName: data.store_name,
+      storeDescription: data.store_description,
+      contactEmail: data.contact_email,
+      contactPhone: data.contact_phone,
+      address: data.address,
+      currency: data.currency,
+      currencySymbol: data.currency_symbol,
+      maintenanceMode: data.maintenance_mode,
+      socialLinks: data.social_links || defaultSettings.socialLinks,
+      footerText: data.footer_text,
+      taxRate: data.tax_rate,
+      shippingFee: data.shipping_fee,
+      freeShippingThreshold: data.free_shipping_threshold
+    } as any;
+  } catch (e) {
+    return defaultSettings;
+  }
 }
 
 export async function saveSettingsDB(settings: SiteSettings) {
@@ -82,8 +96,18 @@ export async function saveProductsDB(products: Product[]) {
 
 // Categories
 export async function getCategoriesDB(): Promise<Category[]> {
-  const { data, error } = await supabase.from('categories').select('*');
-  return data || [];
+  try {
+    const { data, error } = await supabase.from('categories').select('*');
+    if (!error && data && data.length > 0) return data;
+  } catch (e) {}
+
+  try {
+    const jsonPath = path.join(process.cwd(), 'categories.json');
+    if (fs.existsSync(jsonPath)) {
+        return JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    }
+  } catch (e) {}
+  return [];
 }
 
 export async function saveCategoriesDB(categories: Category[]) {
@@ -135,24 +159,25 @@ export async function getOrdersDB(): Promise<any[]> {
 
 // Get dynamic sales count per product from order_items (excluding cancelled orders)
 export async function getProductSales(): Promise<Record<string, number>> {
-  const { data, error } = await supabase
-    .from('order_items')
-    .select('product_id, quantity, orders!inner(status)')
-    .neq('orders.status', 'Cancelled');
+  try {
+    const { data, error } = await supabase
+      .from('order_items')
+      .select('product_id, quantity, orders!inner(status)')
+      .neq('orders.status', 'Cancelled');
 
-  if (error || !data) {
-    console.error('[getProductSales] Error:', error?.message);
-    return {};
-  }
-
-  const salesMap: Record<string, number> = {};
-  for (const item of data) {
-    const pid = item.product_id;
-    if (pid) {
-      salesMap[pid] = (salesMap[pid] || 0) + (item.quantity || 0);
+    if (!error && data) {
+      const salesMap: Record<string, number> = {};
+      for (const item of data) {
+        const pid = item.product_id;
+        if (pid) {
+          salesMap[pid] = (salesMap[pid] || 0) + (item.quantity || 0);
+        }
+      }
+      return salesMap;
     }
-  }
-  return salesMap;
+  } catch (e) {}
+
+  return {}; // Default to empty sales map for offline
 }
 
 export async function getOrderById(id: string): Promise<any | undefined> {
@@ -247,25 +272,37 @@ export async function saveHomepageDB(content: Homepage) {
 
 // Advanced Shop Queries
 export async function getProducts(params: any): Promise<Product[]> {
-  let query = supabase.from('products').select('*');
+  let products: any[] = [];
+  try {
+    let query = supabase.from('products').select('*');
 
-  if (params.category && params.category !== 'all') {
-    query = query.eq('category', params.category);
+    if (params.category && params.category !== 'all') {
+      query = query.eq('category', params.category);
+    }
+    if (params.type) query = query.eq('type', params.type);
+    if (params.minPrice) query = query.gte('price', params.minPrice);
+    if (params.maxPrice) query = query.lte('price', params.maxPrice);
+    if (params.minRating) query = query.gte('rating', params.minRating);
+
+    if (params.sort === 'price_asc') query = query.order('price', { ascending: true });
+    else if (params.sort === 'price_desc') query = query.order('price', { ascending: false });
+    else if (params.sort === 'popular') query = query.order('popularity', { ascending: false });
+    else query = query.order('created_at', { ascending: false });
+
+    const { data, error } = await query;
+    if (!error && data && data.length > 0) products = data;
+    else throw new Error("No products");
+  } catch (e) {
+    console.warn("[OFFLINE] Using products.json for inventory/shop.");
+    try {
+        const jsonPath = path.join(process.cwd(), 'products.json');
+        if (fs.existsSync(jsonPath)) {
+            products = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+        }
+    } catch (err) {}
   }
-  if (params.type) query = query.eq('type', params.type);
-  if (params.minPrice) query = query.gte('price', params.minPrice);
-  if (params.maxPrice) query = query.lte('price', params.maxPrice);
-  if (params.minRating) query = query.gte('rating', params.minRating);
-
-  if (params.sort === 'price_asc') query = query.order('price', { ascending: true });
-  else if (params.sort === 'price_desc') query = query.order('price', { ascending: false });
-  else if (params.sort === 'popular') query = query.order('popularity', { ascending: false });
-  else query = query.order('created_at', { ascending: false });
-
-  const { data, error } = await query;
-  if (error) return [];
   
-  return (data || []).map(p => ({
+  return (products || []).map(p => ({
     ...p,
     discountPrice: p.discount_price,
     imageVariants: p.image_variants,

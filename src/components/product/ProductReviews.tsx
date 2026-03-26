@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Star, CheckCircle2, ThumbsUp, MessageSquare } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
-import { Review } from "@/lib/data";
+import { Review } from "@/lib/types";
 
 interface ProductReviewsProps {
     reviews?: Review[];

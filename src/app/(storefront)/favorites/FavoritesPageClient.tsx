@@ -2,7 +2,7 @@
 
 import { useWishlistStore } from "@/store/useWishlistStore";
 import { ProductGrid } from "@/components/shop/ProductGrid";
-import { Product } from "@/lib/data";
+import type { Product } from "@/lib/types";
 import { getProductsByIds } from "../actions";
 import { useEffect, useState } from "react";
 import Link from "next/link";

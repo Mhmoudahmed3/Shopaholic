@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
-import { Product } from "@/lib/data";
+import { Product } from "@/lib/types";
 import { useCartStore } from "@/store/useCartStore";
 import { Check, ChevronDown, ShieldCheck, Truck, Star, Minus, Plus, ShoppingBag } from "lucide-react";
 import { ColorVariant } from "./ProductGallery";

@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Star, Plus } from "lucide-react";
 import clsx from "clsx";
-import type { Product } from "@/lib/data";
+import { Product } from "@/lib/types";
 import { WishlistToggle } from "./WishlistToggle";
 import { QuickAddModal } from "./QuickAddModal";
 import { COLOR_MAP_HEX } from "@/lib/constants";

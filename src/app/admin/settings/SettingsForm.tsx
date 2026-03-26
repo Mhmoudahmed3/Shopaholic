@@ -492,7 +492,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                             <input
                                 type="text"
                                 name="socialLinks.instagram"
-                                value={settings.socialLinks.instagram}
+                                value={settings.socialLinks?.instagram || ''}
                                 onChange={handleChange}
                                 placeholder="@handle"
                                 className="w-full px-5 py-4 bg-white dark:bg-black border border-gray-100 dark:border-zinc-800 rounded-2xl text-xs outline-none focus:ring-2 ring-emerald-500/20"
@@ -506,7 +506,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                             <input
                                 type="text"
                                 name="socialLinks.facebook"
-                                value={settings.socialLinks.facebook}
+                                value={settings.socialLinks?.facebook || ''}
                                 onChange={handleChange}
                                 placeholder="facebook.com/..."
                                 className="w-full px-5 py-4 bg-white dark:bg-black border border-gray-100 dark:border-zinc-800 rounded-2xl text-xs outline-none focus:ring-2 ring-emerald-500/20"
@@ -520,7 +520,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                             <input
                                 type="text"
                                 name="socialLinks.whatsapp"
-                                value={settings.socialLinks.whatsapp}
+                                value={settings.socialLinks?.whatsapp || ''}
                                 onChange={handleChange}
                                 placeholder="+20..."
                                 className="w-full px-5 py-4 bg-white dark:bg-black border border-gray-100 dark:border-zinc-800 rounded-2xl text-xs outline-none focus:ring-2 ring-emerald-500/20"

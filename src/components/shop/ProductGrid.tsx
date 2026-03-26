@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Plus, Star } from "lucide-react";
 import clsx from "clsx";
-import type { Product } from "@/lib/data";
+import type { Product } from "@/lib/types";
 import { WishlistToggle } from "./WishlistToggle";
 import { useState } from "react";
 import { QuickAddModal } from "./QuickAddModal";

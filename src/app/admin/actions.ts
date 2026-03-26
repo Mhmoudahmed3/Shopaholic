@@ -8,40 +8,54 @@ import { supabase } from "@/lib/supabase";
 
 // Site Settings
 export async function getSiteSettings(): Promise<SiteSettings> {
-    const result = await supabase
-        .from('site_settings')
-        .select('*')
-        .eq('id', 1)
-        .single();
-    let data = result.data;
-    const error = result.error;
-    
-    // Auto-sync store name if it's the old one
-    if (data && data.store_name === "REHAM") {
-        const { data: updated } = await supabase.from('site_settings').upsert({
-            id: 1,
-            store_name: "SHOPOHOLIC"
-        }).select().single();
-        if (updated) data = updated;
-    }
+    const defaultSettings: SiteSettings = {
+        storeName: "SHOPOHOLIC",
+        storeDescription: "Premium Fashion Store",
+        contactEmail: "support@shopaholic.com",
+        contactPhone: "+20 123 456 789",
+        address: "Alexandria, Egypt",
+        currency: "EGP",
+        currencySymbol: "£",
+        maintenanceMode: false,
+        socialLinks: {
+            instagram: "shopaholic_official",
+            facebook: "shopaholic",
+            whatsapp: "+20123456789"
+        },
+        footerText: "© 2026 Shopaholic. All rights reserved.",
+        taxRate: 14,
+        shippingFee: 50,
+        freeShippingThreshold: 1000
+    };
 
-    if (!data) return { storeName: "SHOPOHOLIC" } as SiteSettings;
-    
-    return {
-        storeName: data.store_name,
-        storeDescription: data.store_description,
-        contactEmail: data.contact_email,
-        contactPhone: data.contact_phone,
-        address: data.address,
-        currency: data.currency,
-        currencySymbol: data.currency_symbol,
-        maintenanceMode: data.maintenance_mode,
-        footerText: data.footer_text,
-        taxRate: parseFloat(data.tax_rate || 0),
-        shippingFee: parseFloat(data.shipping_fee || 0),
-        freeShippingThreshold: parseFloat(data.free_shipping_threshold || 0),
-        socialLinks: data.social_links // social_links is JSON, matches interface structure
-    } as SiteSettings;
+    try {
+        const { data, error } = await supabase
+            .from('site_settings')
+            .select('*')
+            .eq('id', 1)
+            .single();
+        
+        if (error || !data) return defaultSettings;
+
+        return {
+            storeName: data.store_name,
+            storeDescription: data.store_description,
+            contactEmail: data.contact_email,
+            contactPhone: data.contact_phone,
+            address: data.address,
+            currency: data.currency,
+            currencySymbol: data.currency_symbol,
+            maintenanceMode: data.maintenance_mode,
+            footerText: data.footer_text,
+            taxRate: parseFloat(data.tax_rate || 0),
+            shippingFee: parseFloat(data.shipping_fee || 0),
+            freeShippingThreshold: parseFloat(data.free_shipping_threshold || 0),
+            socialLinks: data.social_links || defaultSettings.socialLinks
+        } as SiteSettings;
+    } catch (e) {
+        console.warn("[OFFLINE] Using default site settings.");
+        return defaultSettings;
+    }
 }
 
 export async function updateSiteSettings(settings: SiteSettings) {
@@ -81,16 +95,26 @@ export async function updateSiteSettings(settings: SiteSettings) {
 // Categories
 export async function getCategories() {
     console.log("[ACTION] Fetching categories...");
-    const { data, error } = await supabase
-        .from('categories')
-        .select('*')
-        .order('label');
-    
-    if (error) {
-        console.error("Error fetching categories:", error);
-        return [];
+    try {
+        const { data, error } = await supabase
+            .from('categories')
+            .select('*')
+            .order('label');
+        
+        if (!error && data) return data;
+    } catch (e) {
+        console.warn("[OFFLINE] Using categories.json fallback.");
     }
-    return data;
+
+    try {
+        const jsonPath = path.join(process.cwd(), 'categories.json');
+        if (fs.existsSync(jsonPath)) {
+            return JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+        }
+    } catch (e) {
+        console.error("Failed to read categories.json:", e);
+    }
+    return [];
 }
 
 export async function getCategoryProductCounts() {
@@ -588,55 +612,63 @@ export async function deleteCollection(id: string) {
 
 // Homepage Management
 export async function getHomepageContent() {
-    let { data: home } = await supabase.from('homepage_content').select('*').eq('id', 1).single();
-    
-    // Auto-sync rubbish data if detected
-    if (!home || home.hero?.subtitle === "kbkbb") {
-        console.log("[SYNC] Rubbish homepage detected. Syncing from homepage.json...");
+    console.log("[ACTION] Fetching homepage content...");
+    let home: any = null;
+    let collections: any[] = [];
+    let products: any[] = [];
+
+    // 1. Homepage Section Fallback
+    try {
+        const { data, error } = await supabase.from('homepage_content').select('*').eq('id', 1).single();
+        if (!error && data) home = data;
+    } catch (e) {
+        console.warn("[OFFLINE] Homepage fetch failed.");
+    }
+
+    if (!home || !home.hero || home.hero.subtitle === "kbkbb") {
         try {
             const jsonPath = path.join(process.cwd(), 'homepage.json');
             if (fs.existsSync(jsonPath)) {
-                const homeData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-                const { data: synced, error } = await supabase.from('homepage_content').upsert([{
-                    id: 1,
-                    hero: homeData.hero,
-                    promo: homeData.promo,
-                    newsletter: homeData.newsletter
-                }]).select().single();
-                if (!error && synced) home = synced;
+                home = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
             }
         } catch (e) {
-            console.error("[SYNC] Failed to sync homepage:", e);
+            console.error("Failed to read homepage.json:", e);
         }
     }
 
-    // Check for rubbish collections
-    const { data: checkCol } = await supabase.from('collections').select('id, name').eq('name', 'sadassad');
-    if (checkCol && checkCol.length > 0) {
-        console.log("[SYNC] Rubbish collections detected. Syncing from collections.json...");
+    // 2. Collections Fallback
+    try {
+        const { data, error } = await supabase.from('collections').select('*').eq('status', 'Active').limit(4);
+        if (!error && data && data.length > 0) collections = data;
+        else throw new Error("No collections");
+    } catch (e) {
+        console.warn("[OFFLINE] Using collections.json fallback.");
         try {
             const jsonPath = path.join(process.cwd(), 'collections.json');
             if (fs.existsSync(jsonPath)) {
-                const colData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-                // Clear rubbish collections
-                await supabase.from('collections').delete().eq('name', 'sadassad');
-                // Insert new ones
-                await supabase.from('collections').upsert(colData.map((c: any) => ({
-                    id: c.id,
-                    name: c.name,
-                    subtitle: c.subtitle,
-                    image: c.image,
-                    status: c.status,
-                    link: c.link
-                })));
+                collections = JSON.parse(fs.readFileSync(jsonPath, 'utf8')).filter((c: any) => c.status === 'Active');
             }
-        } catch (e) {
-            console.error("[SYNC] Failed to sync collections:", e);
+        } catch (err) {
+            console.error("Failed to read collections.json:", err);
         }
     }
 
-    const { data: collections } = await supabase.from('collections').select('*').eq('status', 'Active').limit(4);
-    const { data: products } = await supabase.from('products').select('*').order('popularity', { ascending: false }).limit(8);
+    // 3. Best Sellers Fallback
+    try {
+        const { data, error } = await supabase.from('products').select('*').order('popularity', { ascending: false }).limit(8);
+        if (!error && data && data.length > 0) products = data;
+        else throw new Error("No products");
+    } catch (e) {
+        console.warn("[OFFLINE] Using products.json fallback.");
+        try {
+            const jsonPath = path.join(process.cwd(), 'products.json');
+            if (fs.existsSync(jsonPath)) {
+                products = JSON.parse(fs.readFileSync(jsonPath, 'utf8')).slice(0, 8);
+            }
+        } catch (err) {
+            console.error("Failed to read products.json:", err);
+        }
+    }
     
     return {
         ...home,

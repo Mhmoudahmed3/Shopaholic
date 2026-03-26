@@ -34,6 +34,30 @@ export default function AccountPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [activeTab, setActiveTab] = useState<'orders' | 'profile'>('orders');
     const [isEditing, setIsEditing] = useState(false);
+    
+    const [orders, setOrders] = useState([
+        {
+            id: "SHO-2024-88A2",
+            date: "October 24, 2024",
+            amount: "18,500 EGP",
+            status: "In Transit",
+            images: [
+                "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=800&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=800&auto=format&fit=crop"
+            ],
+            type: 'primary'
+        },
+        {
+            id: "SHO-2024-55B1",
+            date: "September 12, 2024",
+            amount: "4,200 EGP",
+            status: "Delivered",
+            images: [
+                "https://images.unsplash.com/photo-1591047139829-d91aec36adea?q=80&w=800&auto=format&fit=crop"
+            ],
+            type: 'secondary'
+        }
+    ]);
 
     useEffect(() => {
         setMounted(true);
@@ -117,6 +141,14 @@ export default function AccountPage() {
         router.push("/");
     };
 
+    const handleCancelOrder = (id: string) => {
+        console.log("Cancelling order:", id);
+        // Using alert for immediate visual feedback
+        if (confirm(`Cancel order ${id}?`)) {
+            setOrders(prev => prev.map(o => o.id === id ? { ...o, status: "Cancelled" } : o));
+        }
+    };
+
     if (isAuthenticated && user) {
         return (
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
@@ -127,13 +159,6 @@ export default function AccountPage() {
                             Personalized Experience / {user.role}
                         </p>
                     </div>
-                    <button
-                        onClick={handleLogout}
-                        className="group flex items-center gap-2 text-xs font-medium tracking-widest uppercase text-zinc-400 hover:text-black dark:hover:text-white transition-all"
-                    >
-                        <LogOut className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-                        Sign Out
-                    </button>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -211,134 +236,72 @@ export default function AccountPage() {
                                 </div>
 
                                 <div className="space-y-8">
-                                    {/* Order Entry 01 */}
-                                    <motion.div 
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        className="group bg-white dark:bg-zinc-900/10 border border-zinc-100 dark:border-zinc-800/50 hover:border-black dark:hover:border-white transition-all duration-500 p-8 md:p-10"
-                                    >
-                                        <div className="flex flex-col lg:flex-row justify-between items-start gap-12 mb-10">
-                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 flex-1">
-                                                <div className="space-y-1">
-                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Reference</p>
-                                                    <p className="text-sm font-bold tracking-wider">#SHO-2024-88A2</p>
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Date</p>
-                                                    <p className="text-sm font-light text-zinc-600 dark:text-zinc-400">October 24, 2024</p>
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Amount</p>
-                                                    <p className="text-lg font-medium tracking-tight">18,500 EGP</p>
-                                                </div>
-                                                <div className="space-y-1 text-right md:text-left">
-                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Value</p>
-                                                    <p className="text-sm font-bold opacity-60">$1,250.00</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="flex flex-col items-start lg:items-end gap-6 w-full lg:w-auto">
-                                                <div className="flex flex-col items-start lg:items-end gap-2">
-                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-1">Status</p>
-                                                    <div className="flex items-center gap-2 px-3 py-1 bg-black text-white dark:bg-white dark:text-black">
-                                                        <div className="w-1 h-1 rounded-full bg-white dark:bg-black animate-pulse" />
-                                                        <span className="text-[8px] font-bold tracking-[0.2em] uppercase">In Transit</span>
+                                    {orders.map((order) => (
+                                        <motion.div 
+                                            key={order.id}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true }}
+                                            className={`group border border-zinc-100 dark:border-zinc-800/50 hover:border-black dark:hover:border-white transition-all duration-500 p-8 md:p-10 ${order.type === 'primary' ? 'bg-white dark:bg-zinc-900/10' : 'bg-zinc-50/50 dark:bg-zinc-900/5'}`}
+                                        >
+                                            <div className="flex flex-col lg:flex-row justify-between items-start gap-12 mb-10">
+                                                <div className={`grid grid-cols-2 md:grid-cols-3 gap-8 flex-1 transition-all duration-700 ${order.type === 'secondary' ? 'opacity-60 grayscale group-hover:opacity-100 group-hover:grayscale-0' : ''}`}>
+                                                    <div className="space-y-1">
+                                                        <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Reference</p>
+                                                        <p className="text-sm font-bold tracking-wider">#{order.id}</p>
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Date</p>
+                                                        <p className="text-sm font-light text-zinc-600 dark:text-zinc-400">{order.date}</p>
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Amount</p>
+                                                        <p className="text-lg font-medium tracking-tight">{order.amount}</p>
                                                     </div>
                                                 </div>
-                                                <Link 
-                                                    href="/account/orders/SHO-2024-88A2"
-                                                    className="w-full lg:w-auto px-8 py-3 border border-black dark:border-white text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all flex items-center justify-center gap-2"
-                                                >
-                                                    Explore Details
-                                                </Link>
-                                            </div>
-                                        </div>
 
-                                        <div className="flex items-center justify-between pt-10 border-t border-zinc-100 dark:border-zinc-900">
-                                            <div className="flex -space-x-6">
-                                                <div className="w-20 h-24 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 relative z-20 p-1 group-hover:-translate-y-2 transition-transform duration-500">
-                                                    <Image
-                                                        src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=800&auto=format&fit=crop"
-                                                        alt="Product"
-                                                        fill
-                                                        className="object-cover"
-                                                    />
-                                                </div>
-                                                <div className="w-20 h-24 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 relative z-10 p-1 group-hover:-translate-x-4 transition-transform duration-500 delay-75">
-                                                    <Image
-                                                        src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=800&auto=format&fit=crop"
-                                                        alt="Product"
-                                                        fill
-                                                        className="object-cover"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <Link href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] border-b border-black dark:border-white pb-1 hover:opacity-50 transition-opacity">
-                                                Order Details
-                                            </Link>
-                                        </div>
-                                    </motion.div>
-
-                                    {/* Order Entry 02 */}
-                                    <motion.div 
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        className="group bg-zinc-50/50 dark:bg-zinc-900/5 border border-zinc-100 dark:border-zinc-800/50 hover:border-black dark:hover:border-white transition-all duration-500 p-8 md:p-10"
-                                    >
-                                        <div className="flex flex-col lg:flex-row justify-between items-start gap-12 mb-10">
-                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 flex-1 opacity-60 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700">
-                                                <div className="space-y-1">
-                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Reference</p>
-                                                    <p className="text-sm font-bold tracking-wider">#SHO-2024-55B1</p>
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Date</p>
-                                                    <p className="text-sm font-light text-zinc-600 dark:text-zinc-400">September 12, 2024</p>
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Amount</p>
-                                                    <p className="text-lg font-medium tracking-tight">4,200 EGP</p>
-                                                </div>
-                                                <div className="space-y-1 text-right md:text-left">
-                                                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-2">Value</p>
-                                                    <p className="text-sm font-bold opacity-60">$280.00</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="flex flex-col items-start lg:items-end gap-6 w-full lg:w-auto">
-                                                <div className="flex flex-col items-start lg:items-end gap-2 text-zinc-400">
-                                                    <p className="text-[9px] uppercase tracking-[0.3em] mb-1">Status</p>
-                                                    <div className="flex items-center gap-2 px-3 py-1 border border-zinc-200 dark:border-zinc-800">
-                                                        <span className="text-[8px] font-bold tracking-[0.2em] uppercase">Delivered</span>
+                                                <div className="flex flex-col items-start lg:items-end gap-6 w-full lg:w-auto">
+                                                    <div className="flex flex-col items-start lg:items-end gap-2">
+                                                        <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-400 mb-1">Status</p>
+                                                        <div className={`flex items-center gap-2 px-3 py-1 ${order.status === 'Cancelled' ? 'bg-red-50 text-red-500 border border-red-100' : order.status === 'Delivered' ? 'border border-zinc-200 dark:border-zinc-800 text-zinc-400' : 'bg-black text-white dark:bg-white dark:text-black'}`}>
+                                                            {order.status === 'In Transit' && <div className="w-1 h-1 rounded-full bg-white dark:bg-black animate-pulse" />}
+                                                            <span className="text-[8px] font-bold tracking-[0.2em] uppercase">{order.status}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex flex-row items-center gap-3 w-full lg:w-auto">
+                                                        <Link 
+                                                            href={order.status === 'Cancelled' ? '#' : `/account/orders/${order.id}`}
+                                                            className={`flex-1 lg:flex-none px-8 py-3 border text-[10px] font-bold uppercase tracking-[0.4em] transition-all flex items-center justify-center gap-2 ${order.status === 'Cancelled' ? 'border-zinc-100 text-zinc-300 cursor-not-allowed' : 'border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black'}`}
+                                                        >
+                                                            {order.status === 'Delivered' ? 'Archived View' : 'Explore Details'}
+                                                        </Link>
+                                                        {order.status !== 'Cancelled' && (
+                                                            <button 
+                                                                onClick={() => handleCancelOrder(order.id)}
+                                                                className="p-3 border border-red-100 hover:border-red-500 text-red-400 hover:text-red-500 transition-all flex items-center justify-center group/del"
+                                                                title="Cancel Order"
+                                                            >
+                                                                <X className="w-4 h-4 transition-transform group-hover/del:rotate-90" />
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </div>
-                                                <Link 
-                                                    href="#"
-                                                    className="w-full lg:w-auto px-8 py-3 border border-zinc-200 dark:border-zinc-800 text-[10px] font-bold uppercase tracking-[0.4em] hover:border-black dark:hover:border-white transition-all flex items-center justify-center gap-2"
-                                                >
-                                                    Archived View
+                                            </div>
+
+                                            <div className="flex items-center justify-between pt-10 border-t border-zinc-100 dark:border-zinc-900">
+                                                <div className={`flex -space-x-6 transition-opacity ${order.type === 'secondary' ? 'opacity-40 group-hover:opacity-100' : ''}`}>
+                                                    {order.images.map((img, idx) => (
+                                                        <div key={idx} className={`w-20 h-24 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 relative p-1 transition-transform duration-500 ${idx === 0 ? 'z-20 group-hover:-translate-y-2' : 'z-10 group-hover:-translate-x-4 delay-75'}`}>
+                                                            <Image src={img} alt="Product" fill className="object-cover" />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <Link href="#" className={`text-[10px] font-bold uppercase tracking-[0.3em] border-b pb-1 transition-all ${order.type === 'secondary' ? 'border-zinc-200 dark:border-zinc-800 hover:border-black dark:hover:border-white' : 'border-black dark:border-white hover:opacity-50'}`}>
+                                                    {order.status === 'Delivered' ? 'Review History' : 'Order Details'}
                                                 </Link>
                                             </div>
-                                        </div>
-
-                                        <div className="flex items-center justify-between pt-10 border-t border-zinc-100 dark:border-zinc-900">
-                                            <div className="flex -space-x-6 opacity-40 group-hover:opacity-100 transition-opacity">
-                                                <div className="w-20 h-24 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 relative z-20 p-1 group-hover:-translate-y-2 transition-transform duration-500">
-                                                    <Image
-                                                        src="https://images.unsplash.com/photo-1591047139829-d91aec36adea?q=80&w=800&auto=format&fit=crop"
-                                                        alt="Product"
-                                                        fill
-                                                        className="object-cover"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <Link href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] border-b border-zinc-200 dark:border-zinc-800 pb-1 hover:border-black dark:hover:border-white transition-colors">
-                                                Review History
-                                            </Link>
-                                        </div>
-                                    </motion.div>
+                                        </motion.div>
+                                    ))}
                                 </div>
                             </div>
                         ) : activeTab === 'profile' && (
@@ -472,7 +435,7 @@ export default function AccountPage() {
                     priority
                     className="object-cover opacity-90 grayscale hover:grayscale-0 transition-all duration-1000 scale-105 hover:scale-100"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-12">
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent flex items-end p-12">
                     <div className="space-y-2">
                         <p className="text-[10px] uppercase tracking-[0.4em] text-white/50">Exclusive Collection</p>
                         <h3 className="text-2xl font-light text-white tracking-widest uppercase">The Noir Series</h3>
@@ -604,9 +567,9 @@ export default function AccountPage() {
                         </form>
 
                         <div className="relative flex items-center gap-4">
-                            <div className="h-[1px] flex-grow bg-zinc-100 dark:bg-zinc-900"></div>
+                            <div className="h-px grow bg-zinc-100 dark:bg-zinc-900"></div>
                             <span className="text-[9px] uppercase tracking-[0.3em] text-zinc-400">Social Entry</span>
-                            <div className="h-[1px] flex-grow bg-zinc-100 dark:bg-zinc-900"></div>
+                            <div className="h-px grow bg-zinc-100 dark:bg-zinc-900"></div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">

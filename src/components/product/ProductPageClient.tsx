@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Product } from "@/lib/data";
+import { Product } from "@/lib/types";
 import { ProductGallery, ColorVariant } from "./ProductGallery";
 import ProductInfo from "./ProductInfo";
 
