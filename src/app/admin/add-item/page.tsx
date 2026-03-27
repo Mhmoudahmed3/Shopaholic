@@ -1,4 +1,5 @@
 import { getCategoriesDB, getProduct } from "@/lib/db";
+import { getSiteSettings } from "../actions";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import ProductForm from "./ProductForm";
@@ -19,6 +20,7 @@ export default async function AddItemPage({
         initialProduct = await getProduct(productId);
     }
 
+    const settings = await getSiteSettings();
     const isEditing = !!initialProduct;
 
     return (
@@ -61,7 +63,11 @@ export default async function AddItemPage({
                 </div>
             </div>
 
-            <ProductForm categories={categories} initialProduct={initialProduct} />
+            <ProductForm 
+                categories={categories} 
+                initialProduct={initialProduct} 
+                sizeScales={settings.sizeScales}
+            />
         </div>
     );
 }

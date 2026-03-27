@@ -117,6 +117,7 @@ export interface SiteSettings {
     taxRate: number;
     shippingFee: number;
     freeShippingThreshold: number;
+    sizeScales?: Record<string, string[]>;
 }
 
 export interface PaginatedResponse<T> {

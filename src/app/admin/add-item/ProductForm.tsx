@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Save, Image as ImageIcon, Plus, Trash2, Loader2, ChevronDown, CheckCircle2, AlertCircle, X } from "lucide-react";
+import { Save, Image as ImageIcon, Plus, Trash2, Loader2, ChevronDown, CheckCircle2, AlertCircle, X, Percent } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,13 +30,36 @@ interface ImageVariantRow {
     existingUrl: string;
 }
 
-import { PREDEFINED_COLORS as SHARED_COLORS, PREDEFINED_SIZES, COLOR_MAP_HEX } from "@/lib/constants";
+import { PREDEFINED_COLORS as SHARED_COLORS, COLOR_MAP_HEX, SIZE_SCALES as DEFAULT_SIZE_SCALES } from "@/lib/constants";
 
-const PREDEFINED_COLORS = SHARED_COLORS.map(c => c.name).concat('Default');
-const COLOR_MAP: Record<string, string> = { ...COLOR_MAP_HEX, 'Default': 'transparent' };
-
-export default function ProductForm({ categories, initialProduct }: { categories: Category[], initialProduct?: Product }) {
+export default function ProductForm({ 
+    categories, 
+    initialProduct, 
+    sizeScales: customSizeScales 
+}: { 
+    categories: Category[], 
+    initialProduct?: Product,
+    sizeScales?: Record<string, string[]>
+}) {
+    const SIZE_SCALES = customSizeScales || DEFAULT_SIZE_SCALES;
     const isEditing = !!initialProduct;
+    
+    // Color Management
+    const [availableColors, setAvailableColors] = useState(SHARED_COLORS.map(c => c.name));
+    const [colorMap, setColorMap] = useState<Record<string, string>>({ ...COLOR_MAP_HEX });
+    const [isAddingColor, setIsAddingColor] = useState(false);
+    const [newColor, setNewColor] = useState({ name: "", hex: "#000000" });
+
+    const handleAddCustomColor = () => {
+        if (!newColor.name.trim()) return;
+        const name = newColor.name.charAt(0).toUpperCase() + newColor.name.slice(1);
+        if (!availableColors.includes(name)) {
+            setAvailableColors([...availableColors, name]);
+            setColorMap({ ...colorMap, [name]: newColor.hex });
+        }
+        setNewColor({ name: "", hex: "#000000" });
+        setIsAddingColor(false);
+    };
     
     // Process initial variants into grouped rows (one row per color/image)
     const processInitialRows = () => {
@@ -91,9 +114,39 @@ export default function ProductForm({ categories, initialProduct }: { categories
     const [images, setImages] = useState(processInitialRows());
     const [nextId, setNextId] = useState(processInitialRows().length);
     const [openColorDropdownId, setOpenColorDropdownId] = useState<number | null>(null);
+    // Size Scale Management
+    const [sizeScale, setSizeScale] = useState<keyof typeof SIZE_SCALES>("Standard");
+    const availableSizes = SIZE_SCALES[sizeScale];
+
     const [isPending, startTransition] = useTransition();
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+
+    // Discount Management States
+    const [price, setPrice] = useState<number>(initialProduct?.price || 0);
+    const [isPercentage, setIsPercentage] = useState(false);
+    const [discountInput, setDiscountInput] = useState(initialProduct?.discountPrice?.toString() || "");
+
+    const toggleDiscountType = () => {
+        if (isPercentage) {
+            // Switching to Price
+            if (price && discountInput) {
+                const calculatedPrice = (price * (1 - parseFloat(discountInput) / 100)).toFixed(2);
+                setDiscountInput(calculatedPrice);
+            }
+            setIsPercentage(false);
+        } else {
+            // Switching to Percentage
+            if (price && discountInput && !isNaN(parseFloat(discountInput))) {
+                const discVal = parseFloat(discountInput);
+                if (discVal < price) {
+                    const calculatedPercent = ((1 - discVal / price) * 100).toFixed(0);
+                    setDiscountInput(calculatedPercent);
+                }
+            }
+            setIsPercentage(true);
+        }
+    };
 
     // Independent Category Selection State
     const initialMainCategory = categories.find(c => c.id === initialProduct?.category)?.type || "";
@@ -286,6 +339,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                                     min="0"
                                     step="0.01"
                                     defaultValue={initialProduct?.price}
+                                    onChange={(e) => setPrice(parseFloat(e.target.value) || 0)}
                                     placeholder="0.00"
                                     className="w-full pl-6 pr-12 py-4 text-base bg-white dark:bg-zinc-900 border border-gray-100 dark:border-white/5 focus:outline-none focus:border-black dark:focus:border-white transition-all rounded-2xl shadow-sm focus:ring-4 ring-black/5 dark:ring-white/5 placeholder:text-gray-300 dark:placeholder:text-gray-600 appearance-none m-0"
                                 />
@@ -294,19 +348,45 @@ export default function ProductForm({ categories, initialProduct }: { categories
                         </div>
 
                         <div className="space-y-2">
-                            <label htmlFor="discountPrice" className="inline-block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400 ml-1">Discount Price (Optional)</label>
-                            <div className="relative">
+                            <div className="flex items-center justify-between pr-1">
+                                <label htmlFor="discountDisplay" className="inline-block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400 ml-1">
+                                    {isPercentage ? "Discount (%)" : "Discount Price (Optional)"}
+                                </label>
+                                <button
+                                    type="button"
+                                    onClick={toggleDiscountType}
+                                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-[9px] font-bold uppercase tracking-wider transition-all"
+                                >
+                                    {isPercentage ? (
+                                        <>Switch to Fixed</>
+                                    ) : (
+                                        <><Percent className="w-2.5 h-2.5" /> Percentage</>
+                                    )}
+                                </button>
+                            </div>
+                            <div className="relative group/input">
                                 <input
                                     type="number"
-                                    id="discountPrice"
-                                    name="discountPrice"
+                                    id="discountDisplay"
+                                    value={discountInput}
+                                    onChange={(e) => setDiscountInput(e.target.value)}
                                     min="0"
-                                    step="0.01"
-                                    defaultValue={initialProduct?.discountPrice}
-                                    placeholder="Sale price (if any)"
+                                    step={isPercentage ? "1" : "0.01"}
+                                    placeholder={isPercentage ? "Example: 20" : "Sale price (if any)"}
                                     className="w-full pl-6 pr-12 py-4 text-base bg-white dark:bg-zinc-900 border border-gray-100 dark:border-white/5 focus:outline-none focus:border-black dark:focus:border-white transition-all rounded-2xl shadow-sm focus:ring-4 ring-black/5 dark:ring-white/5 placeholder:text-gray-300 dark:placeholder:text-gray-600"
                                 />
-                                <span className="absolute right-6 top-1/2 -translate-y-1/2 text-sm font-semibold opacity-30">SALE</span>
+                                <span className="absolute right-6 top-1/2 -translate-y-1/2 text-sm font-semibold opacity-30">
+                                    {isPercentage ? "%" : "SALE"}
+                                </span>
+                                <input 
+                                    type="hidden" 
+                                    name="discountPrice" 
+                                    value={
+                                        isPercentage 
+                                            ? (price && discountInput ? (price * (1 - parseFloat(discountInput) / 100)).toFixed(2) : "") 
+                                            : discountInput
+                                    } 
+                                />
                             </div>
                         </div>
 
@@ -358,7 +438,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                                 rows={6}
                                 defaultValue={initialProduct?.description}
                                 placeholder="Immerse your customers in the quality, texture, and inspiration behind this piece..."
-                                className="w-full px-6 py-5 text-base bg-white dark:bg-zinc-900 border border-gray-100 dark:border-white/5 focus:outline-none focus:border-black dark:focus:border-white transition-all rounded-[2rem] shadow-sm focus:ring-4 ring-black/5 dark:ring-white/5 resize-none leading-relaxed"
+                                className="w-full px-6 py-5 text-base bg-white dark:bg-zinc-900 border border-gray-100 dark:border-white/5 focus:outline-none focus:border-black dark:focus:border-white transition-all rounded-4xl shadow-sm focus:ring-4 ring-black/5 dark:ring-white/5 resize-none leading-relaxed"
                             />
                         </div>
                     </div>
@@ -377,6 +457,18 @@ export default function ProductForm({ categories, initialProduct }: { categories
                             <p className="text-sm text-gray-500 dark:text-gray-400 max-w-lg">Manage colors, sizes, and specific inventory for each unique combination.</p>
                         </div>
                         <div className="flex items-center gap-2 p-1 bg-black/5 dark:bg-white/5 rounded-2xl border border-black/5 dark:border-white/5">
+                            <div className="px-4 py-2 flex items-center gap-2 border-r border-black/5 dark:border-white/5">
+                                <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">Scale:</span>
+                                <select 
+                                    value={sizeScale}
+                                    onChange={(e) => setSizeScale(e.target.value as any)}
+                                    className="bg-transparent text-[10px] font-bold uppercase tracking-widest focus:outline-none cursor-pointer hover:text-blue-500 transition-colors"
+                                >
+                                    {Object.keys(SIZE_SCALES).map(scale => (
+                                        <option key={scale} value={scale} className="bg-white dark:bg-zinc-900">{scale}</option>
+                                    ))}
+                                </select>
+                            </div>
                             <div className="px-5 py-2.5 bg-white dark:bg-black rounded-xl shadow-sm">
                                 <span className="text-xs font-bold uppercase tracking-widest">Total Units: {totalStock}</span>
                             </div>
@@ -393,8 +485,8 @@ export default function ProductForm({ categories, initialProduct }: { categories
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
                                     className={cn(
-                                        "group relative flex flex-col xl:flex-row gap-8 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-white/5 p-8 rounded-[2rem] transition-all duration-300",
-                                        openColorDropdownId === img.id ? "z-[60] ring-4 ring-black/5 dark:ring-white/10" : "z-0 hover:border-black/20 dark:hover:border-white/20"
+                                        "group relative flex flex-col xl:flex-row gap-8 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-white/5 p-8 rounded-4xl transition-all duration-300",
+                                        openColorDropdownId === img.id ? "z-60 ring-4 ring-black/5 dark:ring-white/10" : "z-0 hover:border-black/20 dark:hover:border-white/20"
                                     )}
                                 >
                                     {/* Image Upload Area */}
@@ -447,10 +539,10 @@ export default function ProductForm({ categories, initialProduct }: { categories
                                                     >
                                                         {img.color ? (
                                                             <div className="flex items-center gap-3">
-                                                                <div
-                                                                    className="w-5 h-5 rounded-full border border-gray-100 dark:border-white/10 shadow-sm"
-                                                                    style={{ backgroundColor: COLOR_MAP[img.color] }}
-                                                                />
+                                                                    <div
+                                                                        className="w-5 h-5 rounded-full border border-gray-100 dark:border-white/10 shadow-sm"
+                                                                        style={{ backgroundColor: colorMap[img.color] }}
+                                                                    />
                                                                 <span className="text-sm font-medium tracking-tight">{img.color}</span>
                                                             </div>
                                                         ) : (
@@ -465,7 +557,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                                                                 initial={{ opacity: 0, scale: 0.95, y: 10 }}
                                                                 animate={{ opacity: 1, scale: 1, y: 0 }}
                                                                 exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                                                                className="absolute top-full left-0 mt-4 w-full md:w-[280px] p-6 bg-white dark:bg-zinc-800 border border-gray-100 dark:border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-[100] ring-1 ring-black/5"
+                                                                className="absolute top-full left-0 mt-4 w-full md:w-[280px] p-6 bg-white dark:bg-zinc-800 border border-gray-100 dark:border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-100 ring-1 ring-black/5"
                                                             >
                                                                 <div className="grid grid-cols-5 gap-3 mb-6">
                                                                     <button
@@ -478,7 +570,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                                                                     >
                                                                         <X className="w-4 h-4" />
                                                                     </button>
-                                                                    {PREDEFINED_COLORS.map(color => (
+                                                                    {availableColors.map(color => (
                                                                         <button
                                                                             key={color}
                                                                             type="button"
@@ -488,10 +580,50 @@ export default function ProductForm({ categories, initialProduct }: { categories
                                                                                 "w-10 h-10 rounded-full border shadow-inner transition-all hover:scale-110",
                                                                                 img.color === color ? "ring-2 ring-offset-2 ring-black dark:ring-white ring-offset-white dark:ring-offset-zinc-800 scale-110 shadow-md" : "border-transparent ring-1 ring-black/5 dark:ring-white/10 opacity-90"
                                                                             )}
-                                                                            style={{ backgroundColor: COLOR_MAP[color] }}
+                                                                            style={{ backgroundColor: colorMap[color] }}
                                                                         />
                                                                     ))}
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => setIsAddingColor(!isAddingColor)}
+                                                                        className="w-10 h-10 rounded-full border border-dashed border-gray-300 dark:border-white/20 flex items-center justify-center transition-all hover:scale-110 hover:border-black dark:hover:border-white"
+                                                                    >
+                                                                        <Plus className="w-4 h-4" />
+                                                                    </button>
                                                                 </div>
+                                                                
+                                                                {isAddingColor && (
+                                                                    <motion.div 
+                                                                        initial={{ opacity: 0, height: 0 }}
+                                                                        animate={{ opacity: 1, height: "auto" }}
+                                                                        className="mb-6 space-y-3 p-4 bg-gray-50 dark:bg-black/40 rounded-2xl border border-gray-100 dark:border-white/5"
+                                                                    >
+                                                                        <div className="flex gap-2">
+                                                                            <input 
+                                                                                type="text" 
+                                                                                placeholder="Color Name"
+                                                                                value={newColor.name}
+                                                                                onChange={(e) => setNewColor({ ...newColor, name: e.target.value })}
+                                                                                className="flex-1 px-3 py-2 text-xs bg-white dark:bg-zinc-800 border border-gray-100 dark:border-white/10 rounded-xl focus:outline-none"
+                                                                            />
+                                                                            <input 
+                                                                                type="color" 
+                                                                                value={newColor.hex}
+                                                                                onChange={(e) => setNewColor({ ...newColor, hex: e.target.value })}
+                                                                                className="w-10 h-10 p-1 bg-white dark:bg-zinc-800 border border-gray-100 dark:border-white/10 rounded-xl cursor-pointer"
+                                                                            />
+                                                                        </div>
+                                                                        <button 
+                                                                            type="button"
+                                                                            onClick={handleAddCustomColor}
+                                                                            disabled={!newColor.name.trim()}
+                                                                            className="w-full py-2 bg-black dark:bg-white text-white dark:text-black text-[9px] font-bold uppercase tracking-widest rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50"
+                                                                        >
+                                                                            Define Custom Color
+                                                                        </button>
+                                                                    </motion.div>
+                                                                )}
+
                                                                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center">Brand Neutrals</p>
                                                             </motion.div>
                                                         )}
@@ -529,7 +661,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                                                                         className="w-full pl-4 pr-10 py-3 text-xs bg-white dark:bg-zinc-800 border border-gray-100 dark:border-white/5 rounded-xl appearance-none focus:outline-none focus:ring-2 ring-black/5 transition-all cursor-pointer"
                                                                     >
                                                                         <option value="">Size</option>
-                                                                        {PREDEFINED_SIZES.map(sz => (
+                                                                        {availableSizes.map(sz => (
                                                                             <option key={sz} value={sz}>{sz}</option>
                                                                         ))}
                                                                     </select>
@@ -583,7 +715,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                             animate={{ opacity: 1 }}
                             type="button"
                             onClick={addImageRow}
-                            className="w-full mt-6 py-8 border-2 border-dashed border-gray-100 dark:border-white/5 rounded-[2rem] flex items-center justify-center gap-3 text-sm font-semibold text-gray-400 group hover:border-black/10 dark:hover:border-white/10 hover:text-black dark:hover:text-white transition-all duration-500 hover:bg-black/[0.02] dark:hover:bg-white/[0.02]"
+                            className="w-full mt-6 py-8 border-2 border-dashed border-gray-100 dark:border-white/5 rounded-4xl flex items-center justify-center gap-3 text-sm font-semibold text-gray-400 group hover:border-black/10 dark:hover:border-white/10 hover:text-black dark:hover:text-white transition-all duration-500 hover:bg-black/2 dark:hover:bg-white/2"
                         >
                             <div className="w-10 h-10 rounded-full bg-gray-50/50 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                                 <Plus className="w-5 h-5" />
@@ -595,7 +727,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
             </motion.div>
 
             {/* Sticky Refined Footer Actions */}
-            <div className="fixed bottom-0 left-0 right-0 z-[100] px-6 py-8 flex justify-center pointer-events-none">
+            <div className="fixed bottom-0 left-0 right-0 z-100 px-6 py-8 flex justify-center pointer-events-none">
                 <motion.div 
                     initial={{ y: 100 }}
                     animate={{ y: 0 }}
@@ -612,7 +744,7 @@ export default function ProductForm({ categories, initialProduct }: { categories
                         type="submit"
                         disabled={isPending}
                         className={cn(
-                            "flex-[2] py-4 rounded-3xl bg-black dark:bg-white text-white dark:text-black text-[11px] font-bold uppercase tracking-[0.25em] transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50 disabled:scale-100 shadow-xl shadow-black/10 dark:shadow-white/5",
+                            "flex-2 py-4 rounded-3xl bg-black dark:bg-white text-white dark:text-black text-[11px] font-bold uppercase tracking-[0.25em] transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50 disabled:scale-100 shadow-xl shadow-black/10 dark:shadow-white/5",
                             isPending ? "px-10" : "px-14"
                         )}
                     >

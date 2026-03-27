@@ -20,7 +20,11 @@ export const PREDEFINED_COLORS = [
     { name: 'Red', hex: '#ef4444' }
 ];
 
-export const PREDEFINED_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'One Size'];
+export const SIZE_SCALES = {
+    "Numerical": ["36", "38", "40", "42", "44", "46", "48", "50"],
+    "Standard": ["XS", "S", "M", "L", "XL", "XXL", "One Size"],
+    "Shoes": ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45"]
+};
 
 export const COLOR_MAP_HEX: Record<string, string> = PREDEFINED_COLORS.reduce((acc, curr) => {
     acc[curr.name] = curr.hex;

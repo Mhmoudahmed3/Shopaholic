@@ -5,6 +5,7 @@ import path from 'path';
 import { revalidatePath } from "next/cache";
 import { SiteSettings, Category, Review, Product, Collection, Homepage, HomepageHero, HomepagePromo, OrderStatus } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
+import { SIZE_SCALES } from '@/lib/constants';
 
 // Site Settings
 export async function getSiteSettings(): Promise<SiteSettings> {
@@ -25,8 +26,20 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         footerText: "© 2026 Shopaholic. All rights reserved.",
         taxRate: 14,
         shippingFee: 50,
-        freeShippingThreshold: 1000
+        freeShippingThreshold: 1000,
+        sizeScales: SIZE_SCALES
     };
+
+    // Try reading sizing from local file first as primary source for custom scales
+    try {
+        const sizingPath = path.join(process.cwd(), 'sizing.json');
+        if (fs.existsSync(sizingPath)) {
+            const customSizing = JSON.parse(fs.readFileSync(sizingPath, 'utf8'));
+            defaultSettings.sizeScales = customSizing;
+        }
+    } catch (e) {
+        console.warn("Failed to load sizing.json");
+    }
 
     try {
         const { data, error } = await supabase
@@ -50,7 +63,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
             taxRate: parseFloat(data.tax_rate || 0),
             shippingFee: parseFloat(data.shipping_fee || 0),
             freeShippingThreshold: parseFloat(data.free_shipping_threshold || 0),
-            socialLinks: data.social_links || defaultSettings.socialLinks
+            socialLinks: data.social_links || defaultSettings.socialLinks,
+            sizeScales: defaultSettings.sizeScales
         } as SiteSettings;
     } catch (e) {
         console.warn("[OFFLINE] Using default site settings.");
@@ -59,7 +73,6 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 }
 
 export async function updateSiteSettings(settings: SiteSettings) {
-    console.log("[ACTION] Updating site settings...");
     try {
         const { error } = await supabase
             .from('site_settings')
@@ -81,6 +94,16 @@ export async function updateSiteSettings(settings: SiteSettings) {
                 updated_at: new Date().toISOString()
             });
 
+        // Save sizing to file as well to ensure persistence of custom scales
+        if (settings.sizeScales) {
+            try {
+                const sizingPath = path.join(process.cwd(), 'sizing.json');
+                fs.writeFileSync(sizingPath, JSON.stringify(settings.sizeScales, null, 2));
+            } catch (e) {
+                console.error("Failed to persist sizing.json");
+            }
+        }
+
         if (error) throw error;
         
         revalidatePath('/', 'layout');
@@ -94,7 +117,6 @@ export async function updateSiteSettings(settings: SiteSettings) {
 
 // Categories
 export async function getCategories() {
-    console.log("[ACTION] Fetching categories...");
     try {
         const { data, error } = await supabase
             .from('categories')
@@ -133,7 +155,6 @@ export async function getCategoryProductCounts() {
 }
 
 export async function addCategory(category: { label: string, type?: string }) {
-    console.log(`[ACTION] Adding category: ${category.label}`);
     try {
         const slug = category.label.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
         const uniqueId = `${slug}-${Math.random().toString(36).substr(2, 5)}`;
@@ -157,7 +178,6 @@ export async function addCategory(category: { label: string, type?: string }) {
 }
 
 export async function deleteCategory(categoryId: string) {
-    console.log(`[ACTION] Deleting category: ${categoryId}`);
     try {
         const { error } = await supabase
             .from('categories')
@@ -327,7 +347,6 @@ async function saveFile(file: File, prefix: string = "") {
 
 // Product Management
 export async function addProduct(formData: FormData) {
-    console.log("[ACTION] Adding new product...");
     try {
         const id = `prod-${Date.now()}`;
         const name = formData.get("name") as string;
@@ -399,7 +418,6 @@ export async function addProduct(formData: FormData) {
 
 export async function updateProduct(formData: FormData) {
     const productId = formData.get("productId") as string;
-    console.log(`[ACTION] Updating product ${productId}...`);
     try {
         const name = formData.get("name") as string;
         const price = parseFloat(formData.get("price") as string);
@@ -470,7 +488,6 @@ export async function updateProduct(formData: FormData) {
 }
 
 export async function deleteProduct(productId: string) {
-    console.log(`[ACTION] Deleting product ${productId}...`);
     try {
         const { error } = await supabase
             .from('products')
@@ -520,7 +537,6 @@ export async function getAvailableProducts(): Promise<Product[]> {
 }
 
 export async function createCuratedCollection(formData: FormData) {
-    console.log("[ACTION] Creating curated collection...");
     try {
         const id = `col-${Date.now()}`;
         const name = formData.get("name") as string;
@@ -560,7 +576,6 @@ export async function createCuratedCollection(formData: FormData) {
 
 export async function updateCuratedCollection(formData: FormData) {
     const id = formData.get("collectionId") as string;
-    console.log(`[ACTION] Updating collection ${id}...`);
     try {
         const name = formData.get("name") as string;
         const subtitle = formData.get("subtitle") as string || "";
@@ -612,7 +627,6 @@ export async function deleteCollection(id: string) {
 
 // Homepage Management
 export async function getHomepageContent() {
-    console.log("[ACTION] Fetching homepage content...");
     let home: any = null;
     let collections: any[] = [];
     let products: any[] = [];
@@ -765,7 +779,6 @@ export async function updateHomepageSection(section: string, data: any) {
 }
 
 export async function updateOrderStatus(orderId: string, status: string) {
-    console.log(`[ACTION] Updating order ${orderId} to status: ${status}`);
     let normalizedStatus = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
     if (normalizedStatus === 'Canceled') normalizedStatus = 'Cancelled';
     try {
@@ -823,8 +836,6 @@ export async function updateOrderStatus(orderId: string, status: string) {
                 }
             }
         }
-
-        console.log(`[ACTION] Order ${orderId} successfully updated to ${status}.`);
         
         revalidatePath('/admin');
         revalidatePath('/admin/orders');
@@ -839,7 +850,6 @@ export async function updateOrderStatus(orderId: string, status: string) {
 }
 
 export async function deleteOrder(orderId: string) {
-    console.log(`[ACTION] Deleting order ${orderId}...`);
     try {
         const { error } = await supabase
             .from('orders')

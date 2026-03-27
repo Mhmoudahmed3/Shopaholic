@@ -24,8 +24,10 @@ import {
     X,
     MessageCircle,
     Check,
-    Layers
+    Layers,
+    Ruler
 } from "lucide-react";
+import { SIZE_SCALES } from "@/lib/constants";
 import { clsx } from "clsx";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
@@ -56,13 +58,54 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
         return acc;
     }, {} as Record<string, Category[]>);
 
+    // Sizing Architecture State
+    const [sizeScales, setSizeScales] = useState<Record<string, string[]>>(initialSettings.sizeScales || SIZE_SCALES);
+    const [newScaleName, setNewScaleName] = useState("");
+    const [isAddingScale, setIsAddingScale] = useState(false);
+    const [newSizeInputs, setNewSizeInputs] = useState<Record<string, string>>({});
+
+    const handleAddSystemScale = () => {
+        if (!newScaleName || sizeScales[newScaleName]) return;
+        setSizeScales(prev => ({
+            ...prev,
+            [newScaleName]: []
+        }));
+        setNewScaleName("");
+        setIsAddingScale(false);
+    };
+
+    const handleAddSizeToScale = (scaleName: string) => {
+        const sizeToAdd = newSizeInputs[scaleName];
+        if (!sizeToAdd || sizeScales[scaleName].includes(sizeToAdd)) return;
+        setSizeScales(prev => ({
+            ...prev,
+            [scaleName]: [...prev[scaleName], sizeToAdd]
+        }));
+        setNewSizeInputs(prev => ({ ...prev, [scaleName]: "" }));
+    };
+
+    const handleDeleteScale = (scaleName: string) => {
+        const { [scaleName]: deleted, ...rest } = sizeScales;
+        setSizeScales(rest);
+    };
+
+    const handleDeleteSizeFromScale = (scaleName: string, sizeToDelete: string) => {
+        setSizeScales(prev => ({
+            ...prev,
+            [scaleName]: prev[scaleName].filter(s => s !== sizeToDelete)
+        }));
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         setMessage(null);
 
         try {
-            await updateSiteSettings(settings);
+            await updateSiteSettings({
+                ...settings,
+                sizeScales
+            });
             setMessage({ type: 'success', text: "Settings updated successfully." });
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (error) {
@@ -524,6 +567,120 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                 className="w-full px-5 py-4 bg-white dark:bg-black border border-gray-100 dark:border-zinc-800 rounded-2xl text-xs outline-none focus:ring-2 ring-emerald-500/20"
                             />
                         </div>
+                    </div>
+                </section>
+
+                {/* Sizing Architecture */}
+                <section className="bg-white dark:bg-zinc-950 p-8 md:p-12 rounded-[4rem] border border-gray-100 dark:border-zinc-800 shadow-xl overflow-hidden relative group">
+                    <div className="absolute top-0 right-0 p-12 opacity-[0.02] group-hover:opacity-[0.05] transition-opacity pointer-events-none">
+                        <Ruler className="w-64 h-64" />
+                    </div>
+                    
+                    <div className="flex items-center justify-between mb-12">
+                        <div className="flex items-center gap-6">
+                            <div className="p-4 bg-black dark:bg-white rounded-3xl shadow-2xl shadow-black/20 dark:shadow-white/10">
+                                <Ruler className="w-6 h-6 text-white dark:text-black" />
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-light tracking-tight">Sizing Architecture</h2>
+                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em] mt-1">Global scale definitions</p>
+                            </div>
+                        </div>
+
+                        {!isAddingScale ? (
+                            <button
+                                type="button"
+                                onClick={() => setIsAddingScale(true)}
+                                className="flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl"
+                            >
+                                <Plus className="w-4 h-4" />
+                                Add System Scale
+                            </button>
+                        ) : (
+                            <div className="flex items-center gap-2 animate-in slide-in-from-right-4 duration-500">
+                                <input
+                                    type="text"
+                                    placeholder="Scale Name (e.g. Kids)"
+                                    value={newScaleName}
+                                    onChange={(e) => setNewScaleName(e.target.value)}
+                                    className="px-4 py-2 bg-gray-50 dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-xl text-xs outline-none focus:ring-2 ring-black/5"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={handleAddSystemScale}
+                                    className="p-2 bg-emerald-500 text-white rounded-xl"
+                                >
+                                    <Check className="w-5 h-5" />
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsAddingScale(false)}
+                                    className="p-2 bg-gray-200 dark:bg-zinc-800 text-gray-500 rounded-xl"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-10">
+                        {Object.entries(sizeScales).map(([name, sizes]) => (
+                            <div key={name} className="space-y-6 p-8 bg-gray-50/50 dark:bg-zinc-900/40 rounded-[3rem] border border-gray-100 dark:border-white/5 group/scale transition-all hover:bg-white dark:hover:bg-black shadow-sm hover:shadow-2xl">
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-1">
+                                        <div className="flex items-center gap-2">
+                                            <h3 className="text-sm font-medium tracking-tight">{name}</h3>
+                                            <button 
+                                                type="button"
+                                                onClick={() => handleDeleteScale(name)}
+                                                className="opacity-0 group-hover/scale:opacity-100 p-1 hover:bg-red-500/10 text-gray-400 hover:text-red-500 rounded-lg transition-all"
+                                            >
+                                                <Trash2 className="w-3.5 h-3.5" />
+                                            </button>
+                                        </div>
+                                        <p className="text-[8px] font-bold uppercase tracking-widest text-gray-400 opacity-60">System Scale</p>
+                                    </div>
+                                    <span className="text-[9px] font-black px-3 py-1.5 bg-black text-white dark:bg-white dark:text-black rounded-xl uppercase tracking-widest shadow-lg">
+                                        {sizes.length} Options
+                                    </span>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    {sizes.map(size => (
+                                        <div 
+                                            key={size} 
+                                            className="group/size relative px-4 py-2 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-white/5 rounded-2xl text-[10px] font-bold transition-all hover:pr-8 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black cursor-default shadow-xs hover:shadow-lg"
+                                        >
+                                            {size}
+                                            <button
+                                                type="button"
+                                                onClick={() => handleDeleteSizeFromScale(name, size)}
+                                                className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover/size:opacity-100 p-0.5 hover:bg-white/20 rounded-md transition-all"
+                                            >
+                                                <X className="w-3 h-3" />
+                                            </button>
+                                        </div>
+                                    ))}
+                                    
+                                    <div className="flex items-center gap-2 mt-2 w-full">
+                                        <input
+                                            type="text"
+                                            placeholder="Add Size"
+                                            value={newSizeInputs[name] || ""}
+                                            onChange={(e) => setNewSizeInputs(prev => ({ ...prev, [name]: e.target.value }))}
+                                            className="flex-1 px-4 py-2 bg-white dark:bg-black/40 border border-gray-100 dark:border-zinc-800 rounded-xl text-[10px] outline-none"
+                                            onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSizeToScale(name))}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => handleAddSizeToScale(name)}
+                                            className="p-2 bg-black dark:bg-white text-white dark:text-black rounded-xl hover:scale-105 active:scale-95 transition-all"
+                                        >
+                                            <Plus className="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </section>
 
