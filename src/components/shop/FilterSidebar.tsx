@@ -5,7 +5,7 @@ import { ChevronDown, X, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
-import { PREDEFINED_COLORS, PREDEFINED_SIZES } from "@/lib/constants";
+import { PREDEFINED_COLORS, SIZE_SCALES } from "@/lib/constants";
 import { ShopSortSelect } from "./ShopSortSelect";
 
 interface FilterSidebarProps {
@@ -48,6 +48,7 @@ const ACCORDION_CATEGORIES = [
 ];
 
 // Remove static PRICE_RANGES as we are moving to slider
+const ALL_SIZES = Array.from(new Set(Object.values(SIZE_SCALES).flat()));
 
 export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
     const router = useRouter();
@@ -269,7 +270,7 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
             <div className="mb-10 pb-8 border-b border-gray-100 dark:border-neutral-800">
                 <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] mb-6 text-neutral-400">Select Size</h3>
                 <div className="grid grid-cols-4 gap-2">
-                    {PREDEFINED_SIZES.map((size) => {
+                    {ALL_SIZES.map((size) => {
                         const sizeLow = size.toLowerCase();
                         const isAvailable = !availableFilters?.sizes || availableFilters.sizes.includes(sizeLow);
                         if (!isAvailable) return null;
