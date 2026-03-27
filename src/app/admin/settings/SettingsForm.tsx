@@ -101,11 +101,29 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
         setIsLoading(true);
         setMessage(null);
 
+        // Auto-confirm pending scale name if present
+        const finalSizeScales = { ...sizeScales };
+        if (isAddingScale && newScaleName && !sizeScales[newScaleName]) {
+            finalSizeScales[newScaleName] = [];
+            setNewScaleName("");
+            setIsAddingScale(false);
+        }
+
+        // Auto-confirm all pending size inputs
+        Object.keys(newSizeInputs).forEach(scaleName => {
+            const pendingSize = newSizeInputs[scaleName];
+            if (pendingSize && !finalSizeScales[scaleName]?.includes(pendingSize)) {
+                finalSizeScales[scaleName] = [...(finalSizeScales[scaleName] || []), pendingSize];
+            }
+        });
+        setNewSizeInputs({});
+
         try {
             await updateSiteSettings({
                 ...settings,
-                sizeScales
+                sizeScales: finalSizeScales
             });
+            setSizeScales(finalSizeScales);
             setMessage({ type: 'success', text: "Settings updated successfully." });
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (error) {
