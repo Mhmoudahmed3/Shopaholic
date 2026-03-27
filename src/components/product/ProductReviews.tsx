@@ -154,7 +154,7 @@ export default function ProductReviews({
                                     className="relative"
                                 >
                                     <div className="flex flex-col md:flex-row gap-8">
-                                        <div className="md:w-48 flex-shrink-0">
+                                        <div className="md:w-48 shrink-0">
                                             <p className="text-xs font-bold uppercase tracking-widest mb-1">{review.userName}</p>
                                             <div className="flex items-center gap-1.5 mb-2">
                                                 {review.verified && (

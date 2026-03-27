@@ -58,13 +58,11 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Submitting settings:", settings);
         setIsLoading(true);
         setMessage(null);
 
         try {
-            const result = await updateSiteSettings(settings);
-            console.log("Update result:", result);
+            await updateSiteSettings(settings);
             setMessage({ type: 'success', text: "Settings updated successfully." });
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (error) {
@@ -167,7 +165,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
     return (
         <div className="w-full space-y-12 pb-32">
             {/* Header / Notifications */}
-            <div className="sticky top-4 z-[60] space-y-4">
+            <div className="sticky top-4 z-60 space-y-4">
                 {message && (
                     <div className={clsx(
                         "p-4 rounded-3xl flex items-center gap-4 text-sm font-medium backdrop-blur-xl border shadow-2xl animate-in slide-in-from-top-4 duration-500",
@@ -207,7 +205,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                     >
                         <Plus className="w-4 h-4" />
                         <span>Add Main Category</span>
-                        <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" />
+                        <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                     </button>
                 </div>
 
@@ -279,7 +277,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                 </div>
 
                                 {/* Right: Sub-categories Nodes */}
-                                <div className="flex-1 bg-white dark:bg-black/20 p-6 md:p-8 rounded-[2rem] border border-gray-100 dark:border-zinc-800/40 shadow-inner">
+                                <div className="flex-1 bg-white dark:bg-black/20 p-6 md:p-8 rounded-4xl border border-gray-100 dark:border-zinc-800/40 shadow-inner">
                                     <div className="flex items-center justify-between mb-6">
                                         <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Sub-categories (Product Types)</h3>
                                         <button
@@ -337,7 +335,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                         <div className="p-3 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-2xl shadow-2xl cursor-help">
                                             <AlertCircle className="w-5 h-5 text-gray-300 group-hover/hint:text-black dark:group-hover/hint:text-white transition-colors" />
                                         </div>
-                                        <div className="absolute top-0 right-14 w-60 p-5 bg-black text-white text-[10px] font-bold uppercase tracking-widest leading-loose rounded-[2rem] shadow-2xl scale-0 group-hover/hint:scale-100 transition-all origin-right z-[100] border border-white/10">
+                                        <div className="absolute top-0 right-14 w-60 p-5 bg-black text-white text-[10px] font-bold uppercase tracking-widest leading-loose rounded-4xl shadow-2xl scale-0 group-hover/hint:scale-100 transition-all origin-right z-100 border border-white/10">
                                             Architecture Notice: <br/>
                                             <span className="font-light normal-case opacity-60">To remove this entire main branch, you must first eliminate all its sub-collections.</span>
                                         </div>
@@ -357,7 +355,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                     </div>
                     
                     <div className="flex items-center gap-6 mb-12">
-                        <div className="p-4 bg-black dark:bg-white rounded-[1.5rem] shadow-2xl shadow-black/20 dark:shadow-white/10">
+                        <div className="p-4 bg-black dark:bg-white rounded-3xl shadow-2xl shadow-black/20 dark:shadow-white/10">
                             <Mail className="w-6 h-6 text-white dark:text-black" />
                         </div>
                         <div>
@@ -370,7 +368,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                         <div className="space-y-3">
                             <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 ml-2">Official Email</label>
                             <div className="relative group/field">
-                                <div className="absolute -inset-0.5 bg-gradient-to-r from-black/0 via-black/5 to-black/0 dark:from-white/0 dark:via-white/5 dark:to-white/0 rounded-[1.5rem] opacity-0 group-focus-within/field:opacity-100 transition-opacity" />
+                                <div className="absolute -inset-0.5 bg-linear-to-r from-black/0 via-black/5 to-black/0 dark:from-white/0 dark:via-white/5 dark:to-white/0 rounded-3xl opacity-0 group-focus-within/field:opacity-100 transition-opacity" />
                                 <div className="relative flex items-center">
                                     <Mail className="absolute left-6 w-4 h-4 text-gray-300 group-focus-within/field:text-black dark:group-focus-within/field:text-white transition-colors" />
                                     <input
@@ -378,7 +376,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                         name="contactEmail"
                                         value={settings.contactEmail}
                                         onChange={handleChange}
-                                        className="w-full pl-16 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-[1.5rem] text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
+                                        className="w-full pl-16 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-3xl text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
                                     />
                                 </div>
                             </div>
@@ -393,7 +391,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                         name="contactPhone"
                                         value={settings.contactPhone}
                                         onChange={handleChange}
-                                        className="w-full pl-16 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-[1.5rem] text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
+                                        className="w-full pl-16 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-3xl text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
                                     />
                                 </div>
                             </div>
@@ -408,7 +406,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                         name="address"
                                         value={settings.address}
                                         onChange={handleChange}
-                                        className="w-full pl-16 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-[1.5rem] text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
+                                        className="w-full pl-16 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-3xl text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
                                     />
                                 </div>
                             </div>
@@ -419,7 +417,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                 {/* Financial Config */}
                 <section className="bg-white dark:bg-zinc-950 p-8 md:p-12 rounded-[4rem] border border-gray-100 dark:border-zinc-800 shadow-xl overflow-hidden relative">
                     <div className="flex items-center gap-6 mb-12">
-                        <div className="p-4 bg-black dark:bg-white rounded-[1.5rem] shadow-2xl shadow-black/20 dark:shadow-white/10">
+                        <div className="p-4 bg-black dark:bg-white rounded-3xl shadow-2xl shadow-black/20 dark:shadow-white/10">
                             <DollarSign className="w-6 h-6 text-white dark:text-black" />
                         </div>
                         <div>
@@ -438,7 +436,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                     name="taxRate"
                                     value={settings.taxRate}
                                     onChange={handleChange}
-                                    className="w-full pl-14 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-[1.5rem] text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
+                                    className="w-full pl-14 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-3xl text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
                                 />
                             </div>
                         </div>
@@ -451,7 +449,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                     name="shippingFee"
                                     value={settings.shippingFee}
                                     onChange={handleChange}
-                                    className="w-full pl-14 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-[1.5rem] text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
+                                    className="w-full pl-14 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-3xl text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
                                 />
                             </div>
                         </div>
@@ -464,7 +462,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                                     name="freeShippingThreshold"
                                     value={settings.freeShippingThreshold}
                                     onChange={handleChange}
-                                    className="w-full pl-14 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-[1.5rem] text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
+                                    className="w-full pl-14 pr-6 py-5 bg-gray-50/50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 rounded-3xl text-sm focus:bg-white dark:focus:bg-black outline-none transition-all"
                                 />
                             </div>
                         </div>
@@ -474,7 +472,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                 {/* Social Identity */}
                 <section className="bg-white dark:bg-zinc-950 p-8 md:p-12 rounded-[4rem] border border-gray-100 dark:border-zinc-800 shadow-xl overflow-hidden">
                     <div className="flex items-center gap-6 mb-12">
-                        <div className="p-4 bg-black dark:bg-white rounded-[1.5rem] shadow-2xl shadow-black/20 dark:shadow-white/10">
+                        <div className="p-4 bg-black dark:bg-white rounded-3xl shadow-2xl shadow-black/20 dark:shadow-white/10">
                             <Instagram className="w-6 h-6 text-white dark:text-black" />
                         </div>
                         <div>
@@ -533,7 +531,7 @@ export default function SettingsForm({ initialSettings, initialCategories, categ
                 <section className="bg-red-500/5 dark:bg-red-500/10 p-8 md:p-12 rounded-[4rem] border border-red-100/50 dark:border-red-900/20">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-10">
                         <div className="flex items-center gap-8">
-                            <div className="p-5 bg-red-500 rounded-[2rem] text-white shadow-2xl shadow-red-500/30">
+                            <div className="p-5 bg-red-500 rounded-4xl text-white shadow-2xl shadow-red-500/30">
                                 <AlertCircle className="w-8 h-8" />
                             </div>
                             <div>

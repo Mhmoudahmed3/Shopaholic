@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Plus } from "lucide-react";
 import { getHomepageContent } from "@/app/admin/actions";
-import { BestSellersSection } from "./HomePageClient";
+import { BestSellersSection, NewsletterSection, DragScrollContainer } from "./HomePageClient";
 import type { HomepageHero, HomepagePromo, HomepageNewsletter, Product } from "@/lib/types";
 
 export const revalidate = 60; // Revalidate homepage every 60 seconds (ISR)
@@ -102,31 +102,31 @@ export default async function Home() {
         {/* Scroll Indicator */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4">
           <span className="text-white/40 text-[10px] uppercase tracking-[0.2em] [writing-mode:vertical-lr]">Scroll</span>
-          <div className="w-[1px] h-12 bg-gradient-to-b from-white/60 to-transparent"></div>
+          <div className="w-px h-12 bg-linear-to-b from-white/60 to-transparent"></div>
         </div>
       </section>
 
       {/* Collections Showcase */}
-      <section className="bg-[#f5f5f5] dark:bg-zinc-950 py-16 md:py-32 overflow-hidden">
+      <section className="bg-brand-100 dark:bg-zinc-950 py-16 md:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-24 gap-6 md:gap-8">
-            <div className="max-w-xl">
-              <h2 className="text-4xl sm:text-5xl md:text-7xl font-serif italic mb-4 md:mb-8 leading-tight">Collections</h2>
-              <p className="text-neutral-500 dark:text-neutral-400 text-sm uppercase tracking-widest leading-loose max-w-sm">
-                A vision of contemporary luxury. Each series reflects our commitment to form, function, and artistic expression.
-              </p>
+          <div className="mb-10 md:mb-24">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-baseline gap-6 md:gap-8 mb-4 md:mb-8">
+              <h2 className="text-4xl sm:text-5xl md:text-7xl font-serif italic leading-tight">Collections</h2>
+              <Link href="/collections" className="group flex items-center gap-3 text-[10px] font-bold tracking-[0.3em] uppercase border-b-2 border-black dark:border-white pb-2 hover:opacity-50 transition-all">
+                Explore All <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
-            <Link href="/shop" className="group flex items-center gap-3 text-[10px] font-bold tracking-[0.3em] uppercase border-b-2 border-black dark:border-white pb-2 hover:opacity-50 transition-all">
-              Explore All <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm uppercase tracking-widest leading-loose max-w-sm">
+              A vision of contemporary luxury. Each series reflects our commitment to form, function, and artistic expression.
+            </p>
           </div>
 
           <div className="relative w-full">
-            <div className="flex gap-8 pb-6 md:pb-12 overflow-x-auto no-scrollbar scroll-smooth">
+            <DragScrollContainer className="flex gap-8 pb-6 md:pb-12 overflow-x-auto no-scrollbar">
               {collections.map((collection, index) => (
                 <div
                   key={collection.id}
-                  className="flex-none w-[85vw] md:w-[45vw] lg:w-[35vw] group relative overflow-hidden bg-white dark:bg-zinc-900 shadow-2xl aspect-[16/10]"
+                  className="flex-none w-[85vw] md:w-[45vw] lg:w-[35vw] group relative overflow-hidden bg-white dark:bg-zinc-900 shadow-2xl aspect-16/10"
                 >
                   <Link href={collection.link} className="absolute inset-0 z-30">
                     <span className="sr-only">View {collection.title}</span>
@@ -138,12 +138,13 @@ export default async function Home() {
                       alt={collection.title}
                       fill
                       sizes="(max-width: 768px) 85vw, (max-width: 1024px) 45vw, 35vw"
-                      className="object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-105"
+                      draggable={false}
+                      className="object-cover transition-transform duration-2000 ease-out group-hover:scale-105"
                       loading={index < 2 ? "eager" : "lazy"}
                     />
                   ) : null}
                   
-                  <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 z-20 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
+                  <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 z-20 bg-linear-to-t from-black/60 via-black/20 to-transparent">
                     <div className="flex items-end justify-between transition-transform duration-700">
                       <div className="max-w-[80%]">
                         <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-white/70 mb-2 block">{collection.subtitle}</span>
@@ -160,7 +161,7 @@ export default async function Home() {
                   </div>
                 </div>
               ))}
-            </div>
+            </DragScrollContainer>
           </div>
         </div>
       </section>
@@ -241,20 +242,7 @@ export default async function Home() {
       </section>
 
       {/* Newsletter CTA */}
-      <section className="py-16 md:py-32 bg-white dark:bg-black">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-serif mb-6 md:mb-8">{newsletter.title}</h2>
-          <p className="text-neutral-500 dark:text-neutral-400 mb-8 md:mb-12 max-w-md mx-auto leading-relaxed">
-            {newsletter.description}
-          </p>
-          <Link href="/account" className="inline-flex items-center gap-4 group">
-            <span className="text-sm font-bold tracking-widest uppercase border-b-2 border-black dark:border-white pb-1 group-hover:opacity-70 transition-opacity">{newsletter.ctaText}</span>
-            <div className="w-10 h-10 rounded-full border border-black dark:border-white flex items-center justify-center group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition-all">
-              <Plus className="w-4 h-4" />
-            </div>
-          </Link>
-        </div>
-      </section>
+      <NewsletterSection newsletter={newsletter as any} />
 
     </div>
   );

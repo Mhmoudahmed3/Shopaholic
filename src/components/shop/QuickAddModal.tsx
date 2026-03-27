@@ -85,7 +85,7 @@ export function QuickAddModal({ product, onClose }: QuickAddModalProps) {
     return (
         <AnimatePresence mode="wait">
             {product && (
-                <div key={`quick-add-${product.id}`} className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                <div key={`quick-add-${product.id}`} className="fixed inset-0 z-100 flex items-center justify-center p-4">
                     {/* Backdrop */}
                     <motion.div
                         {...MODAL_VARIANTS.backdrop}
@@ -108,7 +108,7 @@ export function QuickAddModal({ product, onClose }: QuickAddModalProps) {
 
                         <div className="flex flex-col md:flex-row h-full max-h-[90vh] overflow-y-auto">
                             {/* Image */}
-                            <div className="relative aspect-[3/4] md:w-1/2 bg-neutral-100 dark:bg-neutral-800">
+                            <div className="relative aspect-3/4 md:w-1/2 bg-neutral-100 dark:bg-neutral-800">
                                 <Image
                                     src={product.images[0]}
                                     alt={product.name}

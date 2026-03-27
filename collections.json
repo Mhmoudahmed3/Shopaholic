@@ -5,9 +5,9 @@
     "subtitle": "The 2024 Evening Series",
     "image": "/uploads/noir_elegance.png",
     "status": "Active",
-    "productIds": ["prod-1", "prod-2"],
-    "itemsCount": 2,
-    "link": "/shop?collection=noir-elegance",
+    "productIds": ["generated-product-1", "generated-product-4", "generated-product-8"],
+    "itemsCount": 3,
+    "link": "/collections/noir-elegance",
     "createdAt": "2026-03-23T22:30:00.000Z"
   },
   {
@@ -16,9 +16,9 @@
     "subtitle": "Natural Linen Collection",
     "image": "/uploads/desert_bloom.png",
     "status": "Active",
-    "productIds": ["prod-3"],
-    "itemsCount": 1,
-    "link": "/shop?collection=desert-bloom",
+    "productIds": ["generated-product-2", "generated-product-10"],
+    "itemsCount": 2,
+    "link": "/collections/desert-bloom",
     "createdAt": "2026-03-23T22:31:00.000Z"
   }
 ]

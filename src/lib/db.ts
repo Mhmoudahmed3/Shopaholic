@@ -74,20 +74,32 @@ export async function getProductsDB(): Promise<Product[]> {
 }
 
 export async function getProduct(id: string): Promise<Product | undefined> {
-  const { data, error } = await supabase.from('products').select('*, reviews(*)').eq('id', id).single();
-  if (error || !data) return undefined;
-  return {
-    ...data,
-    discountPrice: data.discount_price,
-    imageVariants: data.image_variants,
-    reviewsCount: data.reviews_count,
-    createdAt: data.created_at,
-    reviews: data.reviews?.map((r: any) => ({
-      ...r,
-      userName: r.user_name,
-      date: r.created_at
-    }))
-  } as any;
+  try {
+    const { data, error } = await supabase.from('products').select('*, reviews(*)').eq('id', id).single();
+    if (error || !data) throw new Error("Product not found");
+    return {
+      ...data,
+      discountPrice: data.discount_price,
+      imageVariants: data.image_variants,
+      reviewsCount: data.reviews_count,
+      createdAt: data.created_at,
+      reviews: data.reviews?.map((r: any) => ({
+        ...r,
+        userName: r.user_name,
+        date: r.created_at
+      }))
+    } as any;
+  } catch (e) {
+    console.warn(`[OFFLINE] Checking products.json for product ID: ${id}`);
+    try {
+      const jsonPath = path.join(process.cwd(), 'products.json');
+      if (fs.existsSync(jsonPath)) {
+          const products: Product[] = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+          return products.find(p => p.id === id);
+      }
+    } catch (err) {}
+    return undefined;
+  }
 }
 
 export async function saveProductsDB(products: Product[]) {
@@ -195,14 +207,30 @@ export async function getOrderById(id: string): Promise<any | undefined> {
 
 // Collections
 export async function getCollectionsDB(): Promise<Collection[]> {
-  const { data, error } = await supabase.from('collections').select('*');
-  if (error) return [];
-  return data.map(c => ({
-    ...c,
-    productIds: c.product_ids,
-    itemsCount: c.items_count,
-    createdAt: c.created_at
-  })) as any;
+  try {
+    const { data, error } = await supabase.from('collections').select('*');
+    if (!error && data && data.length > 0) {
+      return data.map(c => ({
+        ...c,
+        productIds: c.product_ids || [],
+        itemsCount: c.items_count || (c.product_ids || []).length,
+        createdAt: c.created_at
+      })) as any;
+    }
+    throw new Error("No collections from Supabase");
+  } catch (e) {
+    console.warn("[OFFLINE] Using collections.json for collections index.");
+    try {
+      const jsonPath = path.join(process.cwd(), 'collections.json');
+      if (fs.existsSync(jsonPath)) {
+        const collections = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+        return collections.filter((c: any) => c.status === 'Active');
+      }
+    } catch (err) {
+      console.error("Failed to read collections.json:", err);
+    }
+  }
+  return [];
 }
 
 export async function saveCollectionsDB(collections: Collection[]) {
@@ -210,53 +238,104 @@ export async function saveCollectionsDB(collections: Collection[]) {
 }
 
 export async function getCollection(id: string): Promise<Collection | undefined> {
-  const { data, error } = await supabase.from('collections').select('*').eq('id', id).single();
-  if (error || !data) return undefined;
-  return {
-    ...data,
-    productIds: data.product_ids,
-    itemsCount: data.items_count,
-    createdAt: data.created_at
-  } as any;
+  try {
+    const { data, error } = await supabase.from('collections').select('*').eq('id', id).single();
+    if (!error && data) {
+      return {
+        ...data,
+        productIds: data.product_ids || [],
+        itemsCount: (data.product_ids || []).length,
+        createdAt: data.created_at
+      } as any;
+    }
+    throw new Error("No collection found in Supabase");
+  } catch (e) {
+    console.warn(`[OFFLINE] Fetching collection ${id} from local fallback.`);
+    try {
+      const jsonPath = path.join(process.cwd(), 'collections.json');
+      if (fs.existsSync(jsonPath)) {
+        const collections: Collection[] = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+        const collection = collections.find((c: any) => c.id === id);
+        if (collection) {
+          return {
+            ...collection,
+            productIds: (collection as any).productIds || [],
+            itemsCount: (collection as any).itemsCount || ((collection as any).productIds || []).length
+          };
+        }
+      }
+    } catch (err) {
+      console.error("Failed to read collections.json fallback:", err);
+    }
+  }
+  return undefined;
 }
 
 export async function getCollectionProducts(productIds: string[]): Promise<Product[]> {
   if (!productIds || productIds.length === 0) return [];
   
-  const { data, error } = await supabase.from('products').select('*').in('id', productIds);
-  if (error) return [];
-  
-  return (data || []).map(p => ({
-    ...p,
-    discountPrice: p.discount_price,
-    imageVariants: p.image_variants,
-    createdAt: p.created_at
-  })) as any;
+  try {
+    const { data, error } = await supabase.from('products').select('*').in('id', productIds);
+    if (error || !data) throw new Error("No products");
+    
+    return (data || []).map(p => ({
+      ...p,
+      discountPrice: p.discount_price,
+      imageVariants: p.image_variants,
+      createdAt: p.created_at
+    })) as any;
+  } catch (e) {
+    console.warn(`[OFFLINE] Checking products.json for collection items`);
+    try {
+      const jsonPath = path.join(process.cwd(), 'products.json');
+      if (fs.existsSync(jsonPath)) {
+          const products: Product[] = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+          return products.filter(p => productIds.includes(p.id));
+      }
+    } catch (err) {}
+    return [];
+  }
 }
 
 export async function getRelatedProducts(productId: string, category?: string): Promise<Product[]> {
-  let targetCategory = category;
-  
-  if (!targetCategory) {
-    const { data: current } = await supabase.from('products').select('category').eq('id', productId).single();
-    if (!current) return [];
-    targetCategory = current.category;
+  try {
+    let targetCategory = category;
+    
+    if (!targetCategory) {
+      const { data: current, error } = await supabase.from('products').select('category').eq('id', productId).single();
+      if (error || !current) throw new Error("Category not found");
+      targetCategory = current.category;
+    }
+
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('category', targetCategory)
+        .neq('id', productId)
+        .limit(4);
+
+    if (error || !data) throw new Error("No related products");
+    return (data || []).map(p => ({
+      ...p,
+      discountPrice: p.discount_price,
+      imageVariants: p.image_variants,
+      createdAt: p.created_at
+    })) as any;
+  } catch (e) {
+    console.warn(`[OFFLINE] Checking products.json for related products`);
+    try {
+      const jsonPath = path.join(process.cwd(), 'products.json');
+      if (fs.existsSync(jsonPath)) {
+          const products: Product[] = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+          const currentProduct = products.find(p => p.id === productId);
+          const targetCategory = category || currentProduct?.category;
+          return products
+            .filter(p => p.category === targetCategory && p.id !== productId)
+            .slice(0, 4);
+      }
+    } catch (err) {}
+    return [];
   }
-
-  const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('category', targetCategory)
-      .neq('id', productId)
-      .limit(4);
-
-  if (error) return [];
-  return (data || []).map(p => ({
-    ...p,
-    discountPrice: p.discount_price,
-    imageVariants: p.image_variants,
-    createdAt: p.created_at
-  })) as any;
 }
 
 // Homepage
@@ -297,7 +376,71 @@ export async function getProducts(params: any): Promise<Product[]> {
     try {
         const jsonPath = path.join(process.cwd(), 'products.json');
         if (fs.existsSync(jsonPath)) {
-            products = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+            let localProducts = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+            
+            // Manual Filtering for Offline Mode
+            if (params.category && params.category !== 'all') {
+                const catLower = params.category.toLowerCase();
+                localProducts = localProducts.filter((p: any) => {
+                    // Check if it's a broad category match in the 'type' field
+                    const typeMatch = p.type?.toLowerCase() === catLower;
+                    // Or an exact category match
+                    const catMatch = p.category?.toLowerCase() === catLower;
+                    return typeMatch || catMatch;
+                });
+            }
+            if (params.type) {
+                const typeLower = params.type.toLowerCase();
+                // Map common synonyms for offline robustness
+                const searchTerms = [typeLower];
+                if (typeLower === 'tops') searchTerms.push('shirts', 'tshirts', 'tops');
+                if (typeLower === 'shoes') searchTerms.push('sneakers', 'sandals', 'shoes');
+                if (typeLower === 'pants') searchTerms.push('jeans', 'trousers', 'pants');
+
+                localProducts = localProducts.filter((p: any) => {
+                    const pCat = p.category?.toLowerCase() || "";
+                    const pType = p.type?.toLowerCase() || "";
+                    // Match against any of the terms
+                    return searchTerms.some(term => pCat.includes(term) || pType.includes(term));
+                });
+            }
+            if (params.size) {
+                const selectedSizes = params.size.split(',').map((s: string) => s.toLowerCase());
+                localProducts = localProducts.filter((p: any) => 
+                    p.sizes?.some((s: string) => selectedSizes.includes(s.toLowerCase()))
+                );
+            }
+            if (params.color) {
+                const selectedColors = params.color.split(',').map((c: string) => c.toLowerCase());
+                localProducts = localProducts.filter((p: any) => 
+                    p.colors?.some((c: string) => selectedColors.includes(c.toLowerCase()))
+                );
+            }
+            if (params.minPrice) {
+                localProducts = localProducts.filter((p: any) => p.price >= params.minPrice);
+            }
+            if (params.maxPrice) {
+                localProducts = localProducts.filter((p: any) => p.price <= params.maxPrice);
+            }
+            if (params.minRating) {
+                localProducts = localProducts.filter((p: any) => p.rating >= params.minRating);
+            }
+            if (params.isPopular) {
+                localProducts = localProducts.filter((p: any) => p.popularity >= 80);
+            }
+
+            // Manual Sorting
+            if (params.sort === 'price_asc') {
+                localProducts.sort((a: any, b: any) => a.price - b.price);
+            } else if (params.sort === 'price_desc') {
+                localProducts.sort((a: any, b: any) => b.price - a.price);
+            } else if (params.sort === 'popular') {
+                localProducts.sort((a: any, b: any) => (b.popularity || 0) - (a.popularity || 0));
+            } else {
+                localProducts.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+            }
+
+            products = localProducts;
         }
     } catch (err) {}
   }
@@ -311,16 +454,31 @@ export async function getProducts(params: any): Promise<Product[]> {
 }
 
 export async function getAvailableFilters(params: any) {
-  // Simplify: Return all available colors and sizes from all products (can be optimized)
-  const { data } = await supabase.from('products').select('colors, sizes, price');
+  let productsData: any[] = [];
+  try {
+    const { data, error } = await supabase.from('products').select('colors, sizes, price');
+    if (!error && data && data.length > 0) {
+      productsData = data;
+    } else {
+      throw new Error("No products in DB");
+    }
+  } catch (e) {
+    console.warn("[OFFLINE] Using products.json for available filters.");
+    try {
+      const jsonPath = path.join(process.cwd(), 'products.json');
+      if (fs.existsSync(jsonPath)) {
+          productsData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      }
+    } catch (err) {}
+  }
   
   const allColors = new Set<string>();
   const allSizes = new Set<string>();
   let maxPrice = 0;
 
-  data?.forEach(p => {
-    p.colors?.forEach((c: string) => allColors.add(c));
-    p.sizes?.forEach((s: string) => allSizes.add(s));
+  productsData?.forEach(p => {
+    p.colors?.forEach((c: string) => allColors.add(c.toLowerCase()));
+    p.sizes?.forEach((s: string) => allSizes.add(s.toLowerCase()));
     if (p.price > maxPrice) maxPrice = p.price;
   });
 

@@ -50,7 +50,7 @@ export function ProductGrid({ products }: ProductGridProps) {
                         <span className="sr-only">View {product.name}</span>
                     </Link>
 
-                    <div className="aspect-[3/4] w-full overflow-hidden bg-neutral-100 dark:bg-neutral-900 relative">
+                    <div className="aspect-3/4 w-full overflow-hidden bg-neutral-100 dark:bg-neutral-900 relative">
                         {product.isNew && (
                             <span className="absolute top-4 left-4 z-20 px-2 py-1 bg-white dark:bg-black text-[9px] font-bold tracking-[0.2em] uppercase shadow-sm">
                                 New

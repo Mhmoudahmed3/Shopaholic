@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, X, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -12,6 +12,7 @@ interface FilterSidebarProps {
     availableFilters?: {
         sizes: string[];
         colors: string[];
+        maxPrice: number;
     };
 }
 
@@ -46,12 +47,7 @@ const ACCORDION_CATEGORIES = [
     { title: "Children", path: "/shop?category=children" },
 ];
 
-const PRICE_RANGES = [
-    { label: 'Under 2,000 EGP', min: 0, max: 2000 },
-    { label: '2,000 - 5,000 EGP', min: 2000, max: 5000 },
-    { label: '5,000 - 10,000 EGP', min: 5000, max: 10000 },
-    { label: 'Over 10,000 EGP', min: 10000, max: 999999 }
-];
+// Remove static PRICE_RANGES as we are moving to slider
 
 export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
     const router = useRouter();
@@ -68,15 +64,22 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
     const currentMinRating = searchParams.get("rating");
     const isPopularOnly = searchParams.get("popular") === "true";
 
+    // Local state for smooth slider experience
+    const [localMin, setLocalMin] = useState(parseInt(currentMinPrice || "0"));
+    const [localMax, setLocalMax] = useState(parseInt(currentMaxPrice || (availableFilters?.maxPrice || 10000).toString()));
+
+    // Synchronize local state when URL params change externally
+    useEffect(() => {
+        setLocalMin(parseInt(currentMinPrice || "0"));
+        setLocalMax(parseInt(currentMaxPrice || (availableFilters?.maxPrice || 10000).toString()));
+    }, [currentMinPrice, currentMaxPrice, availableFilters?.maxPrice]);
+
     const [activeCategory, setActiveCategory] = useState<string | null>(
         currentCategory === "women" ? "Women" : currentCategory === "men" ? "Men" : null
     );
     const [isMobileOpen, setIsMobileOpen] = useState(false);
-    const [prevCategory, setPrevCategory] = useState<string | null>(currentCategory);
-
     // Sync active category when URL category changes
-    if (currentCategory !== prevCategory) {
-        setPrevCategory(currentCategory);
+    useEffect(() => {
         if (currentCategory === "women") {
             setActiveCategory("Women");
         } else if (currentCategory === "men") {
@@ -84,7 +87,7 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
         } else {
             setActiveCategory(null);
         }
-    }
+    }, [currentCategory]);
 
     const updateParams = (updates: Record<string, string | null | undefined>) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -143,7 +146,7 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
     };
 
     const isLinkActive = (path: string) => {
-        if (!currentCategory && path === "/shop") return true;
+        if (!currentCategory && (path === "/shop" || path === "/shop/")) return true;
         
         const queryString = path.includes("?") ? path.split("?")[1] : "";
         const params = new URLSearchParams(queryString);
@@ -169,7 +172,7 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
             </div>
 
             {/* Header / Clear All */}
-            <div className="flex items-center justify-between mb-8 pb-4 border-b border-neutral-100 dark:border-neutral-900 hidden md:flex">
+            <div className="hidden md:flex items-center justify-between mb-8 pb-4 border-b border-neutral-100 dark:border-neutral-900">
                 <h2 className="text-[10px] font-bold uppercase tracking-[0.25em] text-black dark:text-white">Filters</h2>
                 <AnimatePresence>
                     {hasAnyFilter && (
@@ -208,6 +211,10 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
                                     onClick={() => {
                                         if (hasSubcategories) {
                                             setActiveCategory(isOpen ? null : cat.title);
+                                            // Navigation on parent click if not already active
+                                            if (!isActiveTopLevel) {
+                                                router.push(cat.path);
+                                            }
                                         } else {
                                             const isActive = isLinkActive(cat.path);
                                             router.push(isActive ? '/shop' : cat.path);
@@ -327,36 +334,68 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
                 </div>
             </div>
 
-            {/* Price Filter */}
+            {/* Price Filter Slider */}
             <div className="mb-10 lg:mb-12 pb-8 border-b border-gray-100 dark:border-neutral-800">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] mb-6 text-neutral-400">Price Range</h3>
-                <div className="space-y-3">
-                    {PRICE_RANGES.map((range) => {
-                        const isActive = currentMinPrice === range.min.toString() && currentMaxPrice === range.max.toString();
-                        return (
-                            <label key={range.label} className="flex items-center gap-3 group cursor-pointer">
-                                <div className="relative flex items-center">
-                                    <input 
-                                        type="checkbox" 
-                                        checked={isActive}
-                                        onChange={() => togglePrice(range.min, range.max)}
-                                        className="appearance-none w-3.5 h-3.5 border border-neutral-300 dark:border-neutral-700 rounded-none checked:bg-black dark:checked:bg-white transition-all cursor-pointer" 
-                                    />
-                                    {isActive && (
-                                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                            <div className="w-1.5 h-1.5 bg-white dark:bg-black" />
-                                        </div>
-                                    )}
-                                </div>
-                                <span className={clsx(
-                                    "text-xs transition-colors",
-                                    isActive ? "text-black dark:text-white font-medium" : "text-neutral-500 dark:text-neutral-400 group-hover:text-black dark:group-hover:text-white"
-                                )}>
-                                    {range.label}
-                                </span>
-                            </label>
-                        );
-                    })}
+                <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-neutral-400">Price Range</h3>
+                    <span className="text-[10px] font-bold tracking-widest text-black dark:text-white uppercase">EGP</span>
+                </div>
+                
+                <div className="space-y-8 px-2">
+                    <div className="relative h-1 w-full bg-neutral-100 dark:bg-neutral-800 rounded-full mt-4">
+                        {/* Interactive Track (visual only) */}
+                        <motion.div 
+                            className="absolute h-full bg-black dark:bg-white rounded-full"
+                            style={{ 
+                                left: `${(localMin / (availableFilters?.maxPrice || 10000)) * 100}%`,
+                                right: `${100 - (localMax / (availableFilters?.maxPrice || 10000)) * 100}%`
+                            }}
+                        />
+                        
+                        {/* Hidden Native Sliders */}
+                        <input 
+                            type="range"
+                            min="0"
+                            max={availableFilters?.maxPrice || 10000}
+                            value={localMin}
+                            onChange={(e) => {
+                                const val = Math.min(parseInt(e.target.value), localMax - 100);
+                                setLocalMin(val);
+                            }}
+                            onMouseUp={() => updateParams({ minPrice: localMin === 0 ? null : localMin.toString() })}
+                            onTouchEnd={() => updateParams({ minPrice: localMin === 0 ? null : localMin.toString() })}
+                            className="absolute inset-0 w-full h-1 bg-transparent appearance-none pointer-events-none cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:dark:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:dark:border-black [&::-webkit-slider-thumb]:shadow-lg"
+                        />
+                        <input 
+                            type="range"
+                            min="0"
+                            max={availableFilters?.maxPrice || 10000}
+                            value={localMax}
+                            onChange={(e) => {
+                                const val = Math.max(parseInt(e.target.value), localMin + 100);
+                                setLocalMax(val);
+                            }}
+                            onMouseUp={() => updateParams({ maxPrice: localMax === (availableFilters?.maxPrice || 10000) ? null : localMax.toString() })}
+                            onTouchEnd={() => updateParams({ maxPrice: localMax === (availableFilters?.maxPrice || 10000) ? null : localMax.toString() })}
+                            className="absolute inset-0 w-full h-1 bg-transparent appearance-none pointer-events-none cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:dark:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:dark:border-black [&::-webkit-slider-thumb]:shadow-lg"
+                        />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                        <div className="space-y-1">
+                            <span className="text-[9px] uppercase tracking-widest text-neutral-400 font-bold">Min Price</span>
+                            <div className="text-[13px] font-serif tracking-tight border-b border-neutral-100 dark:border-neutral-800 pb-0.5">
+                                {localMin.toLocaleString()} <span className="text-[10px] opacity-30">EGP</span>
+                            </div>
+                        </div>
+                        <div className="w-4 h-px bg-neutral-200 dark:bg-neutral-800 mt-4"></div>
+                        <div className="space-y-1 text-right">
+                            <span className="text-[9px] uppercase tracking-widest text-neutral-400 font-bold">Max Price</span>
+                            <div className="text-[13px] font-serif tracking-tight border-b border-neutral-100 dark:border-neutral-800 pb-0.5">
+                                {localMax.toLocaleString()} <span className="text-[10px] opacity-30">EGP</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -465,14 +504,14 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
             {/* Mobile Filter Toggle Button */}
             <button 
                 onClick={() => setIsMobileOpen(true)}
-                className="md:hidden w-full mb-6 flex items-center justify-center gap-2 py-4 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-[0.2em] shadow-lg sticky top-[5rem] z-30"
+                className="md:hidden w-full mb-6 flex items-center justify-center gap-2 py-4 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-[0.2em] shadow-lg sticky top-20 z-30"
             >
                 <SlidersHorizontal className="w-4 h-4" />
                 Filter & Sort
             </button>
 
             {/* Desktop Sidebar */}
-            <aside className="hidden md:block w-64 flex-shrink-0 sticky top-24 self-start max-h-[85vh] overflow-y-auto pr-6 custom-scrollbar">
+            <aside className="hidden md:block w-64 shrink-0 sticky top-24 self-start max-h-[85vh] overflow-y-auto pr-6 custom-scrollbar">
                 {renderFilterContent()}
             </aside>
 

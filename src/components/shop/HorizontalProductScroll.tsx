@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Star, Plus } from "lucide-react";
@@ -18,6 +18,11 @@ interface HorizontalProductScrollProps {
 
 export function HorizontalProductScroll({ title, products }: HorizontalProductScrollProps) {
     const [quickAddProduct, setQuickAddProduct] = useState<Product | null>(null);
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeftState, setScrollLeftState] = useState(0);
+    const dragDistanceRef = useRef(0);
 
     const handleQuickAdd = (e: React.MouseEvent, product: Product) => {
         e.preventDefault();
@@ -25,10 +30,65 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
         setQuickAddProduct(product);
     };
 
+    const handleMouseDown = (e: React.MouseEvent) => {
+        if (!scrollRef.current) return;
+        setIsDragging(true);
+        setStartX(e.pageX - scrollRef.current.offsetLeft);
+        setScrollLeftState(scrollRef.current.scrollLeft);
+        dragDistanceRef.current = 0;
+    };
+
+    const handleMouseLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging || !scrollRef.current) return;
+        const x = e.pageX - scrollRef.current.offsetLeft;
+        const walk = (x - startX) * 1.5; // scroll speed multiplier
+        
+        // Track displacement to prevent accidental clicks
+        dragDistanceRef.current = Math.abs(walk);
+        
+        e.preventDefault();
+        scrollRef.current.scrollLeft = scrollLeftState - walk;
+    };
+
+    // Prevent accidental clicks during drag
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+
+        const handleClick = (e: MouseEvent) => {
+            if (dragDistanceRef.current > 10) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        };
+
+        el.addEventListener('click', handleClick, true);
+        return () => el.removeEventListener('click', handleClick, true);
+    }, [isDragging]);
+
     return (
         <div className="relative w-full py-2 md:py-10">
             {title && <h2 className="text-xl font-serif mb-6 md:mb-8 px-4 md:px-0 uppercase tracking-widest">{title}</h2>}
-            <div className="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar scroll-smooth pb-8 -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0">
+            <div 
+                ref={scrollRef}
+                onMouseDown={handleMouseDown}
+                onMouseLeave={handleMouseLeave}
+                onMouseUp={handleMouseUp}
+                onMouseMove={handleMouseMove}
+                onDragStart={(e) => e.preventDefault()}
+                className={clsx(
+                    "flex gap-4 md:gap-8 overflow-x-auto no-scrollbar pb-8 -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0",
+                    isDragging ? "cursor-grabbing select-none" : "cursor-grab scroll-smooth"
+                )}
+            >
                 {products.map((product, index) => (
                     <div 
                         key={`${product.id}-${index}`}
@@ -42,7 +102,7 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
                         prefetch={false}
                     />
 
-                    <div className="aspect-[3/4] w-full overflow-hidden bg-neutral-100 dark:bg-neutral-900 relative">
+                    <div className="aspect-3/4 w-full overflow-hidden bg-neutral-100 dark:bg-neutral-900 relative">
                         {product.isNew && (
                             <span className="absolute top-4 left-4 z-20 px-2 py-1 bg-white dark:bg-black text-[9px] font-bold tracking-[0.2em] uppercase shadow-sm">
                                 New
@@ -55,6 +115,7 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
                             alt={product.name}
                             fill
                             sizes="(max-width: 768px) 280px, 350px"
+                            draggable={false}
                             className={`object-cover transition-transform duration-1000 group-hover/item:scale-105 ${product.images.length > 1 ? 'opacity-100 group-hover/item:opacity-0' : ''}`}
                         />
 
@@ -65,6 +126,7 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
                                 alt={`${product.name} - Alternate View`}
                                 fill
                                 sizes="(max-width: 768px) 280px, 350px"
+                                draggable={false}
                                 className="object-cover transition-all duration-1000 opacity-0 group-hover/item:opacity-100 group-hover/item:scale-105 absolute inset-0"
                                 loading="lazy"
                             />
