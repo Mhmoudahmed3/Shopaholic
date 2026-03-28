@@ -73,7 +73,21 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 }
 
 export async function updateSiteSettings(settings: SiteSettings) {
+    let sizingSaved = false;
+    
+    // 1. ALWAYS try to save sizing to local file first (Primary Source of Truth for scales)
+    if (settings.sizeScales) {
+        try {
+            const sizingPath = path.join(process.cwd(), 'sizing.json');
+            fs.writeFileSync(sizingPath, JSON.stringify(settings.sizeScales, null, 2));
+            sizingSaved = true;
+        } catch (e) {
+            console.error("[OFFLINE] Failed to persist sizing.json");
+        }
+    }
+
     try {
+        // 2. Try to update Supabase
         const { error } = await supabase
             .from('site_settings')
             .upsert({
@@ -94,22 +108,23 @@ export async function updateSiteSettings(settings: SiteSettings) {
                 updated_at: new Date().toISOString()
             });
 
-        // Save sizing to file as well to ensure persistence of custom scales
-        if (settings.sizeScales) {
-            try {
-                const sizingPath = path.join(process.cwd(), 'sizing.json');
-                fs.writeFileSync(sizingPath, JSON.stringify(settings.sizeScales, null, 2));
-            } catch (e) {
-                console.error("Failed to persist sizing.json");
-            }
-        }
-
         if (error) throw error;
         
         revalidatePath('/', 'layout');
         revalidatePath('/admin/settings');
         return { success: true };
-    } catch (error) {
+    } catch (error: any) {
+        const isNetworkError = error?.message?.includes('fetch failed');
+        
+        if (isNetworkError) {
+            console.warn("[OFFLINE] Supabase update failed, but primary sizing.json was preserved.");
+            // If sizing was saved locally, we can treat this as a "partial success" for offline use
+            if (sizingSaved) {
+                revalidatePath('/admin/settings');
+                return { success: true, offline: true };
+            }
+        }
+
         console.error("Error updating site settings:", error);
         throw new Error("Failed to update site settings");
     }
@@ -508,32 +523,61 @@ export async function deleteProduct(productId: string) {
 
 // Collection Management
 export async function getCuratedCollections(): Promise<Collection[]> {
-    const { data } = await supabase.from('collections').select('*').order('created_at', { ascending: false });
-    
-    if (!data) return [];
-    
-    return data.map(item => ({
-        id: item.id,
-        name: item.name,
-        subtitle: item.subtitle,
-        image: item.image,
-        status: item.status,
-        productIds: item.product_ids || [],
-        itemsCount: (item.product_ids || []).length,
-        link: item.link,
-        createdAt: item.created_at
-    })) as Collection[];
+    try {
+        const { data, error } = await supabase.from('collections').select('*').order('created_at', { ascending: false });
+        
+        if (!error && data && data.length > 0) {
+            return data.map(item => ({
+                id: item.id,
+                name: item.name,
+                subtitle: item.subtitle,
+                image: item.image,
+                status: item.status,
+                productIds: item.product_ids || [],
+                itemsCount: (item.product_ids || []).length,
+                link: item.link,
+                createdAt: item.created_at
+            })) as Collection[];
+        }
+    } catch (e) {
+        console.warn("[OFFLINE] Using collections.json fallback for admin catalog.");
+    }
+
+    try {
+        const jsonPath = path.join(process.cwd(), 'collections.json');
+        if (fs.existsSync(jsonPath)) {
+            const collections = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+            return collections;
+        }
+    } catch (e) {
+        console.error("Failed to read collections.json:", e);
+    }
+    return [];
 }
 
 export async function getAvailableProducts(): Promise<Product[]> {
-    const { data } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-    
-    if (!data) return [];
-    
-    return data.map(item => ({
-        ...item,
-        reviewsCount: item.reviews_count // Map DB snake_case to camelCase
-    })) as any;
+    try {
+        const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+        
+        if (!error && data && data.length > 0) {
+            return data.map(item => ({
+                ...item,
+                reviewsCount: item.reviews_count // Map DB snake_case to camelCase
+            })) as any;
+        }
+    } catch (e) {
+        console.warn("[OFFLINE] Using products.json fallback for admin catalog availability.");
+    }
+
+    try {
+        const jsonPath = path.join(process.cwd(), 'products.json');
+        if (fs.existsSync(jsonPath)) {
+            return JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+        }
+    } catch (e) {
+        console.error("Failed to read products.json:", e);
+    }
+    return [];
 }
 
 export async function createCuratedCollection(formData: FormData) {
@@ -667,21 +711,37 @@ export async function getHomepageContent() {
         }
     }
 
-    // 3. Best Sellers Fallback
+    // 3. Best Sellers
     try {
         const { data, error } = await supabase.from('products').select('*').order('popularity', { ascending: false }).limit(8);
         if (!error && data && data.length > 0) products = data;
         else throw new Error("No products");
     } catch (e) {
-        console.warn("[OFFLINE] Using products.json fallback.");
+        console.warn("[OFFLINE] Using products.json fallback for best sellers.");
         try {
             const jsonPath = path.join(process.cwd(), 'products.json');
             if (fs.existsSync(jsonPath)) {
                 products = JSON.parse(fs.readFileSync(jsonPath, 'utf8')).slice(0, 8);
             }
-        } catch (err) {
-            console.error("Failed to read products.json:", err);
-        }
+        } catch (err) {}
+    }
+
+    // 4. Newest Arrivals
+    let newArrivals: Product[] = [];
+    try {
+        const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false }).limit(8);
+        if (!error && data && data.length > 0) newArrivals = data;
+        else throw new Error("No products");
+    } catch (e) {
+        console.warn("[OFFLINE] Using products.json fallback for new arrivals.");
+        try {
+            const jsonPath = path.join(process.cwd(), 'products.json');
+            if (fs.existsSync(jsonPath)) {
+                newArrivals = JSON.parse(fs.readFileSync(jsonPath, 'utf8'))
+                    .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+                    .slice(0, 8);
+            }
+        } catch (err) {}
     }
     
     return {
@@ -693,7 +753,8 @@ export async function getHomepageContent() {
             image: c.image,
             link: c.link
         })),
-        bestSellers: products
+        bestSellers: products,
+        newArrivals: newArrivals
     };
 }
 
@@ -850,7 +911,23 @@ export async function updateOrderStatus(orderId: string, status: string) {
 }
 
 export async function deleteOrder(orderId: string) {
+    let localDeleted = false;
+    
+    // 1. Try to remove from local orders.json to ensure immediate consistency for offline mode
     try {
+        const jsonPath = path.join(process.cwd(), 'orders.json');
+        if (fs.existsSync(jsonPath)) {
+            const orders = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+            const filteredOrders = orders.filter((o: any) => o.id !== orderId);
+            fs.writeFileSync(jsonPath, JSON.stringify(filteredOrders, null, 2));
+            localDeleted = true;
+        }
+    } catch (err) {
+        console.error("[OFFLINE] Failed to sync deletion to local orders.json:", err);
+    }
+
+    try {
+        // 2. Try Supabase deletion
         const { error } = await supabase
             .from('orders')
             .delete()
@@ -861,8 +938,17 @@ export async function deleteOrder(orderId: string) {
         revalidatePath('/admin/orders');
         revalidatePath('/admin');
         return { success: true };
-    } catch (error) {
-        console.error("Error deleting order:", error);
+    } catch (error: any) {
+        const isNetworkError = error?.message?.includes('fetch failed');
+        
+        if (isNetworkError && localDeleted) {
+            console.warn("[OFFLINE] Supabase deletion failed, but local orders.json was updated.");
+            revalidatePath('/admin/orders');
+            revalidatePath('/admin');
+            return { success: true, offline: true };
+        }
+
+        console.error("[ACTION ERROR] deleteOrder:", error);
         throw new Error("Failed to delete order");
     }
 }

@@ -1,5 +1,4 @@
 import { getCollectionsDB, getProducts } from "@/lib/db";
-import { BestSellersSection } from "@/app/(storefront)/HomePageClient";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import Image from "next/image";

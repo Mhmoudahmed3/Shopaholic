@@ -10,19 +10,19 @@ import { useRef, useEffect } from "react";
 import { clsx } from "clsx";
 import type { Product, HomepageNewsletter } from "@/lib/types";
 
-interface BestSellersProps {
-  bestSellers: Product[];
+interface ProductCarouselProps {
+  products: Product[];
 }
 
-export function BestSellersSection({ bestSellers }: BestSellersProps) {
+export function ProductCarouselSection({ products }: ProductCarouselProps) {
   const [activeCategory, setActiveCategory] = useState("ALL");
   const categories = ["ALL", "WOMEN", "MEN", "ACCESSORIES", "CHILDREN"];
 
-  const filteredBestSellers = useMemo(() => {
-    if (!bestSellers) return [];
-    if (activeCategory === "ALL") return bestSellers;
-    return bestSellers.filter(p => p.type?.toUpperCase() === activeCategory);
-  }, [bestSellers, activeCategory]);
+  const filteredProducts = useMemo(() => {
+    if (!products) return [];
+    if (activeCategory === "ALL") return products;
+    return products.filter(p => p.type?.toUpperCase() === activeCategory);
+  }, [products, activeCategory]);
 
   return (
     <>
@@ -40,7 +40,7 @@ export function BestSellersSection({ bestSellers }: BestSellersProps) {
             </span>
             {activeCategory === cat && (
               <motion.div 
-                layoutId="activeCategory"
+                layoutId={`activeCategory-${products?.[0]?.id || 'default'}`}
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-black dark:bg-white"
                 transition={{ type: "spring", stiffness: 380, damping: 30 }}
               />
@@ -49,11 +49,11 @@ export function BestSellersSection({ bestSellers }: BestSellersProps) {
         ))}
       </div>
 
-      {filteredBestSellers && filteredBestSellers.length > 0 ? (
-        <HorizontalProductScroll products={filteredBestSellers} />
+      {filteredProducts && filteredProducts.length > 0 ? (
+        <HorizontalProductScroll products={filteredProducts} />
       ) : (
         <div className="text-center py-20 border border-dashed border-neutral-200 dark:border-neutral-800">
-          <p className="text-neutral-400 text-sm font-light uppercase tracking-widest">New arrivals coming soon</p>
+          <p className="text-neutral-400 text-sm font-light uppercase tracking-widest">More items coming soon</p>
         </div>
       )}
     </>
@@ -69,20 +69,23 @@ export function NewsletterSection({ newsletter }: NewsletterSectionProps) {
   if (isAuthenticated) return null;
 
   return (
-    <section className="py-16 md:py-32 bg-white dark:bg-black">
+    <AnimatedSection className="py-24 md:py-48 bg-neutral-50 dark:bg-zinc-950/50 border-y border-black/5 dark:border-white/5">
       <div className="max-w-4xl mx-auto px-4 text-center">
-        <h2 className="text-3xl font-serif mb-6 md:mb-8">{newsletter.title}</h2>
-        <p className="text-neutral-500 dark:text-neutral-400 mb-8 md:mb-12 max-w-md mx-auto leading-relaxed">
+        <span className="text-[10px] font-bold tracking-[0.5em] text-neutral-400 uppercase mb-8 block">Exclusive Access</span>
+        <h2 className="text-4xl md:text-6xl font-serif italic mb-8 md:mb-12">{newsletter.title}</h2>
+        <p className="text-neutral-500 dark:text-neutral-400 mb-12 md:mb-16 max-w-lg mx-auto leading-relaxed text-lg">
           {newsletter.description}
         </p>
-        <Link href="/account" className="inline-flex items-center gap-4 group">
-          <span className="text-sm font-bold tracking-widest uppercase border-b-2 border-black dark:border-white pb-1 group-hover:opacity-70 transition-opacity">{newsletter.ctaText}</span>
-          <div className="w-10 h-10 rounded-full border border-black dark:border-white flex items-center justify-center group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition-all">
-            <Plus className="w-4 h-4" />
+        <Link href="/account" className="inline-flex items-center gap-6 group">
+          <span className="text-sm font-bold tracking-[0.3em] uppercase border-b-2 border-black dark:border-white pb-1 group-hover:opacity-50 transition-all duration-300">
+            {newsletter.ctaText}
+          </span>
+          <div className="w-12 h-12 rounded-full border border-black dark:border-white flex items-center justify-center group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition-all duration-500 scale-100 group-hover:scale-110 shadow-xl">
+            <Plus className="w-5 h-5 transition-transform duration-500 group-hover:rotate-90" />
           </div>
         </Link>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
 export function DragScrollContainer({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -143,5 +146,38 @@ export function DragScrollContainer({ children, className }: { children: React.R
     >
       {children}
     </div>
+  );
+}
+
+export function AnimatedSection({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+      className={className}
+    >
+      {children}
+    </motion.section>
+  );
+}
+
+export function AnimatedHero({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 1.05 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
+      className="relative z-20 text-center px-4 max-w-5xl mx-auto"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
   );
 }

@@ -116,7 +116,7 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
                             fill
                             sizes="(max-width: 768px) 280px, 350px"
                             draggable={false}
-                            className={`object-cover transition-transform duration-1000 group-hover/item:scale-105 ${product.images.length > 1 ? 'opacity-100 group-hover/item:opacity-0' : ''}`}
+                            className={`object-cover transition-all duration-1000 ease-[0.21,0.47,0.32,0.98] group-hover/item:scale-105 ${product.images.length > 1 ? 'opacity-100 group-hover/item:opacity-0' : ''}`}
                         />
 
                         {/* Secondary Image */}
@@ -127,7 +127,7 @@ export function HorizontalProductScroll({ title, products }: HorizontalProductSc
                                 fill
                                 sizes="(max-width: 768px) 280px, 350px"
                                 draggable={false}
-                                className="object-cover transition-all duration-1000 opacity-0 group-hover/item:opacity-100 group-hover/item:scale-105 absolute inset-0"
+                                className="object-cover transition-all duration-1000 ease-[0.21,0.47,0.32,0.98] opacity-0 group-hover/item:opacity-100 group-hover/item:scale-105 absolute inset-0"
                                 loading="lazy"
                             />
                         )}

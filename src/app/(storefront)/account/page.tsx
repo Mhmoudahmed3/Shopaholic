@@ -99,6 +99,11 @@ export default function AccountPage() {
         try {
             if (isLogin) {
                 await login(email);
+                // Check if user is admin and redirect
+                const currentState = useAuthStore.getState();
+                if (currentState.user?.role === 'admin') {
+                    router.push('/admin');
+                }
             } else {
                 await signup(name, email, phone, address, age, city);
             }
@@ -142,13 +147,15 @@ export default function AccountPage() {
     };
 
     const handleCancelOrder = (id: string) => {
-        console.log("Requesting cancellation for order:", id);
         if (typeof window !== 'undefined' && window.confirm("Are you sure you want to cancel this order?")) {
             setOrders(prev => prev.map(o => o.id === id ? { ...o, status: "Cancelled" } : o));
         }
     };
 
     if (isAuthenticated && user) {
+        // Prevent flashing the account page for admins before they are redirected
+        if (user.role === 'admin') return null;
+
         return (
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
@@ -207,18 +214,6 @@ export default function AccountPage() {
                                     >
                                         <LogOut className="w-4 h-4" /> Sign Out
                                     </button>
-
-                                    {user.role === 'admin' && (
-                                        <div className="pt-6 mt-6 border-t border-zinc-100 dark:border-zinc-800/50 space-y-1">
-                                            <p className="text-[10px] text-zinc-400 uppercase tracking-widest mb-3 px-4">Management</p>
-                                            <Link href="/admin" className="flex items-center gap-3 w-full px-4 py-3 text-xs tracking-widest uppercase hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 transition-all border border-transparent">
-                                                <Settings className="w-4 h-4" /> Admin Portal
-                                            </Link>
-                                            <Link href="/admin/add-item" className="flex items-center gap-3 w-full px-4 py-3 text-xs tracking-widest uppercase hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 transition-all border border-transparent">
-                                                <Plus className="w-4 h-4" /> New Product
-                                            </Link>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </div>

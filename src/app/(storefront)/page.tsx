@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Plus } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { getHomepageContent } from "@/app/admin/actions";
-import { BestSellersSection, NewsletterSection, DragScrollContainer } from "./HomePageClient";
+import { ProductCarouselSection, NewsletterSection, DragScrollContainer, AnimatedSection, AnimatedHero } from "./HomePageClient";
 import type { HomepageHero, HomepagePromo, HomepageNewsletter, Product } from "@/lib/types";
 
 export const revalidate = 60; // Revalidate homepage every 60 seconds (ISR)
@@ -42,6 +42,7 @@ export default async function Home() {
     newsletter?: Partial<HomepageNewsletter & { ctaText: string }>;
     collections?: { id: string; title: string; subtitle: string; image: string; link: string }[];
     bestSellers?: Product[];
+    newArrivals?: Product[];
   } | null);
 
   const hero = { ...defaultHero, ...(serverContent?.hero || {}) };
@@ -49,12 +50,13 @@ export default async function Home() {
   const promo = { ...defaultPromo, ...(serverContent?.promo || {}) };
   const newsletter = { ...defaultNewsletter, ...(serverContent?.newsletter || {}) };
   const bestSellers = serverContent?.bestSellers || [];
+  const newArrivals = serverContent?.newArrivals || [];
 
   return (
     <div className="flex flex-col min-h-screen">
 
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[calc(100svh-4rem-4rem)] lg:min-h-[calc(100vh-5rem)] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           {hero.backgroundImage && hero.backgroundImage.trim() ? (
             <Image
@@ -69,8 +71,7 @@ export default async function Home() {
           <div className="absolute inset-0 bg-black/40 z-10" />
         </div>
 
-        <div className="relative z-20 text-center px-4 max-w-5xl mx-auto">
-          <div>
+        <AnimatedHero>
             <span className="text-white/70 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">{hero.subtitle}</span>
             <h1 className="text-white text-6xl md:text-8xl lg:text-9xl font-serif italic mb-8 leading-tight">
               {hero.title} <br />
@@ -96,21 +97,50 @@ export default async function Home() {
                 {hero.secondaryLinkText}
               </Link>
             </div>
-          </div>
-        </div>
+        </AnimatedHero>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4">
+        {/* Scroll Indicator - Hidden on mobile to prevent clutter with bottom nav */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 hidden lg:flex flex-col items-center gap-4">
           <span className="text-white/40 text-[10px] uppercase tracking-[0.2em] [writing-mode:vertical-lr]">Scroll</span>
           <div className="w-px h-12 bg-linear-to-b from-white/60 to-transparent"></div>
         </div>
       </section>
 
+      {/* Best Sellers */}
+      <AnimatedSection className="min-h-[calc(100svh-4rem-4rem)] lg:min-h-[calc(100vh-5rem)] flex flex-col justify-center bg-neutral-50 dark:bg-zinc-900/30 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="mb-8 md:mb-12">
+            <div className="flex items-baseline justify-between gap-4 mb-4 md:mb-8">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif tracking-tight">Best Sellers</h2>
+              <Link href="/shop" className="group flex items-center gap-2 text-[10px] font-bold tracking-[0.3em] uppercase border-b border-transparent hover:border-black dark:hover:border-white transition-all pb-1 shrink-0">
+                Shop All <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+            <ProductCarouselSection products={bestSellers} />
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* Newest Arrivals */}
+      <AnimatedSection className="min-h-[calc(100svh-4rem-4rem)] lg:min-h-[calc(100vh-5rem)] flex flex-col justify-center bg-white dark:bg-black py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="mb-8 md:mb-12">
+            <div className="flex items-baseline justify-between gap-4 mb-4 md:mb-8">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif tracking-tight">Newest Arrivals</h2>
+              <Link href="/shop" className="group flex items-center gap-2 text-[10px] font-bold tracking-[0.3em] uppercase border-b border-transparent hover:border-black dark:hover:border-white transition-all pb-1 shrink-0">
+                Shop All <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+            <ProductCarouselSection products={newArrivals} />
+          </div>
+        </div>
+      </AnimatedSection>
+
       {/* Collections Showcase */}
-      <section className="bg-brand-100 dark:bg-zinc-950 py-16 md:py-32 overflow-hidden">
+      <AnimatedSection className="bg-brand-100 dark:bg-zinc-950 py-16 md:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10 md:mb-24">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-baseline gap-6 md:gap-8 mb-4 md:mb-8">
+            <div className="flex items-baseline justify-between gap-4 mb-4 md:mb-8">
               <h2 className="text-4xl sm:text-5xl md:text-7xl font-serif italic leading-tight">Collections</h2>
               <Link href="/collections" className="group flex items-center gap-3 text-[10px] font-bold tracking-[0.3em] uppercase border-b-2 border-black dark:border-white pb-2 hover:opacity-50 transition-all">
                 Explore All <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
@@ -164,27 +194,10 @@ export default async function Home() {
             </DragScrollContainer>
           </div>
         </div>
-      </section>
-
-      {/* Best Sellers */}
-      <section className="py-16 md:py-32 bg-neutral-50 dark:bg-zinc-900/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-10 gap-6 md:gap-10 overflow-hidden">
-            <div className="space-y-6 md:space-y-8 w-full">
-              <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif tracking-tight">Best Sellers</h2>
-              {/* Interactive category tabs — client component */}
-              <BestSellersSection bestSellers={bestSellers} />
-            </div>
-            
-            <Link href="/shop" className="group flex items-center gap-2 text-[10px] font-bold tracking-[0.3em] uppercase mb-1 border-b border-transparent hover:border-black dark:hover:border-white transition-all pb-1">
-              Shop All <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </div>
-        </div>
-      </section>
+      </AnimatedSection>
 
       {/* Social Proof Marquee */}
-      <section className="py-10 md:py-20 border-y border-neutral-100 dark:border-neutral-900 bg-white dark:bg-black overflow-hidden relative">
+      <AnimatedSection className="py-10 md:py-20 border-y border-neutral-100 dark:border-neutral-900 bg-white dark:bg-black overflow-hidden relative">
         <div className="flex flex-col items-center mb-6 md:mb-12">
           <span className="text-[10px] font-bold tracking-[0.4em] text-neutral-400 uppercase">Globally Recognized By</span>
         </div>
@@ -205,10 +218,10 @@ export default async function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Promotional Banner */}
-      <section className="relative h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
+      <AnimatedSection className="relative h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           {promo.backgroundImage && promo.backgroundImage.trim() ? (
             <Image
@@ -239,7 +252,7 @@ export default async function Home() {
             {promo.ctaText}
           </Link>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Newsletter CTA */}
       <NewsletterSection newsletter={newsletter as any} />

@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { User, Search, Heart } from "lucide-react";
 import { CartIcon } from "./CartIcon";
@@ -12,28 +14,53 @@ import { useAuthStore } from "@/store/useAuthStore";
 export function Navbar({ storeName = "SHOPOHOLIC" }: { storeName?: string }) {
     const { open: openSearch } = useSearchStore();
     const { user, isAuthenticated } = useAuthStore();
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
 
-    // Logic: 
-    // - Guest: /account (Login)
-    // - Admin: /admin
-    // - Customer: /account (Dashboard)
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            
+            // Only apply hide logic on mobile (screens < 1024px)
+            if (window.innerWidth < 1024) {
+                if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    setIsVisible(false);
+                } else {
+                    setIsVisible(true);
+                }
+            } else {
+                setIsVisible(true);
+            }
+            
+            setLastScrollY(currentScrollY);
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [lastScrollY]);
+
     const profileHref = isAuthenticated 
-        ? (user?.email === "admin@shopaholic.com" ? "/admin" : "/account")
+        ? (user?.role === "admin" ? "/admin" : "/account")
         : "/account";
 
     return (
         <>
-            <header className="sticky top-0 z-50 w-full bg-white/80 dark:bg-black/80 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 transition-all duration-300">
+            <motion.header 
+                initial={{ y: 0 }}
+                animate={{ y: isVisible ? 0 : -100 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="fixed top-0 z-50 w-full bg-white/80 dark:bg-black/80 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 transition-colors duration-300"
+            >
                 <div className="mx-auto flex lg:grid lg:grid-cols-3 h-16 sm:h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 relative">
 
-                    {/* Left: Logo (Now primary position) */}
+                    {/* Left: Logo */}
                     <div className="flex flex-1 items-center justify-start h-full">
                         <Link href="/" className="text-xl sm:text-2xl font-bold tracking-widest uppercase whitespace-nowrap">
                             {storeName}
                         </Link>
                     </div>
 
-                    {/* Center: Spacer (Reserved for potential centered elements) */}
+                    {/* Center: Spacer */}
                     <div className="hidden lg:flex flex-1 justify-center items-center" />
 
                     {/* Right: Actions */}
@@ -66,7 +93,9 @@ export function Navbar({ storeName = "SHOPOHOLIC" }: { storeName?: string }) {
                     </div>
 
                 </div>
-            </header>
+            </motion.header>
+            {/* Add a spacer to prevent layout shift since we changed sticky to fixed */}
+            <div className="h-16 sm:h-20 w-full" />
             <SearchModal />
         </>
     );

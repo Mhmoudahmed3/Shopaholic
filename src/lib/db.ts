@@ -62,15 +62,29 @@ export async function saveSettingsDB(settings: SiteSettings) {
 
 // Products
 export async function getProductsDB(): Promise<Product[]> {
-  const { data, error } = await supabase.from('products').select('*');
-  if (error) return [];
-  return data.map(p => ({
-    ...p,
-    discountPrice: p.discount_price,
-    imageVariants: p.image_variants,
-    reviewsCount: p.reviews_count,
-    createdAt: p.created_at
-  })) as any;
+  try {
+    const { data, error } = await supabase.from('products').select('*');
+    if (!error && data && data.length > 0) {
+      return data.map(p => ({
+        ...p,
+        discountPrice: p.discount_price,
+        imageVariants: p.image_variants,
+        reviewsCount: p.reviews_count,
+        createdAt: p.created_at
+      })) as any;
+    }
+    throw new Error(error?.message || "No products in Supabase");
+  } catch (e) {
+    console.warn("[OFFLINE] Supabase failed, using products.json for inventory.");
+    try {
+      const jsonPath = path.join(process.cwd(), 'products.json');
+      if (fs.existsSync(jsonPath)) {
+          const products = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+          return products;
+      }
+    } catch (err) {}
+  }
+  return [];
 }
 
 export async function getProduct(id: string): Promise<Product | undefined> {
@@ -132,41 +146,74 @@ export async function deleteCategoryDB(id: string) {
 
 // Orders
 export async function getOrdersDB(): Promise<any[]> {
-  // First, try with order_items join
-  const { data, error } = await supabase
-    .from('orders')
-    .select('*, order_items(*)')
-    .order('created_at', { ascending: false });
-  
-  // If the join fails (e.g. table doesn't exist or RLS), fall back to orders only
-  if (error) {
-    console.error('[getOrdersDB] Join query failed, falling back:', error.message);
-    const { data: ordersOnly, error: fallbackError } = await supabase
+  try {
+    // First, try with order_items join
+    const { data, error } = await supabase
       .from('orders')
-      .select('*')
+      .select('*, order_items(*)')
       .order('created_at', { ascending: false });
     
-    if (fallbackError || !ordersOnly) return [];
+    // If the join works, return it
+    if (!error && data) {
+      return data.map(o => ({
+        ...o,
+        customer: o.customer_name,
+        phone: o.phone,
+        total: o.total_amount,
+        items: o.order_items || [],
+        itemsCount: o.items_count,
+        date: new Date(o.created_at).toLocaleDateString()
+      }));
+    }
+
+    // If the join fails specifically (e.g. table doesn't exist or RLS), but connection is alive
+    if (error && !error.message.includes('fetch failed')) {
+      console.warn('[getOrdersDB] Join query failed, falling back to orders-only query:', error.message);
+      const { data: ordersOnly, error: fallbackError } = await supabase
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (!fallbackError && ordersOnly) {
+        return ordersOnly.map(o => ({
+          ...o,
+          customer: o.customer_name,
+          total: o.total_amount,
+          items: [],
+          itemsCount: o.items_count,
+          date: new Date(o.created_at).toLocaleDateString()
+        }));
+      }
+    }
     
-    return ordersOnly.map(o => ({
-      ...o,
-      customer: o.customer_name,
-      total: o.total_amount,
-      items: [],
-      itemsCount: o.items_count,
-      date: new Date(o.created_at).toLocaleDateString()
-    }));
+    throw new Error(error?.message || "Join query failed");
+  } catch (e: any) {
+    const isNetworkError = e.message?.includes('fetch failed');
+    if (isNetworkError) {
+        console.warn("[OFFLINE] Supabase connection failed. Using orders.json fallback.");
+    } else {
+        console.error("[getOrdersDB] Database error:", e.message);
+    }
+    
+    try {
+      const jsonPath = path.join(process.cwd(), 'orders.json');
+      if (fs.existsSync(jsonPath)) {
+          const orders = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+          return (orders || []).map((o: any) => ({
+            ...o,
+            customer: o.customer || o.customer_name,
+            total: o.total || o.total_amount,
+            items: o.items || [],
+            itemsCount: o.itemsCount || o.items_count || 0,
+            date: o.date || new Date(o.created_at).toLocaleDateString()
+          }));
+      }
+    } catch (err) {
+      console.error("Failed to read orders.json fallback:", err);
+    }
   }
   
-  return data.map(o => ({
-    ...o,
-    customer: o.customer_name,
-    phone: o.phone,
-    total: o.total_amount,
-    items: o.order_items || [],
-    itemsCount: o.items_count,
-    date: new Date(o.created_at).toLocaleDateString()
-  }));
+  return [];
 }
 
 // Get dynamic sales count per product from order_items (excluding cancelled orders)
@@ -193,16 +240,40 @@ export async function getProductSales(): Promise<Record<string, number>> {
 }
 
 export async function getOrderById(id: string): Promise<any | undefined> {
-  const { data, error } = await supabase.from('orders').select('*').eq('id', id).single();
-  if (error || !data) return undefined;
+  try {
+    const { data, error } = await supabase.from('orders').select('*, order_items(*)').eq('id', id).single();
+    if (!error && data) {
+      return {
+        ...data,
+        customer: data.customer_name,
+        total: data.total_amount,
+        items: data.order_items || [],
+        itemsCount: data.items_count,
+        date: new Date(data.created_at).toLocaleDateString()
+      };
+    }
+  } catch (e) {}
+
+  // Offline Fallback
+  try {
+    const jsonPath = path.join(process.cwd(), 'orders.json');
+    if (fs.existsSync(jsonPath)) {
+        const orders = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+        const order = orders.find((o: any) => o.id === id);
+        if (order) {
+            return {
+              ...order,
+              customer: order.customer || order.customer_name,
+              total: order.total || order.total_amount,
+              items: order.items || [],
+              itemsCount: order.itemsCount || order.items_count || 0,
+              date: order.date || new Date(order.created_at).toLocaleDateString()
+            };
+        }
+    }
+  } catch (err) {}
   
-  return {
-    ...data,
-    customer: data.customer_name,
-    total: data.total_amount,
-    items: data.items_count,
-    date: new Date(data.created_at).toLocaleDateString()
-  };
+  return undefined;
 }
 
 // Collections
