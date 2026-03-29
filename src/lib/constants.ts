@@ -21,9 +21,10 @@ export const PREDEFINED_COLORS = [
 ];
 
 export const SIZE_SCALES = {
-    "Numerical": ["36", "38", "40", "42", "44", "46", "48", "50"],
     "Standard": ["XS", "S", "M", "L", "XL", "XXL", "One Size"],
-    "Shoes": ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45"]
+    "Numerical": ["32", "34", "36", "38", "40", "42", "44", "46", "48", "50", "52", "54"],
+    "Age": ["0-3M", "3-6M", "6-12M", "12-18M", "18-24M", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "10Y", "12Y", "14Y"],
+    "Shoes": ["35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48"]
 };
 
 export const COLOR_MAP_HEX: Record<string, string> = PREDEFINED_COLORS.reduce((acc, curr) => {

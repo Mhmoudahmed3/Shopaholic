@@ -2,6 +2,7 @@ import { getProducts, getCategoriesDB, getAvailableFilters } from "@/lib/db";
 import { FilterSidebar } from "@/components/shop/FilterSidebar";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { ShopSortSelect } from "@/components/shop/ShopSortSelect";
+import { Suspense } from "react";
 
 interface ShopPageProps {
     searchParams: Promise<{ [key: string]: string | undefined }>;
@@ -20,10 +21,11 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     const maxPrice = resolvedParams.maxPrice ? parseInt(resolvedParams.maxPrice) : undefined;
     const minRating = resolvedParams.rating ? parseInt(resolvedParams.rating) : undefined;
     const isPopular = resolvedParams.popular === "true";
+    const q = resolvedParams.q;
 
     const [categories, products, filterOptions] = await Promise.all([
         getCategoriesDB(),
-        getProducts({ category, sort, type, size, color, minPrice, maxPrice, minRating, isPopular }),
+        getProducts({ category, sort, type, size, color, minPrice, maxPrice, minRating, isPopular, q }),
         getAvailableFilters({ category, type }),
     ]);
 
@@ -40,7 +42,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                         {currentCategoryLabel}
                     </h1>
                     <div className="flex items-center gap-2">
-                        <span className="w-8 h-[1px] bg-neutral-300 dark:bg-neutral-700"></span>
+                        <span className="w-8 h-px bg-neutral-300 dark:bg-neutral-700"></span>
                         <p className="text-neutral-400 text-[10px] font-bold uppercase tracking-[0.2em]">Showing {products.length} products</p>
                     </div>
                 </div>
@@ -52,7 +54,9 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
 
             {/* Main Content */}
             <div className="flex flex-col md:flex-row gap-8 lg:gap-12">
-                <FilterSidebar availableFilters={filterOptions} />
+                <Suspense fallback={<div className="w-64 shrink-0 bg-neutral-50 dark:bg-neutral-900/50 animate-pulse rounded-lg h-[80vh] hidden md:block" />}>
+                    <FilterSidebar availableFilters={filterOptions} />
+                </Suspense>
                 <div className="flex-1">
                     <ProductGrid products={products} />
                 </div>

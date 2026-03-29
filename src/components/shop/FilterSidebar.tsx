@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ChevronDown, X, RotateCcw, SlidersHorizontal } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { ChevronDown, X, RotateCcw, SlidersHorizontal, Search, ListFilter } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
@@ -64,6 +64,60 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
     const currentMaxPrice = searchParams.get("maxPrice");
     const currentMinRating = searchParams.get("rating");
     const isPopularOnly = searchParams.get("popular") === "true";
+    const currentQ = searchParams.get("q") || "";
+
+    const updateParams = useCallback((updates: Record<string, string | null | undefined>) => {
+        const params = new URLSearchParams(searchParams.toString());
+        Object.entries(updates).forEach(([key, value]) => {
+            if (value === null || value === undefined) {
+                params.delete(key);
+            } else {
+                params.set(key, value);
+            }
+        });
+        router.push(`/shop?${params.toString()}`);
+    }, [searchParams, router]);
+
+    // Local state for search
+    const [searchQ, setSearchQ] = useState(currentQ);
+    useEffect(() => { setSearchQ(currentQ); }, [currentQ]);
+
+    // Debounced search execution
+    useEffect(() => {
+        if (searchQ === currentQ) return;
+        
+        const handler = setTimeout(() => {
+            updateParams({ q: searchQ || null });
+        }, 500);
+
+        return () => clearTimeout(handler);
+    }, [searchQ, currentQ, updateParams]);
+
+    // Scroll-aware visibility (for mobile sticky bar)
+    const [isBarVisible, setIsBarVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            
+            if (window.innerWidth < 1024) {
+                // Hide when scrolling down, show when scrolling up
+                if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    setIsBarVisible(false);
+                } else {
+                    setIsBarVisible(true);
+                }
+            } else {
+                setIsBarVisible(true);
+            }
+            
+            setLastScrollY(currentScrollY);
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [lastScrollY]);
 
     // Local state for smooth slider experience
     const [localMin, setLocalMin] = useState(parseInt(currentMinPrice || "0"));
@@ -90,17 +144,7 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
         }
     }, [currentCategory]);
 
-    const updateParams = (updates: Record<string, string | null | undefined>) => {
-        const params = new URLSearchParams(searchParams.toString());
-        Object.entries(updates).forEach(([key, value]) => {
-            if (value === null || value === undefined) {
-                params.delete(key);
-            } else {
-                params.set(key, value);
-            }
-        });
-        router.push(`/shop?${params.toString()}`);
-    };
+
 
     const toggleSize = (size: string) => {
         const sizes = currentSize ? currentSize.split(',') : [];
@@ -192,7 +236,6 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
 
             {/* Mobile Sorting */}
             <div className="md:hidden mb-10 pb-8 border-b border-gray-100 dark:border-neutral-800">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] mb-6 text-neutral-400">Sort By</h3>
                 <ShopSortSelect initialSort={currentSort} />
             </div>
 
@@ -266,29 +309,47 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
                 </ul>
             </div>
 
-            {/* Size Filter */}
-            <div className="mb-10 pb-8 border-b border-gray-100 dark:border-neutral-800">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] mb-6 text-neutral-400">Select Size</h3>
-                <div className="grid grid-cols-4 gap-2">
-                    {ALL_SIZES.map((size) => {
-                        const sizeLow = size.toLowerCase();
-                        const isAvailable = !availableFilters?.sizes || availableFilters.sizes.includes(sizeLow);
-                        if (!isAvailable) return null;
-                        
-                        const isActive = currentSize?.split(',').includes(sizeLow);
+            {/* Size Filter Grouped by System - Only show systems with available products */}
+            <div className="mb-10 lg:mb-12 pb-12 border-b border-gray-100 dark:border-neutral-800">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] mb-8 text-neutral-400">Select Size</h3>
+                
+                <div className="space-y-12">
+                    {Object.entries(SIZE_SCALES).map(([scale, sizes]) => {
+                        // Filter sizes to only show those currently available
+                        const availableInScale = sizes.filter(size => 
+                            !availableFilters?.sizes || availableFilters.sizes.includes(size.toLowerCase())
+                        );
+
+                        if (availableInScale.length === 0) return null;
+
                         return (
-                            <button
-                                key={size}
-                                onClick={() => toggleSize(size)}
-                                className={clsx(
-                                    "aspect-square flex items-center justify-center text-[10px] font-bold transition-all duration-300 border",
-                                    isActive 
-                                        ? "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white" 
-                                        : "border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:border-black dark:hover:border-white"
-                                )}
-                            >
-                                {size}
-                            </button>
+                            <div key={scale} className="space-y-4">
+                                <div className="flex items-center gap-4">
+                                    <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-neutral-300 whitespace-nowrap">{scale}</span>
+                                    <div className="h-px w-full bg-neutral-100 dark:bg-neutral-900" />
+                                </div>
+                                <div className="grid grid-cols-5 md:grid-cols-4 gap-2">
+                                    {availableInScale.map((size) => {
+                                        const sizeLow = size.toLowerCase();
+                                        const isActive = currentSize?.split(',').includes(sizeLow);
+
+                                        return (
+                                            <button
+                                                key={`${scale}-${size}`}
+                                                onClick={() => toggleSize(size)}
+                                                className={clsx(
+                                                    "h-10 md:h-11 flex items-center justify-center text-[10px] font-bold transition-all duration-300 border",
+                                                    isActive 
+                                                        ? "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white z-10 scale-105 shadow-sm" 
+                                                        : "border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white"
+                                                )}
+                                            >
+                                                {size}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
                         );
                     })}
                 </div>
@@ -382,18 +443,42 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
                         />
                     </div>
 
-                    <div className="flex items-center justify-between">
-                        <div className="space-y-1">
+                    <div className="flex items-center justify-between gap-12">
+                        <div className="flex flex-col gap-1 flex-1">
                             <span className="text-[9px] uppercase tracking-widest text-neutral-400 font-bold">Min Price</span>
-                            <div className="text-[13px] font-serif tracking-tight border-b border-neutral-100 dark:border-neutral-800 pb-0.5">
-                                {localMin.toLocaleString()} <span className="text-[10px] opacity-30">EGP</span>
+                            <div className="flex items-center gap-1 border-b border-neutral-100 dark:border-neutral-800 focus-within:border-black dark:focus-within:border-white transition-colors pb-0.5">
+                                <input 
+                                    type="number"
+                                    value={localMin}
+                                    onChange={(e) => {
+                                        const val = parseInt(e.target.value) || 0;
+                                        setLocalMin(Math.min(val, localMax - 1));
+                                    }}
+                                    onBlur={() => updateParams({ minPrice: localMin === 0 ? null : localMin.toString() })}
+                                    onKeyDown={(e) => e.key === 'Enter' && updateParams({ minPrice: localMin === 0 ? null : localMin.toString() })}
+                                    className="w-full bg-transparent text-[13px] font-serif tracking-tight outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                />
+                                <span className="text-[10px] opacity-30 font-serif">EGP</span>
                             </div>
                         </div>
-                        <div className="w-4 h-px bg-neutral-200 dark:bg-neutral-800 mt-4"></div>
-                        <div className="space-y-1 text-right">
+
+                        <div className="w-4 h-px bg-neutral-100 dark:bg-neutral-800 mt-4" />
+
+                        <div className="flex flex-col gap-1 flex-1 text-right">
                             <span className="text-[9px] uppercase tracking-widest text-neutral-400 font-bold">Max Price</span>
-                            <div className="text-[13px] font-serif tracking-tight border-b border-neutral-100 dark:border-neutral-800 pb-0.5">
-                                {localMax.toLocaleString()} <span className="text-[10px] opacity-30">EGP</span>
+                            <div className="flex items-center gap-1 border-b border-neutral-100 dark:border-neutral-800 justify-end focus-within:border-black dark:focus-within:border-white transition-colors pb-0.5">
+                                <input 
+                                    type="number"
+                                    value={localMax}
+                                    onChange={(e) => {
+                                        const val = parseInt(e.target.value) || 0;
+                                        setLocalMax(Math.max(val, localMin + 1));
+                                    }}
+                                    onBlur={() => updateParams({ maxPrice: localMax === (availableFilters?.maxPrice || 10000) ? null : localMax.toString() })}
+                                    onKeyDown={(e) => e.key === 'Enter' && updateParams({ maxPrice: localMax === (availableFilters?.maxPrice || 10000) ? null : localMax.toString() })}
+                                    className="w-full bg-transparent text-[13px] font-serif tracking-tight outline-none text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                />
+                                <span className="text-[10px] opacity-30 font-serif">EGP</span>
                             </div>
                         </div>
                     </div>
@@ -502,14 +587,52 @@ export function FilterSidebar({ availableFilters }: FilterSidebarProps) {
 
     return (
         <>
-            {/* Mobile Filter Toggle Button */}
-            <button 
-                onClick={() => setIsMobileOpen(true)}
-                className="md:hidden w-full mb-6 flex items-center justify-center gap-2 py-4 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-[0.2em] shadow-lg sticky top-20 z-30"
+            {/* Mobile Search & Action Bar */}
+            <motion.div 
+                animate={{ 
+                    y: isBarVisible ? 0 : -100,
+                    opacity: isBarVisible ? 1 : 0
+                }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="md:hidden sticky top-16 sm:top-20 z-30 mb-8 -mx-4 px-4 py-3 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-neutral-100 dark:border-neutral-900 flex items-center gap-3 transition-opacity"
             >
-                <SlidersHorizontal className="w-4 h-4" />
-                Filter & Sort
-            </button>
+                <div className="flex-1 relative group">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400 group-focus-within:text-black dark:group-focus-within:text-white transition-colors" />
+                    <input 
+                        type="text"
+                        placeholder="Search arrivals..."
+                        value={searchQ}
+                        onChange={(e) => setSearchQ(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                updateParams({ q: searchQ || null });
+                            }
+                        }}
+                        className="w-full bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-100 dark:border-neutral-800 rounded-full py-3 pl-12 pr-10 text-xs font-medium placeholder:text-neutral-400 outline-none focus:bg-white dark:focus:bg-black focus:ring-1 ring-black/5 dark:ring-white/5 transition-all"
+                    />
+                    {searchQ && (
+                        <button 
+                            onClick={() => {
+                                setSearchQ("");
+                                updateParams({ q: null });
+                            }}
+                            className="absolute right-12 top-1/2 -translate-y-1/2 p-2 text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
+                        >
+                            <X className="w-3 h-3" />
+                        </button>
+                    )}
+                </div>
+                
+                <div className="flex items-center gap-2">
+                    <button 
+                        onClick={() => setIsMobileOpen(true)}
+                        className="p-3 bg-black dark:bg-white text-white dark:text-black rounded-full shadow-lg active:scale-90 transition-all flex items-center justify-center"
+                        title="Filter & Sort"
+                    >
+                        <ListFilter className="w-4 h-4" />
+                    </button>
+                </div>
+            </motion.div>
 
             {/* Desktop Sidebar */}
             <aside className="hidden md:block w-64 shrink-0 sticky top-24 self-start max-h-[85vh] overflow-y-auto pr-6 custom-scrollbar">

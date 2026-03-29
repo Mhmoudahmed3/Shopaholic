@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Truck, Sparkles, PhoneCall, ShieldCheck } from "lucide-react";
 import { getHomepageContent } from "@/app/admin/actions";
 import { ProductCarouselSection, NewsletterSection, DragScrollContainer, AnimatedSection, AnimatedHero } from "./HomePageClient";
 import type { HomepageHero, HomepagePromo, HomepageNewsletter, Product } from "@/lib/types";
@@ -107,9 +107,9 @@ export default async function Home() {
       </section>
 
       {/* Best Sellers */}
-      <AnimatedSection className="min-h-[calc(100svh-4rem-4rem)] lg:min-h-[calc(100vh-5rem)] flex flex-col justify-center bg-neutral-50 dark:bg-zinc-900/30 py-16">
+      <AnimatedSection className="flex flex-col justify-center bg-neutral-50 dark:bg-zinc-900/30 py-4 md:py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="mb-8 md:mb-12">
+          <div className="mb-4 md:mb-8">
             <div className="flex items-baseline justify-between gap-4 mb-4 md:mb-8">
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif tracking-tight">Best Sellers</h2>
               <Link href="/shop" className="group flex items-center gap-2 text-[10px] font-bold tracking-[0.3em] uppercase border-b border-transparent hover:border-black dark:hover:border-white transition-all pb-1 shrink-0">
@@ -122,9 +122,9 @@ export default async function Home() {
       </AnimatedSection>
 
       {/* Newest Arrivals */}
-      <AnimatedSection className="min-h-[calc(100svh-4rem-4rem)] lg:min-h-[calc(100vh-5rem)] flex flex-col justify-center bg-white dark:bg-black py-16">
+      <AnimatedSection className="flex flex-col justify-center bg-white dark:bg-black py-4 md:py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="mb-8 md:mb-12">
+          <div className="mb-4 md:mb-8">
             <div className="flex items-baseline justify-between gap-4 mb-4 md:mb-8">
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif tracking-tight">Newest Arrivals</h2>
               <Link href="/shop" className="group flex items-center gap-2 text-[10px] font-bold tracking-[0.3em] uppercase border-b border-transparent hover:border-black dark:hover:border-white transition-all pb-1 shrink-0">
@@ -192,6 +192,50 @@ export default async function Home() {
                 </div>
               ))}
             </DragScrollContainer>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* Why Choose Us Section */}
+      <AnimatedSection className="py-20 md:py-32 bg-white dark:bg-black overflow-hidden border-t border-neutral-100 dark:border-neutral-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16 md:mb-24">
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
+              Why People Choose SHOPOHOLIC?
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+            {[
+              {
+                icon: Truck,
+                title: "Same day Delivery",
+                description: "Fast and safe shipping all over Egypt"
+              },
+              {
+                icon: Sparkles,
+                title: "Authentic Design",
+                description: "Discover the excellence of local craftsmanship and modern design."
+              },
+              {
+                icon: PhoneCall,
+                title: "Customer Care",
+                description: "We're always here to help if you have any issues with your order"
+              },
+              {
+                icon: ShieldCheck,
+                title: "Secure Checkout",
+                description: "Payments are made with advanced encryption standards."
+              }
+            ].map((feature, idx) => (
+              <div key={idx} className="bg-neutral-50 dark:bg-neutral-900/40 p-6 md:p-12 text-center flex flex-col items-center gap-4 md:gap-6 group hover:bg-white dark:hover:bg-zinc-800 transition-all duration-500 rounded-3xl border border-transparent hover:border-neutral-100 dark:hover:border-neutral-800 hover:shadow-2xl">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-neutral-200 dark:border-neutral-800 flex items-center justify-center mb-0 md:mb-2 group-hover:rotate-12 transition-transform">
+                  <feature.icon className="w-5 h-5 md:w-7 md:h-7 text-black dark:text-white" strokeWidth={1.5} />
+                </div>
+                <h3 className="text-sm md:text-lg font-bold tracking-tight">{feature.title}</h3>
+                <p className="hidden md:block text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed max-w-xs">{feature.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </AnimatedSection>

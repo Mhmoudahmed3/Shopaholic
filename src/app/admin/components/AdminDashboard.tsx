@@ -270,7 +270,7 @@ export default function AdminDashboard({ products, orders, categories, salesMap 
                             variants={containerVariants}
                             initial="hidden"
                             animate="visible"
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                            className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
                         >
                             <StatCard label="Total Revenue" value={`${(totalRevenue || 0).toLocaleString()} EGP`} trend="+12.5%" trendUp={true} icon={TrendingUp} description="vs last month" color="emerald" />
                             <StatCard label="Total Orders" value={totalOrders.toString()} trend="+8.2%" trendUp={true} icon={ShoppingBag} description="New orders today" color="blue" />
@@ -449,7 +449,7 @@ export default function AdminDashboard({ products, orders, categories, salesMap 
 
                     <div className="flex gap-6 overflow-x-auto pb-8 no-scrollbar snap-x snap-mandatory scroll-smooth px-4 md:px-8">
                         {orders.filter(o => o.status === 'Processing' || o.status === 'Shipped').slice(0, 10).map((order) => (
-                            <div key={order.id} className="flex-shrink-0 w-[300px] md:w-[380px] snap-start">
+                            <div key={order.id} className="shrink-0 w-[300px] md:w-[380px] snap-start">
                                 <OrderFulfillmentCard order={order} />
                             </div>
                         ))}
@@ -477,9 +477,9 @@ function StatCard({ label, value, trend, trendUp, icon: Icon, description, color
     };
     const colorClasses = colorMap[color] || colorMap.neutral;
     return (
-        <motion.div variants={itemVariants} whileHover={{ y: -5 }} className="relative overflow-hidden bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/5 p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all group">
-            <div className="flex justify-between items-start mb-6">
-                <div className={`p-3 rounded-xl shadow-sm ${colorClasses}`}><Icon className="w-5 h-5" /></div>
+        <motion.div variants={itemVariants} whileHover={{ y: -5 }} className="relative overflow-hidden bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/5 p-4 md:p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all group">
+            <div className="flex justify-between items-start mb-4 md:mb-6">
+                <div className={`p-2 md:p-3 rounded-xl shadow-sm ${colorClasses}`}><Icon className="w-4 h-4 md:w-5 md:h-5" /></div>
                 <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase ${trendUp ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'}`}>
                     {trendUp ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                     {trend}
@@ -487,8 +487,8 @@ function StatCard({ label, value, trend, trendUp, icon: Icon, description, color
             </div>
             <div className="space-y-1">
                 <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-gray-500/70">{label}</p>
-                <h4 className="text-2xl font-light tracking-tight">{value}</h4>
-                <p className="text-[10px] text-gray-400 font-medium">{description}</p>
+                <h4 className="text-xl md:text-2xl font-light tracking-tight">{value}</h4>
+                <p className="text-[9px] md:text-[10px] text-gray-400 font-medium">{description}</p>
             </div>
         </motion.div>
     );

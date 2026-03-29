@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { User, Search, Heart } from "lucide-react";
 import { CartIcon } from "./CartIcon";
 import { WishlistIcon } from "./WishlistIcon";
@@ -14,6 +15,8 @@ import { useAuthStore } from "@/store/useAuthStore";
 export function Navbar({ storeName = "SHOPOHOLIC" }: { storeName?: string }) {
     const { open: openSearch } = useSearchStore();
     const { user, isAuthenticated } = useAuthStore();
+    const pathname = usePathname();
+    const isShopPage = pathname?.startsWith("/shop");
     const [isVisible, setIsVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -66,12 +69,14 @@ export function Navbar({ storeName = "SHOPOHOLIC" }: { storeName?: string }) {
                     {/* Right: Actions */}
                     <div className="flex flex-1 lg:flex-none items-center justify-end gap-1 sm:gap-2">
 
-                        <button 
-                            onClick={openSearch}
-                            className="block p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors"
-                        >
-                            <Search className="h-5 w-5" />
-                        </button>
+                        {!isShopPage && (
+                            <button 
+                                onClick={openSearch}
+                                className="block p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors"
+                            >
+                                <Search className="h-5 w-5" />
+                            </button>
+                        )}
                         
                         <div className="flex items-center gap-1">
                             <SettingsDropdown />

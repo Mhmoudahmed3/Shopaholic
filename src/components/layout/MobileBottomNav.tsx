@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Home, ShoppingBag, Heart } from "lucide-react";
+import { Home, ShoppingBag, Heart, ShoppingCart } from "lucide-react";
 import { useWishlistStore } from "@/store/useWishlistStore";
 import { useCartStore } from "@/store/useCartStore";
 import { useEffect, useState } from "react";
@@ -35,7 +35,7 @@ export function MobileBottomNav() {
         { label: "home", icon: Home, href: "/" },
         { label: "shop", icon: ShoppingBag, href: "/shop" },
         { label: "wishlist", icon: Heart, href: "/favorites", count: wishlistCount },
-        { label: "cart", icon: ShoppingBag, href: "/cart", count: cartCount },
+        { label: "cart", icon: ShoppingCart, href: "/cart", count: cartCount },
     ];
 
     return (

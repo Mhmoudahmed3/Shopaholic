@@ -2,13 +2,14 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { CustomSelect } from "@/components/ui/CustomSelect";
+import { Clock, ArrowDownWideNarrow, ArrowUpWideNarrow, Zap, Star } from "lucide-react";
 
 const SORT_OPTIONS = [
-    { value: "newest", label: "Newest Arrivals" },
-    { value: "price-low", label: "Price: Low to High" },
-    { value: "price-high", label: "Price: High to Low" },
-    { value: "popularity", label: "Popularity" },
-    { value: "rating", label: "Customer Rating" },
+    { value: "newest", label: "Newest Arrivals", icon: <Clock className="w-3.5 h-3.5" /> },
+    { value: "price_asc", label: "Price: Low to High", icon: <ArrowUpWideNarrow className="w-3.5 h-3.5" /> },
+    { value: "price_desc", label: "Price: High to Low", icon: <ArrowDownWideNarrow className="w-3.5 h-3.5" /> },
+    { value: "popularity", label: "Popularity", icon: <Zap className="w-3.5 h-3.5" /> },
+    { value: "rating", label: "Customer Rating", icon: <Star className="w-3.5 h-3.5" /> },
 ];
 
 export function ShopSortSelect({ initialSort }: { initialSort: string }) {

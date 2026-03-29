@@ -8,6 +8,7 @@ import clsx from "clsx";
 interface Option {
     value: string;
     label: string;
+    icon?: React.ReactNode;
 }
 
 interface CustomSelectProps {
@@ -57,12 +58,15 @@ export function CustomSelect({
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
                 className={clsx(
-                    "flex items-center justify-between text-[11px] font-bold uppercase tracking-widest transition-all text-left",
+                    "flex items-center justify-between text-[11px] font-bold uppercase tracking-widest transition-all text-left group",
                     variant === "underlined" ? "py-2 border-b border-neutral-200 dark:border-neutral-800" : "py-1 gap-4",
                     isOpen && variant === "underlined" && "border-black dark:border-white"
                 )}
             >
-                <span>{selectedOption?.label}</span>
+                <div className="flex items-center gap-2">
+                    {selectedOption?.icon && <span className="opacity-50 group-hover:opacity-100 transition-opacity">{selectedOption.icon}</span>}
+                    <span>{selectedOption?.label}</span>
+                </div>
                 <ChevronDown className={clsx("w-3.5 h-3.5 transition-transform duration-500", isOpen ? "rotate-180" : "rotate-0")} />
             </button>
 
@@ -85,13 +89,17 @@ export function CustomSelect({
                                         setIsOpen(false);
                                     }}
                                     className={clsx(
-                                        "w-full px-4 py-3 text-[10px] font-bold uppercase tracking-[0.15em] text-left transition-colors",
+                                        "w-full px-4 py-4 text-[10px] font-bold uppercase tracking-[0.15em] text-left transition-all flex items-center justify-between group/opt",
                                         value === option.value 
                                             ? "bg-neutral-50 dark:bg-neutral-800 text-black dark:text-white" 
-                                            : "text-neutral-500 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white"
+                                            : "text-neutral-500 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white hover:pl-6"
                                     )}
                                 >
-                                    {option.label}
+                                    <div className="flex items-center gap-3">
+                                        {option.icon && <span className="text-neutral-300 dark:text-neutral-600 group-hover/opt:text-black dark:group-hover/opt:text-white transition-colors">{option.icon}</span>}
+                                        {option.label}
+                                    </div>
+                                    {value === option.value && <div className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white" />}
                                 </button>
                             ))}
                         </div>

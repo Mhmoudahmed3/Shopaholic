@@ -426,6 +426,11 @@ export async function getProducts(params: any): Promise<Product[]> {
   try {
     let query = supabase.from('products').select('*');
 
+    if (params.q) {
+      const q = `%${params.q}%`;
+      query = query.or(`name.ilike.${q},description.ilike.${q},category.ilike.${q},type.ilike.${q}`);
+    }
+
     if (params.category && params.category !== 'all') {
       query = query.eq('category', params.category);
     }
@@ -436,7 +441,8 @@ export async function getProducts(params: any): Promise<Product[]> {
 
     if (params.sort === 'price_asc') query = query.order('price', { ascending: true });
     else if (params.sort === 'price_desc') query = query.order('price', { ascending: false });
-    else if (params.sort === 'popular') query = query.order('popularity', { ascending: false });
+    else if (params.sort === 'popularity') query = query.order('popularity', { ascending: false });
+    else if (params.sort === 'rating') query = query.order('rating', { ascending: false });
     else query = query.order('created_at', { ascending: false });
 
     const { data, error } = await query;
@@ -450,6 +456,20 @@ export async function getProducts(params: any): Promise<Product[]> {
             let localProducts = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
             
             // Manual Filtering for Offline Mode
+            if (params.q) {
+                const qLower = params.q.toLowerCase().trim();
+                // Map common terms for better search matching
+                const searchTerms = [qLower];
+                if (qLower === 'man' || qLower === 'men') searchTerms.push('man', 'men');
+                if (qLower === 'woman' || qLower === 'women') searchTerms.push('woman', 'women');
+                if (qLower === 'kid' || qLower === 'kids' || qLower === 'children') searchTerms.push('kid', 'kids', 'children');
+
+                localProducts = localProducts.filter((p: any) => {
+                    const searchableText = `${p.name} ${p.description} ${p.category} ${p.type}`.toLowerCase();
+                    return searchTerms.some(term => searchableText.includes(term));
+                });
+            }
+            
             if (params.category && params.category !== 'all') {
                 const catLower = params.category.toLowerCase();
                 localProducts = localProducts.filter((p: any) => {
@@ -505,8 +525,10 @@ export async function getProducts(params: any): Promise<Product[]> {
                 localProducts.sort((a: any, b: any) => a.price - b.price);
             } else if (params.sort === 'price_desc') {
                 localProducts.sort((a: any, b: any) => b.price - a.price);
-            } else if (params.sort === 'popular') {
+            } else if (params.sort === 'popularity') {
                 localProducts.sort((a: any, b: any) => (b.popularity || 0) - (a.popularity || 0));
+            } else if (params.sort === 'rating') {
+                localProducts.sort((a: any, b: any) => (b.rating || 0) - (a.rating || 0));
             } else {
                 localProducts.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
             }
